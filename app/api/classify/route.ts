@@ -7,6 +7,7 @@ import {
   type Terminal,
 } from "@/lib/questionnaire-schema";
 import { llmClassify } from "@/lib/llm-classifier";
+import { checkRateLimit } from "@/lib/llm-rate-limiter";
 
 const NOT_SURE_PATTERN = /i'?m\s+not\s+sure/i;
 
@@ -88,6 +89,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const ip =
+      request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+      "unknown";
+
     const configPath = path.join(process.cwd(), "lib", "questionnaire.json");
     const raw = await readFile(configPath, "utf-8");
     const config = QuestionnaireSchema.parse(JSON.parse(raw));
@@ -111,6 +116,17 @@ export async function POST(request: NextRequest) {
     if (lowConfidence) {
       const userText = answers["q-start"] ?? Object.values(answers)[0] ?? "";
       if (userText) {
+        const rateCheck = checkRateLimit(ip, "navigate");
+        if (!rateCheck.allowed) {
+          return NextResponse.json(
+            {
+              data: null,
+              error: "Too many requests — try again later",
+              meta: { resetMs: rateCheck.resetMs },
+            },
+            { status: 429 },
+          );
+        }
         try {
           const llmResult = await llmClassify(userText);
           return NextResponse.json({ data: { ...llmResult }, error: null });

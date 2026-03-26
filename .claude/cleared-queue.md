@@ -387,3 +387,45 @@ Artifacts:
 Produces: Design source of truth — TASK-010, TASK-011, TASK-012 implement against these screens
 Verify: cpo review — all 4 screens present; WCAG AA passed; mobile layout reviewed; approved before any component code starts
 Depends: TASK-004
+
+---
+
+## TASK-017: Vercel GitHub Connection + Disable All Authentication
+Status: queued
+Feature: FEATURE-005
+Agent: cto
+Spec: Connect the GitHub repo (anhnguyensynctree/auto-leverage) to the Vercel project so pushes to master trigger auto-deploys and PRs get preview URLs. Then disable all Vercel deployment protection so the site is publicly accessible without any Vercel login. Steps: (1) User creates a Vercel API token at vercel.com/account/tokens and saves to ~/.claude/config/vercel/token; (2) CTO calls PATCH /v9/projects/prj_s8EAq4E7pwL8Rh3wsuGy66s1yDgm to connect the GitHub repo; (3) CTO calls PATCH to set ssoProtection: null and passwordProtection: null — disabling all deployment protection; (4) Verify: open a preview URL without Vercel login and confirm it loads.
+Scenarios:
+- GIVEN a push to master WHEN Vercel picks it up THEN a production deploy triggers automatically
+- GIVEN a PR is opened WHEN Vercel picks it up THEN a preview URL is posted to the PR
+- GIVEN the production URL WHEN opened in a browser with no Vercel account THEN it loads without an auth prompt
+- GIVEN a preview URL WHEN opened in a browser with no Vercel account THEN it loads without an auth prompt
+Artifacts:
+- Vercel project GitHub connection (confirmed via vercel project ls)
+- .claude/agents/cto.ctx.md updated with confirmed deployment status
+Produces: Fully automated deploy pipeline — every push ships
+Verify: cto self-review — production URL loads publicly; preview URL loads publicly; auto-deploy confirmed
+Depends: none
+Blocked-by: user must provide Vercel API token at ~/.claude/config/vercel/token
+
+---
+
+## TASK-018: Write Tests for Rate Limiter, Strategy Route, and LLM Client
+Status: queued
+Feature: FEATURE-002
+Agent: backend-developer
+Spec: Write unit tests for the three new lib files added in the LLM split: (1) llm-rate-limiter.ts — test allowed/blocked behaviour, window expiry, separate limits per callType, separate buckets per IP; (2) llm-client.ts — test that it throws when GLM_API_KEY is missing, test happy path with mocked fetch, test non-200 response handling; (3) llm-strategy.ts — test valid output, invalid JSON from GLM, missing steps, missing llmPrompt. Also write integration tests for POST /api/strategy — happy path, 429 on rate limit exceeded, 503 when GLM_API_KEY missing, 400 on bad body.
+Scenarios:
+- GIVEN an IP has hit the navigate limit WHEN another classify request fires the LLM path THEN 429 is returned
+- GIVEN a fresh IP WHEN strategy is called THEN allowed up to 3 times then 429
+- GIVEN GLM_API_KEY is not set WHEN /api/strategy is called THEN 503 with "Strategy advisor not available"
+- GIVEN GLM returns invalid JSON WHEN llmStrategy is called THEN returns null (no throw)
+- GIVEN rate window expires WHEN same IP calls again THEN allowed again
+Artifacts:
+- lib/__tests__/llm-rate-limiter.test.ts
+- lib/__tests__/llm-client.test.ts
+- lib/__tests__/llm-strategy.test.ts
+- app/api/strategy/__tests__/route.test.ts
+Produces: Test coverage for all new LLM infrastructure
+Verify: qa — all new tests pass; no regressions in existing 71 tests
+Depends: none
