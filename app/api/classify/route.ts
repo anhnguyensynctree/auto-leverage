@@ -6,6 +6,7 @@ import {
   type QuestionNode,
   type Terminal,
 } from "@/lib/questionnaire-schema";
+import { llmClassify } from "@/lib/llm-classifier";
 
 const NOT_SURE_PATTERN = /i'?m\s+not\s+sure/i;
 
@@ -106,6 +107,18 @@ export async function POST(request: NextRequest) {
       process.env.CONFIDENCE_THRESHOLD ?? "0.6",
     );
     const lowConfidence = result.confidence < confidenceThreshold;
+
+    if (lowConfidence) {
+      const userText = answers["q-start"] ?? Object.values(answers)[0] ?? "";
+      if (userText) {
+        try {
+          const llmResult = await llmClassify(userText);
+          return NextResponse.json({ data: { ...llmResult }, error: null });
+        } catch {
+          // graceful degrade — return static result
+        }
+      }
+    }
 
     return NextResponse.json({
       data: {
