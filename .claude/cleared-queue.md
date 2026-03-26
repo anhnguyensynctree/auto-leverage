@@ -350,7 +350,7 @@ Depends: TASK-008
 ---
 
 ## TASK-015: Vercel Config + Domain Setup
-Status: queued
+Status: done
 Feature: FEATURE-005
 Agent: cto
 Spec: Configure Vercel deployment for the project. Steps: (1) create vercel.json at project root specifying framework: nextjs, (2) document the Vercel project link steps in .claude/agents/cto.ctx.md (connect GitHub repo, set production branch: main, enable preview deployments on PRs), (3) document environment variable setup in .claude/agents/cto.ctx.md: ANTHROPIC_API_KEY (production + preview) and CONFIDENCE_THRESHOLD (production + preview, default "0.6"), (4) document domain claim steps: attempt auto-leverage.vercel.com, note fallback naming if unavailable. The vercel.json and the ctx.md doc are the deliverables — actual Vercel project creation requires manual steps documented here.

@@ -43,6 +43,36 @@ The agent runs a fixed loop: reads program.md → edits train.py → runs 5-minu
 - Env vars managed via Vercel dashboard (ANTHROPIC_API_KEY, CONFIDENCE_THRESHOLD)
 - OMS owns the full pipeline spec — no manual deploy steps
 
+## Vercel Setup — Manual Steps Required
+
+### 1. Link GitHub repo to Vercel
+1. Go to vercel.com → New Project → Import Git Repository
+2. Select the `auto-leverage` GitHub repo
+3. Framework will be auto-detected as Next.js (vercel.json confirms it)
+4. Set **Production Branch**: `main`
+5. Enable **Preview Deployments**: on (triggers on every PR automatically)
+6. Leave Build & Output Settings as defaults — Next.js preset handles them
+
+### 2. Environment Variables
+Set in Vercel dashboard → Project → Settings → Environment Variables.
+Apply each to both **Production** and **Preview** environments:
+
+| Variable | Value | Notes |
+|---|---|---|
+| `ANTHROPIC_API_KEY` | `sk-ant-...` | Server-side only — never expose to client bundle |
+| `CONFIDENCE_THRESHOLD` | `0.6` | Default; tune up to reduce LLM fallback calls |
+
+### 3. Domain
+- Attempt: `auto-leverage.vercel.com` (claim via Project → Settings → Domains → Edit)
+- If taken: use Vercel's generated `auto-leverage-<hash>.vercel.app` for MVP
+- Custom domain (future): add CNAME record pointing to `cname.vercel-dns.com`
+
+### 4. Verification
+After linking:
+- Open a test PR → confirm preview URL appears in PR checks
+- Merge to main → confirm production deploy triggers in Vercel dashboard
+- Hit the production URL → confirm `/api/classify` returns `{ data, error }` shape (not 500)
+
 ## Key Constraints
 - No server-side autoresearch execution — advisory only
 - No user data stored — GDPR-trivial
