@@ -20,7 +20,7 @@ export async function llmClassify(userText: string): Promise<ClassifyResult> {
     return FALLBACK_RESULT;
   }
 
-  const model = process.env.GLM_MODEL ?? "glm-4-flash";
+  const model = process.env.GLM_MODEL ?? "glm-5";
 
   const prompt = `You are classifying a user's machine learning problem into autoresearch components.
 
@@ -47,10 +47,10 @@ Rules:
     },
     body: JSON.stringify({
       model,
-      max_tokens: 100,
+      max_tokens: 2000,
       messages: [{ role: "user", content: prompt }],
     }),
-    signal: AbortSignal.timeout(5000),
+    signal: AbortSignal.timeout(15000),
   });
 
   if (!response.ok) {
