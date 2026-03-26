@@ -126,7 +126,7 @@ ${PREPARE_PROMPT}
 ${PROGRAM_PROMPT}`,
   },
 
-  "train+program": {
+  "program+train": {
     component_names: ["Model Trainer", "Experiment Instructions"],
     guide_steps: [
       "1. Start with Experiment Instructions: fill in the second prompt to define what the agent is allowed to try and what counts as a good result.",
