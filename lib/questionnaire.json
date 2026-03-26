@@ -1,0 +1,231 @@
+{
+  "version": "1.0.0",
+  "start": "q-start",
+  "nodes": [
+    {
+      "id": "q-start",
+      "question": "What do you want to change about your AI research run?",
+      "type": "choice",
+      "options": [
+        { "label": "Set up or change data before training starts", "next": "q-p1" },
+        { "label": "Change how the model trains or is built", "next": "q-t1" },
+        { "label": "Change what the AI agent does or decides", "next": "q-e1" },
+        { "label": "I'm not sure", "next": "q-fallback-1" }
+      ]
+    },
+
+    {
+      "id": "q-p1",
+      "question": "What brings you to the data prep step?",
+      "type": "choice",
+      "options": [
+        { "label": "I want to download more data shards", "next": "q-p2" },
+        { "label": "I need to change where data is stored on disk", "next": "terminal-prepare" },
+        { "label": "I want to adjust the tokenizer or vocabulary size", "next": "q-p3" },
+        { "label": "I'm not sure", "next": "q-fallback-1" }
+      ]
+    },
+    {
+      "id": "q-p2",
+      "question": "How much data do you want to use?",
+      "type": "choice",
+      "options": [
+        { "label": "I want more shards than the default 10", "next": "terminal-prepare" },
+        { "label": "I have a small GPU and need to use fewer shards", "next": "terminal-prepare" },
+        { "label": "I want to change how long each training sequence is", "next": "terminal-prepare" },
+        { "label": "I'm not sure", "next": "q-fallback-1" }
+      ]
+    },
+    {
+      "id": "q-p3",
+      "question": "What do you want to change about the tokenizer?",
+      "type": "choice",
+      "options": [
+        { "label": "I want a larger or smaller vocabulary", "next": "terminal-prepare" },
+        { "label": "I want more tokens used to score the model", "next": "terminal-prepare" },
+        { "label": "The tokenizer hasn't been trained yet and I need to run setup", "next": "terminal-prepare" },
+        { "label": "I'm not sure", "next": "q-fallback-1" }
+      ]
+    },
+    {
+      "id": "q-p4",
+      "question": "Do you want to change how long each experiment run can go?",
+      "type": "choice",
+      "options": [
+        { "label": "Yes, I want to set a hard time limit", "next": "terminal-prepare" },
+        { "label": "No, I just want to check my current settings", "next": "terminal-prepare" },
+        { "label": "I'm not sure", "next": "q-fallback-1" }
+      ]
+    },
+
+    {
+      "id": "q-t1",
+      "question": "What are you trying to change about the model?",
+      "type": "choice",
+      "options": [
+        { "label": "I want the model to be bigger or smaller", "next": "q-t2" },
+        { "label": "The model is crashing with an out-of-memory error", "next": "terminal-train" },
+        { "label": "I want to change the learning rate or optimizer", "next": "q-t3" },
+        { "label": "I want to change the model's internal structure", "next": "q-t4" },
+        { "label": "I'm not sure", "next": "q-fallback-1" }
+      ]
+    },
+    {
+      "id": "q-t2",
+      "question": "How do you want to resize the model?",
+      "type": "choice",
+      "options": [
+        { "label": "Add or remove transformer layers", "next": "terminal-train" },
+        { "label": "Make each layer wider or narrower", "next": "terminal-train" },
+        { "label": "Change the attention head size", "next": "terminal-train" },
+        { "label": "I'm not sure", "next": "q-fallback-1" }
+      ]
+    },
+    {
+      "id": "q-t3",
+      "question": "What do you want to change about learning?",
+      "type": "choice",
+      "options": [
+        { "label": "The main learning rates (embedding, matrix, output)", "next": "terminal-train" },
+        { "label": "How training starts and ends — warmup and cooldown", "next": "terminal-train" },
+        { "label": "The optimizer algorithm itself", "next": "terminal-train" },
+        { "label": "Batch size or how many tokens per step", "next": "terminal-train" },
+        { "label": "I'm not sure", "next": "q-fallback-1" }
+      ]
+    },
+    {
+      "id": "q-t4",
+      "question": "What part of the model structure do you want to change?",
+      "type": "choice",
+      "options": [
+        { "label": "The attention window pattern (how far each layer can see)", "next": "terminal-train" },
+        { "label": "The activation function inside each block", "next": "terminal-train" },
+        { "label": "The full architecture — I want to redesign it", "next": "terminal-train" },
+        { "label": "I'm not sure", "next": "q-fallback-1" }
+      ]
+    },
+
+    {
+      "id": "q-e1",
+      "question": "What do you want to change about how the agent works?",
+      "type": "choice",
+      "options": [
+        { "label": "I want to limit what the agent is allowed to try", "next": "q-e2" },
+        { "label": "I want to change what counts as a good result", "next": "terminal-program" },
+        { "label": "I want the agent to stop after a set number of runs", "next": "terminal-program" },
+        { "label": "I want to change how results are logged", "next": "terminal-program" },
+        { "label": "I'm not sure", "next": "q-fallback-1" }
+      ]
+    },
+    {
+      "id": "q-e2",
+      "question": "How do you want to limit the agent?",
+      "type": "choice",
+      "options": [
+        { "label": "Block certain types of changes (e.g. no architecture edits)", "next": "terminal-program" },
+        { "label": "Point the agent at specific papers or code to read", "next": "terminal-program" },
+        { "label": "Tell the agent to prefer simple solutions over small gains", "next": "terminal-program" },
+        { "label": "I'm not sure", "next": "q-fallback-1" }
+      ]
+    },
+    {
+      "id": "q-e3",
+      "question": "Do you want to change how the agent handles problems?",
+      "type": "choice",
+      "options": [
+        { "label": "The agent keeps trying things that crash and I want to guide it", "next": "terminal-program" },
+        { "label": "I want to add more agents to run experiments at the same time", "next": "terminal-program" },
+        { "label": "I want to set up a fresh experiment run from scratch", "next": "terminal-program" },
+        { "label": "I'm not sure", "next": "q-fallback-1" }
+      ]
+    },
+
+    {
+      "id": "q-fallback-1",
+      "question": "Which of these sounds closest to your goal?",
+      "type": "choice",
+      "options": [
+        { "label": "I need to set up the data before training can start", "next": "q-p1" },
+        { "label": "I want to change how the model itself trains or is built", "next": "q-t1" },
+        { "label": "I want to change what the AI agent does or decides", "next": "q-e1" },
+        { "label": "I need a full walkthrough — I'm new to this", "next": "terminal-all" },
+        { "label": "I'm not sure", "next": "q-fallback-2" }
+      ]
+    },
+    {
+      "id": "q-fallback-2",
+      "question": "Does your question involve…",
+      "type": "choice",
+      "options": [
+        { "label": "Files, folders, or downloading data", "next": "q-p1" },
+        { "label": "A specific number, setting, or piece of code", "next": "q-t1" },
+        { "label": "What the agent is allowed to do or try", "next": "q-e1" },
+        { "label": "I still don't know", "next": "terminal-all" }
+      ]
+    },
+
+    {
+      "id": "terminal-prepare",
+      "question": "You're working with Data Preparation (prepare.py).",
+      "type": "choice",
+      "terminal": {
+        "components": ["prepare"],
+        "confidence": 1.0
+      }
+    },
+    {
+      "id": "terminal-train",
+      "question": "You're working with the Model Trainer (train.py).",
+      "type": "choice",
+      "terminal": {
+        "components": ["train"],
+        "confidence": 1.0
+      }
+    },
+    {
+      "id": "terminal-program",
+      "question": "You're working with Experiment Instructions (program.md).",
+      "type": "choice",
+      "terminal": {
+        "components": ["program"],
+        "confidence": 1.0
+      }
+    },
+    {
+      "id": "terminal-prepare-train",
+      "question": "Your question touches both Data Preparation and the Model Trainer.",
+      "type": "choice",
+      "terminal": {
+        "components": ["prepare", "train"],
+        "confidence": 0.9
+      }
+    },
+    {
+      "id": "terminal-prepare-program",
+      "question": "Your question touches both Data Preparation and Experiment Instructions.",
+      "type": "choice",
+      "terminal": {
+        "components": ["prepare", "program"],
+        "confidence": 0.9
+      }
+    },
+    {
+      "id": "terminal-train-program",
+      "question": "Your question touches both the Model Trainer and Experiment Instructions.",
+      "type": "choice",
+      "terminal": {
+        "components": ["train", "program"],
+        "confidence": 0.9
+      }
+    },
+    {
+      "id": "terminal-all",
+      "question": "We'll walk you through all three parts: Data Preparation, Model Trainer, and Experiment Instructions.",
+      "type": "choice",
+      "terminal": {
+        "components": ["prepare", "train", "program"],
+        "confidence": 0.5
+      }
+    }
+  ]
+}

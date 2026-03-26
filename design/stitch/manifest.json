@@ -1,0 +1,56 @@
+{
+  "projectId": "10374551638545078263",
+  "defaultDevice": "DESKTOP",
+  "screens": [
+    {
+      "id": "b9c81bab5d9a472da70cbb8f64b50cfd",
+      "name": "home",
+      "prompt": "Landing screen for 'auto-leverage', a guided wizard tool that helps non-technical researchers configure their AI training runs.\n\nVIBE: Clean, calm, trustworthy. Like Stripe's focused onboarding page. ",
+      "deviceType": "DESKTOP",
+      "version": 1,
+      "updatedAt": "2026-03-26T07:28:51.774Z",
+      "htmlPath": "design/stitch/home.html",
+      "imagePath": "design/stitch/home.png"
+    },
+    {
+      "id": "b07e599e5806401bb66643f5320ad767",
+      "name": "question-card",
+      "prompt": "Question step screen for a guided wizard. Non-technical researchers answer multiple-choice questions to find the right configuration component.\n\nVIBE: Clean, minimal, trustworthy. User should feel gui",
+      "deviceType": "DESKTOP",
+      "version": 1,
+      "updatedAt": "2026-03-26T07:30:21.039Z",
+      "htmlPath": "design/stitch/question-card.html",
+      "imagePath": "design/stitch/question-card.png"
+    },
+    {
+      "id": "3ad4566354284c7a9f04b150e141d466",
+      "name": "confirmation",
+      "prompt": "Confirmation screen for a guided wizard. Shows which configuration component(s) the user's question maps to, with a plain-language description. User confirms they're in the right place before proceedi",
+      "deviceType": "DESKTOP",
+      "version": 1,
+      "updatedAt": "2026-03-26T07:31:58.714Z",
+      "htmlPath": "design/stitch/confirmation.html",
+      "imagePath": "design/stitch/confirmation.png"
+    },
+    {
+      "id": "96ff3140f3b44992bf86501495e8d110",
+      "name": "output",
+      "prompt": "Output screen for a guided wizard. Shows the user a numbered guide with specific steps to change their AI research configuration, plus an LLM prompt they can copy and use directly in an AI chat tool.\n",
+      "deviceType": "DESKTOP",
+      "version": 1,
+      "updatedAt": "2026-03-26T07:33:31.439Z",
+      "htmlPath": "design/stitch/output.html",
+      "imagePath": "design/stitch/output.png"
+    }
+  ],
+  "styleConfig": {
+    "profile": "product",
+    "platform": "Web, Desktop-first",
+    "aestheticAnchor": "clean minimal trustworthy",
+    "brandReference": "similar to Notion or Stripe",
+    "colorPalette": "white background, slate-800 text, single blue-600 accent, subtle gray borders",
+    "typography": "Inter for UI, Geist Mono for code blocks",
+    "theme": "Light, modern, approachable",
+    "notes": "Guided wizard for non-technical researchers. Users should feel calm and confident. Generous whitespace, clear hierarchy, WCAG AA contrast required."
+  }
+}
