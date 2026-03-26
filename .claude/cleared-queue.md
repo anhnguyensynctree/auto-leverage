@@ -391,7 +391,7 @@ Depends: TASK-004
 ---
 
 ## TASK-017: Vercel GitHub Connection + Disable All Authentication
-Status: queued
+Status: cto-stop
 Feature: FEATURE-005
 Agent: cto
 Spec: Connect the GitHub repo (anhnguyensynctree/auto-leverage) to the Vercel project so pushes to master trigger auto-deploys and PRs get preview URLs. Then disable all Vercel deployment protection so the site is publicly accessible without any Vercel login. Steps: (1) User creates a Vercel API token at vercel.com/account/tokens and saves to ~/.claude/config/vercel/token; (2) CTO calls PATCH /v9/projects/prj_s8EAq4E7pwL8Rh3wsuGy66s1yDgm to connect the GitHub repo; (3) CTO calls PATCH to set ssoProtection: null and passwordProtection: null — disabling all deployment protection; (4) Verify: open a preview URL without Vercel login and confirm it loads.

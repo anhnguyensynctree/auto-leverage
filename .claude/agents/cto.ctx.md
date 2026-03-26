@@ -65,9 +65,18 @@ Apply each to both **Production** and **Preview** environments:
 
 | Variable | Value | Notes |
 |---|---|---|
-| `GLM_API_KEY` | `<zhipu-api-key>` | Server-side only — never expose to client bundle |
-| `GLM_MODEL` | `glm-4-flash` | Optional; defaults to `glm-4-flash`. Set to your GLM-5 model name if different. |
-| `CONFIDENCE_THRESHOLD` | `0.6` | Optional; below this value the LLM fallback fires. Tune up to fire LLM more often, down to fire less. |
+| `GLM_API_KEY` | `<zhipu-api-key>` | Server-side only — never expose to client bundle. Key stored at `~/.claude/config/glm5/key` |
+| `GLM_MODEL` | `glm-5` | Optional; defaults to `glm-5`. Override via env if model name changes. |
+| `CONFIDENCE_THRESHOLD` | `0.75` | Below this value the LLM navigate fallback fires. Default 0.75 — only triggers for ambiguous inputs. |
+
+## API Key Locations (local machine)
+
+| Key | Path | Permissions |
+|---|---|---|
+| GLM-5 (Zhipu AI) | `~/.claude/config/glm5/key` | chmod 600 |
+| Vercel API token | `~/.config/vercel/key` | chmod 600 |
+
+These paths are the canonical locations for Claude sessions to reference. Never hardcode values.
 
 ### 3. Domain
 - Attempt: `auto-leverage.vercel.com` (claim via Project → Settings → Domains → Edit)
