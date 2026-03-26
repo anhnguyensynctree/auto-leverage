@@ -1,7 +1,8 @@
-import Anthropic from "@anthropic-ai/sdk";
 import { type Component } from "@/lib/questionnaire-schema";
 
 const VALID_COMPONENTS: readonly Component[] = ["prepare", "train", "program"];
+
+const GLM_BASE_URL = "https://open.bigmodel.cn/api/paas/v4/chat/completions";
 
 export interface ClassifyResult {
   components: Component[];
@@ -14,12 +15,12 @@ const FALLBACK_RESULT: ClassifyResult = {
 };
 
 export async function llmClassify(userText: string): Promise<ClassifyResult> {
-  const apiKey = process.env.ANTHROPIC_API_KEY;
+  const apiKey = process.env.GLM_API_KEY;
   if (!apiKey) {
     return FALLBACK_RESULT;
   }
 
-  const client = new Anthropic({ apiKey });
+  const model = process.env.GLM_MODEL ?? "glm-4-flash";
 
   const prompt = `You are classifying a user's machine learning problem into autoresearch components.
 
@@ -38,17 +39,34 @@ Rules:
 - If unclear, include all three and set confidence to 0.5
 - confidence should be 0.7-0.95 for clear cases, 0.5-0.69 for uncertain`;
 
-  const message = await client.messages.create({
-    model: "claude-haiku-4-5-20251001",
-    max_tokens: 100,
-    messages: [{ role: "user", content: prompt }],
+  const response = await fetch(GLM_BASE_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      model,
+      max_tokens: 100,
+      messages: [{ role: "user", content: prompt }],
+    }),
+    signal: AbortSignal.timeout(5000),
   });
 
-  const text =
-    message.content[0].type === "text" ? message.content[0].text : "";
-  const parsed = JSON.parse(text.trim());
+  if (!response.ok) {
+    return FALLBACK_RESULT;
+  }
 
-  const validComponents = (parsed.components as unknown[]).filter(
+  const data = (await response.json()) as {
+    choices?: Array<{ message?: { content?: string } }>;
+  };
+  const text = data.choices?.[0]?.message?.content ?? "";
+  const parsed = JSON.parse(text.trim()) as {
+    components?: unknown[];
+    confidence?: unknown;
+  };
+
+  const validComponents = (parsed.components ?? []).filter(
     (c): c is Component =>
       typeof c === "string" && VALID_COMPONENTS.includes(c as Component),
   );

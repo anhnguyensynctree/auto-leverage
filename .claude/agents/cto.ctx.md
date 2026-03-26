@@ -8,7 +8,7 @@ Advisory web platform. Non-technical users describe a problem → adaptive quest
 - **Deployment**: Vercel — target domain `auto-leverage.vercel.com`
 - **API routes**: Next.js server-side API routes (no separate backend service)
 - **No database**: stateless MVP — no ORM, no Supabase
-- **Env vars**: ANTHROPIC_API_KEY (server-side only, never in client bundle)
+- **Env vars**: GLM_API_KEY (server-side only, never in client bundle); GLM_MODEL (optional, defaults to glm-4-flash)
 
 ## Architecture
 
@@ -40,27 +40,34 @@ The agent runs a fixed loop: reads program.md → edits train.py → runs 5-minu
 ## Deployment Pipeline (OMS-managed)
 - GitHub Actions CI: lint + type-check + unit tests on every PR
 - Vercel: preview deployments on PR, production deploy on merge to main
-- Env vars managed via Vercel dashboard (ANTHROPIC_API_KEY, CONFIDENCE_THRESHOLD)
+- Env vars managed via Vercel dashboard (GLM_API_KEY, GLM_MODEL, CONFIDENCE_THRESHOLD)
 - OMS owns the full pipeline spec — no manual deploy steps
 
 ## Vercel Setup — Manual Steps Required
 
 ### 1. Link GitHub repo to Vercel
-1. Go to vercel.com → New Project → Import Git Repository
-2. Select the `auto-leverage` GitHub repo
-3. Framework will be auto-detected as Next.js (vercel.json confirms it)
-4. Set **Production Branch**: `main`
-5. Enable **Preview Deployments**: on (triggers on every PR automatically)
-6. Leave Build & Output Settings as defaults — Next.js preset handles them
+The project is already linked via CLI (`vercel link` completed). To connect GitHub for auto-deploys:
+1. Go to vercel.com → Project `auto-leverage` → Settings → Git
+2. Connect the GitHub repo — this enables push-to-deploy and PR preview URLs
+3. Set **Production Branch**: `main`
+4. Preview deployments on PRs are enabled by default once the repo is connected
 
-### 2. Environment Variables
+### 2. Disable Vercel Authentication on Previews
+By default, Vercel protects preview deployments with Vercel SSO. To make previews publicly accessible:
+1. Project Settings → Security → Deployment Protection
+2. Set to **Disabled** (or "Only Production" if you want previews unlocked but production protected)
+
+Production deployments are always public.
+
+### 3. Environment Variables
 Set in Vercel dashboard → Project → Settings → Environment Variables.
 Apply each to both **Production** and **Preview** environments:
 
 | Variable | Value | Notes |
 |---|---|---|
-| `ANTHROPIC_API_KEY` | `sk-ant-...` | Server-side only — never expose to client bundle |
-| `CONFIDENCE_THRESHOLD` | `0.6` | Default; tune up to reduce LLM fallback calls |
+| `GLM_API_KEY` | `<zhipu-api-key>` | Server-side only — never expose to client bundle |
+| `GLM_MODEL` | `glm-4-flash` | Optional; defaults to `glm-4-flash`. Set to your GLM-5 model name if different. |
+| `CONFIDENCE_THRESHOLD` | `0.6` | Optional; below this value the LLM fallback fires. Tune up to fire LLM more often, down to fire less. |
 
 ### 3. Domain
 - Attempt: `auto-leverage.vercel.com` (claim via Project → Settings → Domains → Edit)
