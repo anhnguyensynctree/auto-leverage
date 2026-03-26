@@ -46,7 +46,7 @@ function OutputContent() {
     } finally {
       setLoading(false);
     }
-  }, [rawComponents]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [rawComponents]);
 
   useEffect(() => {
     if (components.length === 0) {
@@ -54,7 +54,7 @@ function OutputContent() {
       return;
     }
     fetchOutput();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   if (loading) {
     return (

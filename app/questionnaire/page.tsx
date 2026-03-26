@@ -33,7 +33,7 @@ function QuestionnaireContent() {
   const [currentNodeId, setCurrentNodeId] = useState<string>(TREE.start);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [history, setHistory] = useState<string[]>([]);
-  const [answerHistory, setAnswerHistory] = useState<string[]>([]);
+  const [_answerHistory, setAnswerHistory] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   const currentNode = NODE_MAP.get(currentNodeId);

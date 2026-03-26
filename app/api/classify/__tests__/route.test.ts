@@ -3,7 +3,9 @@ import { NextRequest } from "next/server";
 
 // vi.hoisted runs before vi.mock factories — safe to read sync file here
 const { QUESTIONNAIRE_RAW } = vi.hoisted(() => {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const { readFileSync } = require("fs") as typeof import("fs");
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const { join } = require("path") as typeof import("path");
   return {
     QUESTIONNAIRE_RAW: readFileSync(
@@ -41,7 +43,9 @@ function makeRequest(body: unknown): NextRequest {
 beforeEach(() => {
   vi.clearAllMocks();
   // Restore default readFile behaviour after any per-test override
-  mockReadFile.mockResolvedValue(QUESTIONNAIRE_RAW as unknown as Uint8Array);
+  mockReadFile.mockResolvedValue(
+    QUESTIONNAIRE_RAW as unknown as Buffer<ArrayBuffer>,
+  );
   delete process.env.CONFIDENCE_THRESHOLD;
 });
 
@@ -330,7 +334,7 @@ describe("low_confidence flag", () => {
     });
 
     const res = await POST(req);
-    const json = await res.json();
+    await res.json();
 
     expect(res.status).toBe(200);
     expect(mockLlmClassify).toHaveBeenCalledOnce();
@@ -409,7 +413,9 @@ describe("error paths", () => {
         },
       ],
     });
-    mockReadFile.mockResolvedValueOnce(brokenQ as unknown as Uint8Array);
+    mockReadFile.mockResolvedValueOnce(
+      brokenQ as unknown as Buffer<ArrayBuffer>,
+    );
 
     const req = makeRequest({ answers: { "q-broken": "yes" } });
     const res = await POST(req);
@@ -438,7 +444,9 @@ describe("error paths", () => {
         },
       ],
     });
-    mockReadFile.mockResolvedValueOnce(noFallbackQ as unknown as Uint8Array);
+    mockReadFile.mockResolvedValueOnce(
+      noFallbackQ as unknown as Buffer<ArrayBuffer>,
+    );
 
     // Provide an answer that doesn't exist AND no "I'm not sure" option
     const req = makeRequest({
@@ -470,7 +478,9 @@ describe("error paths", () => {
         },
       ],
     });
-    mockReadFile.mockResolvedValueOnce(noFallbackQ as unknown as Uint8Array);
+    mockReadFile.mockResolvedValueOnce(
+      noFallbackQ as unknown as Buffer<ArrayBuffer>,
+    );
 
     // No answer provided for q-strict, no "I'm not sure" option available
     const req = makeRequest({ answers: { placeholder: "force non-empty" } });

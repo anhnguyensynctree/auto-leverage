@@ -1,0 +1,137 @@
+[
+  {
+    "task_id": "TASK-001",
+    "slug": "auto-leverage",
+    "title": "Autoresearch Routing Taxonomy Doc",
+    "date": "2026-03-26T06:57:42.375183Z",
+    "passed": true,
+    "fail_at": null,
+    "cost_usd": null
+  },
+  {
+    "task_id": "TASK-009",
+    "slug": "auto-leverage",
+    "title": "Next.js App Scaffold",
+    "date": "2026-03-26T06:57:42.375183Z",
+    "passed": true,
+    "fail_at": null,
+    "cost_usd": null
+  },
+  {
+    "task_id": "TASK-002",
+    "slug": "auto-leverage",
+    "title": "Per-Use-Case Testing Plan",
+    "date": "2026-03-26T07:00:36.108230Z",
+    "passed": true,
+    "fail_at": null,
+    "cost_usd": null
+  },
+  {
+    "task_id": "TASK-003",
+    "slug": "auto-leverage",
+    "title": "LLM Prompt Templates (3 Components)",
+    "date": "2026-03-26T07:00:36.108230Z",
+    "passed": true,
+    "fail_at": null,
+    "cost_usd": null
+  },
+  {
+    "task_id": "TASK-015",
+    "slug": "auto-leverage",
+    "title": "Vercel Config + Domain Setup",
+    "date": "2026-03-26T07:00:36.108230Z",
+    "passed": false,
+    "fail_at": "cto",
+    "cost_usd": null
+  },
+  {
+    "task_id": "TASK-004",
+    "slug": "auto-leverage",
+    "title": "Question Stubs for Static Decision Tree",
+    "date": "2026-03-26T07:03:05.026216Z",
+    "passed": true,
+    "fail_at": null,
+    "cost_usd": null
+  },
+  {
+    "task_id": "TASK-005",
+    "slug": "auto-leverage",
+    "title": "Questionnaire JSON Config",
+    "date": "2026-03-26T07:34:38.133839Z",
+    "passed": true,
+    "fail_at": null,
+    "cost_usd": null
+  },
+  {
+    "task_id": "TASK-016",
+    "slug": "auto-leverage",
+    "title": "UI Design \u2014 All 4 Screens",
+    "date": "2026-03-26T07:34:38.133839Z",
+    "passed": true,
+    "fail_at": null,
+    "cost_usd": null
+  },
+  {
+    "task_id": "TASK-006",
+    "slug": "auto-leverage",
+    "title": "POST /api/classify Route",
+    "date": "2026-03-26T07:37:28.038242Z",
+    "passed": true,
+    "fail_at": null,
+    "cost_usd": null
+  },
+  {
+    "task_id": "TASK-010",
+    "slug": "auto-leverage",
+    "title": "Home Page + Free-Text Entry Screen",
+    "date": "2026-03-26T07:37:28.038242Z",
+    "passed": true,
+    "fail_at": null,
+    "cost_usd": null
+  },
+  {
+    "task_id": "TASK-007",
+    "slug": "auto-leverage",
+    "title": "Output Templates + POST /api/output",
+    "date": "2026-03-26T07:40:03.810931Z",
+    "passed": true,
+    "fail_at": null,
+    "cost_usd": null
+  },
+  {
+    "task_id": "TASK-011",
+    "slug": "auto-leverage",
+    "title": "Questionnaire Flow UI",
+    "date": "2026-03-26T07:40:03.810931Z",
+    "passed": true,
+    "fail_at": null,
+    "cost_usd": null
+  },
+  {
+    "task_id": "TASK-013",
+    "slug": "auto-leverage",
+    "title": "LLM Fallback Classifier",
+    "date": "2026-03-26T07:40:03.810931Z",
+    "passed": true,
+    "fail_at": null,
+    "cost_usd": null
+  },
+  {
+    "task_id": "TASK-008",
+    "slug": "auto-leverage",
+    "title": "Unit Tests \u2014 All 7 Output Combinations",
+    "date": "2026-03-26T07:46:41.352849Z",
+    "passed": true,
+    "fail_at": null,
+    "cost_usd": null
+  },
+  {
+    "task_id": "TASK-012",
+    "slug": "auto-leverage",
+    "title": "Confirmation + Output Screen",
+    "date": "2026-03-26T07:46:41.352849Z",
+    "passed": true,
+    "fail_at": null,
+    "cost_usd": null
+  }
+]
