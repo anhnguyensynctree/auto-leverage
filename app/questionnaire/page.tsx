@@ -1,124 +1,191 @@
 "use client";
 
-import { useState, useCallback, Suspense } from "react";
+import { useState, useEffect, useCallback, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import questionnaire from "@/lib/questionnaire.json";
-import { QuestionnaireSchema } from "@/lib/questionnaire-schema";
-import type { QuestionNode } from "@/lib/questionnaire-schema";
 import QuestionCard from "@/components/QuestionCard";
 
-const TREE = QuestionnaireSchema.parse(questionnaire);
-const NODE_MAP = new Map<string, QuestionNode>(
-  TREE.nodes.map((n) => [n.id, n]),
-);
+const ELSE_OPTION = "Something else — I'll describe it";
 
-function getDepth(nodeId: string, visited = new Set<string>()): number {
-  if (visited.has(nodeId)) return 0;
-  visited.add(nodeId);
-  const node = NODE_MAP.get(nodeId);
-  if (!node || node.terminal) return 0;
-  const options = node.options ?? [];
-  const maxChild = options.reduce((max, opt) => {
-    return Math.max(max, getDepth(opt.next, new Set(visited)));
-  }, 0);
-  return 1 + maxChild;
+interface Turn {
+  q: string;
+  a: string;
 }
 
-const ESTIMATED_TOTAL = Math.max(getDepth(TREE.start), 4);
+interface ConverseNotDone {
+  done: false;
+  question: string;
+  options: string[];
+}
+
+interface ConverseDone {
+  done: true;
+  components: string[];
+  useCase: string;
+  confidence: number;
+}
+
+type ConverseResult = ConverseNotDone | ConverseDone;
+
+async function fetchConverse(
+  intent: string,
+  turns: Turn[],
+  turnCount: number,
+): Promise<ConverseResult> {
+  const res = await fetch("/api/converse", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ intent, turns, turnCount }),
+  });
+
+  if (!res.ok) {
+    throw new Error(`HTTP ${res.status}`);
+  }
+
+  const json = await res.json();
+  if (json.error) {
+    throw new Error(json.error);
+  }
+
+  return json.data as ConverseResult;
+}
 
 function QuestionnaireContent() {
   const params = useSearchParams();
   const router = useRouter();
 
-  const [currentNodeId, setCurrentNodeId] = useState<string>(TREE.start);
-  const [answers, setAnswers] = useState<Record<string, string>>({});
-  const [history, setHistory] = useState<string[]>([]);
-  const [_answerHistory, setAnswerHistory] = useState<string[]>([]);
-  const [error, setError] = useState<string | null>(null);
+  const intent = params.get("intent") ?? "";
 
-  const currentNode = NODE_MAP.get(currentNodeId);
+  const [turns, setTurns] = useState<Turn[]>([]);
+  const [turnCount, setTurnCount] = useState(0);
+  const [currentQuestion, setCurrentQuestion] = useState("");
+  const [currentOptions, setCurrentOptions] = useState<string[]>([]);
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [freeText, setFreeText] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
-  const handleAnswer = useCallback(
-    (answer: string) => {
-      if (!currentNode) return;
+  // Snapshot stack for Back navigation — each entry captures the UI state before advancing
+  const [stateStack, setStateStack] = useState<
+    Array<{
+      question: string;
+      options: string[];
+      selected: string | null;
+      free: string;
+    }>
+  >([]);
 
-      const option = (currentNode.options ?? []).find(
-        (o) => o.label === answer,
-      );
-      if (!option) return;
-
-      const nextNode = NODE_MAP.get(option.next);
-      if (!nextNode) return;
-
-      const newAnswers = { ...answers, [currentNodeId]: answer };
-      setAnswers(newAnswers);
-      setHistory((prev) => [...prev, currentNodeId]);
-      setAnswerHistory((prev) => [...prev, answer]);
-      setError(null);
-
-      if (nextNode.terminal) {
-        const { components, confidence } = nextNode.terminal;
-        const initialComponents = params.get("components") ?? "";
-        const mergedComponents = Array.from(
-          new Set([
-            ...initialComponents.split(",").filter(Boolean),
-            ...components,
-          ]),
+  const callConverse = useCallback(
+    async (currentTurns: Turn[], currentTurnCount: number) => {
+      setLoading(true);
+      setError(false);
+      try {
+        const result = await fetchConverse(
+          intent,
+          currentTurns,
+          currentTurnCount,
         );
-        const navParams = new URLSearchParams({
-          components: mergedComponents.join(","),
-          confidence: String(confidence),
-        });
-        router.push(`/confirm?${navParams.toString()}`);
-        return;
-      }
 
-      setCurrentNodeId(option.next);
+        if (result.done) {
+          const navParams = new URLSearchParams({
+            components: result.components.join(","),
+            useCase: result.useCase,
+            confidence: String(result.confidence),
+          });
+          router.push(`/confirm?${navParams.toString()}`);
+          return;
+        }
+
+        setCurrentQuestion(result.question);
+        setCurrentOptions(result.options);
+        setSelectedOption(null);
+        setFreeText("");
+      } catch {
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
     },
-    [currentNode, currentNodeId, answers, params, router],
+    [intent, router],
   );
 
+  // Initial load
+  useEffect(() => {
+    callConverse([], 0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleNext = useCallback(() => {
+    if (!selectedOption) return;
+
+    const answer =
+      selectedOption === ELSE_OPTION && freeText.trim()
+        ? freeText.trim()
+        : selectedOption;
+
+    const newTurns = [...turns, { q: currentQuestion, a: answer }];
+    const newTurnCount = turnCount + 1;
+
+    // Push current state onto the stack before advancing
+    setStateStack((prev) => [
+      ...prev,
+      {
+        question: currentQuestion,
+        options: currentOptions,
+        selected: selectedOption,
+        free: freeText,
+      },
+    ]);
+
+    setTurns(newTurns);
+    setTurnCount(newTurnCount);
+    callConverse(newTurns, newTurnCount);
+  }, [
+    selectedOption,
+    freeText,
+    turns,
+    turnCount,
+    currentQuestion,
+    currentOptions,
+    callConverse,
+  ]);
+
   const handleBack = useCallback(() => {
-    if (history.length === 0) {
+    if (stateStack.length === 0) {
       router.back();
       return;
     }
-    const prevNodeId = history[history.length - 1];
-    const prevAnswers = { ...answers };
-    delete prevAnswers[prevNodeId];
-    setAnswers(prevAnswers);
-    setHistory((prev) => prev.slice(0, -1));
-    setAnswerHistory((prev) => prev.slice(0, -1));
-    setCurrentNodeId(prevNodeId);
-    setError(null);
-  }, [history, answers, router]);
 
-  if (!currentNode) {
-    return (
-      <div className="min-h-screen bg-surface flex items-center justify-center px-6">
-        <div className="text-center space-y-4">
-          <p className="text-on-surface font-medium">
-            Something went wrong loading the questionnaire.
-          </p>
-          <button
-            onClick={() => router.push("/")}
-            className="text-primary text-sm font-medium hover:underline"
-          >
-            Start over
-          </button>
-        </div>
-      </div>
-    );
-  }
+    const prev = stateStack[stateStack.length - 1];
+    setStateStack((s) => s.slice(0, -1));
+    setTurns((t) => t.slice(0, -1));
+    setTurnCount((c) => Math.max(0, c - 1));
+    setCurrentQuestion(prev.question);
+    setCurrentOptions(prev.options);
+    setSelectedOption(prev.selected);
+    setFreeText(prev.free);
+    setError(false);
+  }, [stateStack, router]);
+
+  const handleRetry = useCallback(() => {
+    setError(false);
+    callConverse(turns, turnCount);
+  }, [turns, turnCount, callConverse]);
+
+  const showFreeText = selectedOption === ELSE_OPTION;
+  const nextDisabled =
+    !selectedOption ||
+    (selectedOption === ELSE_OPTION && freeText.trim() === "");
 
   if (error) {
     return (
       <div className="min-h-screen bg-surface flex items-center justify-center px-6">
         <div className="max-w-[400px] w-full bg-error-container rounded-xl p-6 space-y-4">
-          <p className="text-on-error-container font-medium text-sm">{error}</p>
+          <p className="text-on-error-container font-medium text-sm">
+            Something went wrong — try again
+          </p>
           <div className="flex gap-3">
             <button
-              onClick={() => setError(null)}
+              onClick={handleRetry}
               className="flex-1 h-10 bg-primary text-white text-sm font-semibold rounded-lg hover:bg-on-primary-fixed-variant transition-colors"
             >
               Retry
@@ -135,15 +202,34 @@ function QuestionnaireContent() {
     );
   }
 
-  const stepNumber = history.length + 1;
+  if (!currentQuestion && !loading) {
+    return null;
+  }
+
+  if (loading && !currentQuestion) {
+    return (
+      <div className="min-h-screen bg-surface flex items-center justify-center">
+        <span className="animate-spin material-symbols-outlined text-primary text-3xl">
+          progress_activity
+        </span>
+      </div>
+    );
+  }
 
   return (
     <QuestionCard
-      node={currentNode}
-      onAnswer={handleAnswer}
+      question={currentQuestion}
+      options={currentOptions}
+      selectedOption={selectedOption}
+      onSelect={setSelectedOption}
+      freeText={freeText}
+      onFreeTextChange={setFreeText}
+      showFreeText={showFreeText}
+      turnCount={turnCount}
       onBack={handleBack}
-      current={stepNumber}
-      total={ESTIMATED_TOTAL}
+      onNext={handleNext}
+      loading={loading}
+      nextDisabled={nextDisabled}
     />
   );
 }
