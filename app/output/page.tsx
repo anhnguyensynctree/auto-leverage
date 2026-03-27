@@ -24,16 +24,21 @@ function OutputContent() {
   const [error, setError] = useState<string | null>(null);
 
   const rawComponents = params.get("components") ?? "";
+  const useCase = params.get("useCase") ?? "";
   const components = rawComponents.split(",").filter(Boolean);
 
   const fetchOutput = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
+      const requestBody: { components: string[]; useCase?: string } = {
+        components,
+      };
+      if (useCase) requestBody.useCase = useCase;
       const res = await fetch("/api/output", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ components }),
+        body: JSON.stringify(requestBody),
       });
       const json: ApiResponse = await res.json();
       if (!res.ok || json.error || !json.data) {

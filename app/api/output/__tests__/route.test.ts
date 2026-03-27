@@ -209,3 +209,63 @@ describe("error paths", () => {
     expect(json.data).toBeNull();
   });
 });
+
+// ---------------------------------------------------------------------------
+// useCase injection
+// ---------------------------------------------------------------------------
+
+describe("useCase injection", () => {
+  it("prefixes first guide_step when useCase is present", async () => {
+    const res = await POST(
+      makeRequest({
+        components: ["train"],
+        useCase: "tune the Muon optimizer to reduce val_bpb on Shakespeare",
+      }),
+    );
+    const json = await res.json();
+
+    expect(res.status).toBe(200);
+    expect(json.error).toBeNull();
+    expect(json.data.guide_steps[0]).toBe(
+      "Based on your goal — tune the Muon optimizer to reduce val_bpb on Shakespeare — here's how to apply autoresearch:",
+    );
+    expect(json.data.guide_steps).toHaveLength(
+      OUTPUT_TEMPLATES.train.guide_steps.length + 1,
+    );
+    expect(json.data.guide_steps[1]).toBe(
+      OUTPUT_TEMPLATES.train.guide_steps[0],
+    );
+  });
+
+  it("does not prefix when useCase is absent", async () => {
+    const res = await POST(makeRequest({ components: ["train"] }));
+    const json = await res.json();
+
+    expect(res.status).toBe(200);
+    expect(json.data.guide_steps).toEqual(OUTPUT_TEMPLATES.train.guide_steps);
+  });
+
+  it("treats empty string useCase as absent — no prefix", async () => {
+    const res = await POST(makeRequest({ components: ["train"], useCase: "" }));
+    const json = await res.json();
+
+    expect(res.status).toBe(200);
+    expect(json.data.guide_steps).toEqual(OUTPUT_TEMPLATES.train.guide_steps);
+  });
+
+  it("treats whitespace-only useCase as absent — no prefix", async () => {
+    const res = await POST(
+      makeRequest({ components: ["train"], useCase: "   " }),
+    );
+    const json = await res.json();
+
+    expect(res.status).toBe(200);
+    expect(json.data.guide_steps).toEqual(OUTPUT_TEMPLATES.train.guide_steps);
+  });
+
+  it("does not mutate the original template guide_steps", async () => {
+    const original = [...OUTPUT_TEMPLATES.train.guide_steps];
+    await POST(makeRequest({ components: ["train"], useCase: "some goal" }));
+    expect(OUTPUT_TEMPLATES.train.guide_steps).toEqual(original);
+  });
+});

@@ -26,7 +26,10 @@ export async function POST(request: Request) {
     );
   }
 
-  const { components } = body as { components: string[] };
+  const { components, useCase } = body as {
+    components: string[];
+    useCase?: string;
+  };
 
   const template = getTemplate(components);
 
@@ -35,6 +38,19 @@ export async function POST(request: Request) {
       { data: null, error: "Unknown component combination" },
       { status: 400 },
     );
+  }
+
+  const trimmedUseCase = typeof useCase === "string" ? useCase.trim() : "";
+
+  if (trimmedUseCase) {
+    const prefixed = [
+      `Based on your goal — ${trimmedUseCase} — here's how to apply autoresearch:`,
+      ...template.guide_steps,
+    ];
+    return NextResponse.json({
+      data: { ...template, guide_steps: prefixed },
+      error: null,
+    });
   }
 
   return NextResponse.json({ data: template, error: null });

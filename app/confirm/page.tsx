@@ -43,6 +43,7 @@ function ConfirmContent() {
 
   const rawComponents = params.get("components") ?? "";
   const confidence = params.get("confidence") ?? "";
+  const useCase = params.get("useCase") ?? "";
   const components = rawComponents.split(",").filter(Boolean);
 
   if (components.length === 0) {
@@ -68,11 +69,12 @@ function ConfirmContent() {
       components: rawComponents,
       confidence,
     });
+    if (useCase) navParams.set("useCase", useCase);
     router.push(`/output?${navParams.toString()}`);
   }
 
   function handleStartOver() {
-    router.push("/");
+    router.replace("/");
   }
 
   return (
@@ -91,6 +93,17 @@ function ConfirmContent() {
         <h1 className="text-xl font-semibold text-slate-900 text-center mb-8">
           Here&apos;s where we&apos;ll start
         </h1>
+
+        {useCase && (
+          <div className="w-full bg-[#f8f9ff] border border-[#dbe1ff] rounded-xl px-6 py-4 mb-6">
+            <p className="text-[13px] text-slate-500 uppercase tracking-wider font-medium mb-1">
+              Here&apos;s what we understood
+            </p>
+            <p className="text-[15px] text-slate-800 leading-relaxed">
+              {useCase}
+            </p>
+          </div>
+        )}
 
         <div className="w-full bg-[#f0fdf4] border border-[#bbf7d0] rounded-xl p-8 mb-10 transition-all duration-300 hover:shadow-sm">
           <div className="flex items-center gap-3 mb-4">
