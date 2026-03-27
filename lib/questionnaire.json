@@ -160,7 +160,7 @@
         { "label": "Files, folders, or downloading data", "next": "q-p1" },
         { "label": "A specific number, setting, or piece of code", "next": "q-t1" },
         { "label": "What the agent is allowed to do or try", "next": "q-e1" },
-        { "label": "I still don't know", "next": "terminal-all" }
+        { "label": "I'm not sure", "next": "terminal-all" }
       ]
     },
 

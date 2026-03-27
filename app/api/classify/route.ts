@@ -24,6 +24,10 @@ function traverseTree(
 ): Terminal | { error: string } {
   const MAX_DEPTH = 50;
   let currentId = startId;
+  const TERMINAL_ALL_FALLBACK: Terminal = {
+    components: ["prepare", "train", "program"],
+    confidence: 0.5,
+  };
 
   for (let depth = 0; depth < MAX_DEPTH; depth++) {
     const node = nodes.get(currentId);
@@ -45,9 +49,7 @@ function traverseTree(
       // No answer provided — follow "I'm not sure" branch
       const fallback = findNotSureOption(node);
       if (!fallback) {
-        return {
-          error: `No answer for node ${node.id} and no fallback option`,
-        };
+        return TERMINAL_ALL_FALLBACK;
       }
       currentId = fallback;
       continue;
@@ -61,9 +63,7 @@ function traverseTree(
       // Answer doesn't match any option label — treat as "I'm not sure"
       const fallback = findNotSureOption(node);
       if (!fallback) {
-        return {
-          error: `Answer "${answer}" did not match any option for node ${node.id}`,
-        };
+        return TERMINAL_ALL_FALLBACK;
       }
       currentId = fallback;
       continue;

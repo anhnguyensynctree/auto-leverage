@@ -212,14 +212,14 @@ describe("fallback / I'm not sure path", () => {
   it("follows I'm not sure at q-start → q-fallback-1 → q-fallback-2 → terminal-all", async () => {
     // q-start: "I'm not sure" → q-fallback-1
     // q-fallback-1: "I'm not sure" → q-fallback-2
-    // q-fallback-2: "I still don't know" → terminal-all
+    // q-fallback-2: "I'm not sure" → terminal-all
     // Set threshold below 0.5 so static result is returned directly
     process.env.CONFIDENCE_THRESHOLD = "0.4";
     const req = makeRequest({
       answers: {
         "q-start": "I'm not sure",
         "q-fallback-1": "I'm not sure",
-        "q-fallback-2": "I still don't know",
+        "q-fallback-2": "I'm not sure",
       },
     });
 
@@ -425,7 +425,7 @@ describe("error paths", () => {
     expect(json.error).toContain("Unknown node id");
   });
 
-  it("returns 400 when node has no answer and no I'm not sure fallback option", async () => {
+  it("routes to terminal-all when node has no I'm not sure fallback and answer is unrecognised", async () => {
     const noFallbackQ = JSON.stringify({
       version: "1.0.0",
       start: "q-strict",
@@ -447,19 +447,22 @@ describe("error paths", () => {
     mockReadFile.mockResolvedValueOnce(
       noFallbackQ as unknown as Buffer<ArrayBuffer>,
     );
+    process.env.CONFIDENCE_THRESHOLD = "0.4";
 
-    // Provide an answer that doesn't exist AND no "I'm not sure" option
+    // Provide an answer that doesn't exist AND no "I'm not sure" option — routes to terminal-all
     const req = makeRequest({
       answers: { "q-strict": "unrecognised answer no fallback" },
     });
     const res = await POST(req);
     const json = await res.json();
 
-    expect(res.status).toBe(400);
-    expect(json.error).toContain("did not match any option");
+    expect(res.status).toBe(200);
+    expect(json.error).toBeNull();
+    expect(json.data.components).toEqual(["prepare", "train", "program"]);
+    expect(json.data.confidence).toBe(0.5);
   });
 
-  it("returns 400 when node has no answer and no I'm not sure fallback option (missing answer path)", async () => {
+  it("routes to terminal-all when node has no answer and no I'm not sure fallback option", async () => {
     const noFallbackQ = JSON.stringify({
       version: "1.0.0",
       start: "q-strict",
@@ -481,14 +484,17 @@ describe("error paths", () => {
     mockReadFile.mockResolvedValueOnce(
       noFallbackQ as unknown as Buffer<ArrayBuffer>,
     );
+    process.env.CONFIDENCE_THRESHOLD = "0.4";
 
-    // No answer provided for q-strict, no "I'm not sure" option available
+    // No answer provided for q-strict, no "I'm not sure" option — routes to terminal-all
     const req = makeRequest({ answers: { placeholder: "force non-empty" } });
     const res = await POST(req);
     const json = await res.json();
 
-    expect(res.status).toBe(400);
-    expect(json.error).toContain("No answer for node");
+    expect(res.status).toBe(200);
+    expect(json.error).toBeNull();
+    expect(json.data.components).toEqual(["prepare", "train", "program"]);
+    expect(json.data.confidence).toBe(0.5);
   });
 
   it("returns 500 when readFile rejects with unexpected error", async () => {
@@ -503,5 +509,37 @@ describe("error paths", () => {
     expect(res.status).toBe(500);
     expect(json.error).toBe("Internal server error");
     expect(json.data).toBeNull();
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Regression tests
+// ---------------------------------------------------------------------------
+
+describe("regression", () => {
+  it("resolves free-text trading strategy input without error", async () => {
+    // Regression: free text from home page (only q0 answer) must never return 400.
+    // q0 is not a node id in the questionnaire, so traversal starts at q-start with
+    // no matching answer → follows I'm not sure chain → terminal-all (confidence 0.5).
+    // LLM is mocked to avoid real API call; threshold set above 0.5 to trigger LLM path.
+    process.env.CONFIDENCE_THRESHOLD = "0.9";
+    mockLlmClassify.mockResolvedValueOnce({
+      components: ["train", "program"],
+      confidence: 0.75,
+    });
+
+    const req = makeRequest({
+      answers: {
+        q0: "i have a trading strategy and i want improve on that",
+      },
+    });
+
+    const res = await POST(req);
+    const json = await res.json();
+
+    expect(res.status).toBe(200);
+    expect(json.error).toBeNull();
+    expect(json.data.components).toEqual(expect.any(Array));
+    expect(json.data.confidence).toEqual(expect.any(Number));
   });
 });
