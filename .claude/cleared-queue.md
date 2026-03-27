@@ -445,3 +445,109 @@ Artifacts:
 Produces: Test coverage for all new LLM infrastructure
 Verify: qa — all new tests pass; no regressions in existing 71 tests
 Depends: none
+
+---
+
+## FEATURE-006: Adaptive 3-5 Turn Narrowing Flow
+Status: elaborated
+Milestone: Adaptive Conversation Engine
+Type: product
+Departments: cto, backend-developer, frontend-developer
+Research-gate: false
+Why: The static questionnaire tree is broken by design — it can't handle free-text input, falls through fallback nodes, and crashes in production. Users need a smarter flow: 3-5 LLM-driven messages that understand what they typed and narrow them to the right autoresearch component (prepare.py, train.py, or program.md) through targeted follow-up questions.
+Exec-decision: Replace the static questionnaire traversal with an adaptive LLM-driven conversation. User types free text on the home page → LLM asks 3-5 targeted follow-up questions (multiple choice + free-text option) to narrow down which autoresearch component(s) apply and the user's specific use case → confirmation screen shows what was understood → output is personalised with the use case. Max 5 turns hard cap (rate-limited). History sent as compressed `{ intent, turns: [{q,a}] }` — not raw transcript. GLM-5 drives the questions. Graceful degrade if GLM unavailable. The static questionnaire.json and traversal logic are retired. Output templates remain unchanged.
+Acceptance: (1) Free-text home input never crashes — any input resolves to a component classification. (2) LLM generates targeted questions specific to the user's stated intent — not generic. (3) Multiple choice options + "Something else" free-text always available. (4) Max 5 turns enforced. (5) Confirmation screen shows useCase string. (6) Output first step personalised with useCase.
+Validation: product → cpo + cto
+Tasks: TASK-019, TASK-021, TASK-022, TASK-023
+
+---
+
+## TASK-019: Fix Questionnaire Traversal — "I still don't know" fallback crash
+Status: done
+Notes: q-fallback-2 label fixed to "I'm not sure", terminal-all last-resort added to traverseTree — 95 tests passing
+Feature: FEATURE-006
+Agent: backend-developer
+Spec: Fix two defects causing a production crash when a user submits free text from the home page. Defect 1: node q-fallback-2 used label "I still don't know" but NOT_SURE_PATTERN only matches "I'm not sure" — renamed label. Defect 2: traverseTree returned error when no fallback option found — now routes to terminal-all (confidence 0.5) as last resort.
+Scenarios:
+- GIVEN free-text home submission WHEN /api/classify called THEN response is { data: { components, confidence }, error: null } — never a 400
+- GIVEN traversal reaches q-fallback-2 with no answer WHEN findNotSureOption called THEN routes to terminal-all
+- GIVEN any choice node with no answer and no "I'm not sure" option WHEN traversal runs THEN falls back to terminal-all
+Artifacts:
+- lib/questionnaire.json
+- app/api/classify/route.ts
+- app/api/classify/__tests__/route.test.ts
+Produces: Production crash fixed; traversal resilient to missing-fallback scenarios
+Verify: qa — regression test passes; live site tested with "i have a trading strategy" input
+Depends: none
+
+---
+
+## TASK-020: Smart Free-Text Routing
+Status: superseded
+Notes: Superseded by TASK-021 — full conversational engine replaces static tree and smart routing
+Feature: FEATURE-006
+Agent: backend-developer
+Depends: TASK-019
+
+---
+
+## TASK-021: POST /api/converse — Adaptive Question Generation
+Status: done
+Notes: app/api/converse/route.ts + lib/converse-prompt.ts — 95 tests passing, all acceptance criteria met
+Feature: FEATURE-006
+Agent: backend-developer
+Spec: Stateless endpoint driving 3-5 turn adaptive conversation. Receives { intent, turns, turnCount }, returns next question or final classification. Hard cap at turnCount >= 5. GLM-5 via llm-client.ts. Graceful degrade on parse error or missing API key. Rate limiting via checkRateLimit(ip, "navigate"). Response: { data: { done: false, question, options } } or { data: { done: true, components, useCase, confidence } }.
+Scenarios:
+- GIVEN intent "tune my optimizer" + empty turns WHEN POST /api/converse THEN question references optimizer specifically
+- GIVEN turnCount >= 5 WHEN POST /api/converse THEN done:true always returned
+- GIVEN GLM malformed JSON WHEN parsed THEN graceful degrade — done:true all-3 components
+- GIVEN rate limit exceeded WHEN POST /api/converse THEN 429 with resetMs
+Artifacts:
+- app/api/converse/route.ts
+- lib/converse-prompt.ts
+- app/api/converse/__tests__/route.test.ts
+Produces: Core adaptive flow — unlocks TASK-022
+Verify: cto + backend-developer — done detection, graceful degrade, rate limit, response shapes
+Depends: TASK-019
+
+---
+
+## TASK-022: Replace Questionnaire UI with Adaptive Conversation
+Status: done
+Notes: app/questionnaire/page.tsx + QuestionCard.tsx + ProgressBar.tsx — 179 tests, all acceptance criteria met
+Feature: FEATURE-006
+Agent: frontend-developer
+Spec: Replace static questionnaire with conversational UI driven by /api/converse. On load: extract intent from URL, POST /api/converse with empty turns. Render question + radio options. "Something else — I'll describe it" reveals free-text input. Back button pops local state (no API call). Progress "Question X of 5". When done:true: navigate to /confirm with components, useCase, confidence params. No localStorage.
+Scenarios:
+- GIVEN page loads WHEN first API call completes THEN LLM question renders with radio options
+- GIVEN user selects "Something else" WHEN rendered THEN free-text input appears
+- GIVEN Back pressed on turn 3 WHEN rendered THEN turn 2 question + prior answer from local state
+- GIVEN done:true WHEN navigation fires THEN /confirm has components, useCase, confidence params
+Artifacts:
+- app/questionnaire/page.tsx
+- components/QuestionCard.tsx
+- components/ProgressBar.tsx
+Produces: Full adaptive UI live
+Verify: cpo + frontend-developer — full flow, back nav, free-text, done routing, error recovery
+Depends: TASK-021
+
+---
+
+## TASK-023: Personalise Confirmation + Output with useCase
+Status: done
+Notes: confirm useCase block + api/output goal prefix — 115 tests passing, all acceptance criteria met
+Feature: FEATURE-006
+Agent: frontend-developer
+Spec: Update confirmation and output screens to surface the `useCase` string. Confirmation screen: read useCase from URL params, display as "Here's what we understood: [useCase]" above component cards. Output screen: pass useCase to POST /api/output. Update /api/output to accept useCase?: string and prepend to first guide step: "Based on your goal — [useCase] — here's how to apply autoresearch:". If useCase absent, output unchanged (no regression). "Start over" on /confirm navigates to / with all params cleared.
+Scenarios:
+- GIVEN useCase "tune the Muon optimizer" WHEN /confirm renders THEN "Here's what we understood: tune the Muon optimizer..." visible above component cards
+- GIVEN useCase present WHEN POST /api/output THEN first guide_step begins "Based on your goal — [useCase]"
+- GIVEN useCase absent WHEN POST /api/output THEN output identical to current behaviour
+- GIVEN "Start over" clicked WHEN navigation fires THEN / loads with no stale params
+Artifacts:
+- app/confirm/page.tsx
+- app/output/page.tsx
+- app/api/output/route.ts
+Produces: Output feels tailored to user's specific problem
+Verify: cpo — useCase on confirm; first output step personalised; no regression on missing useCase
+Depends: TASK-022
