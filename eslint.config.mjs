@@ -9,6 +9,7 @@ export default [
       "dist/**",
       "coverage/**",
       "drizzle/**",
+      "e2e/**",
     ],
   },
   {
