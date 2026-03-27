@@ -111,12 +111,14 @@ test.describe("questionnaire flow", () => {
   test("done:true — navigates to /confirm with components, useCase params", async ({
     page,
   }) => {
-    let callCount = 0;
-
-    await page.route("**/api/converse", (route) => {
-      callCount++;
-      const body = callCount === 1 ? MOCK_TURN_0 : MOCK_DONE;
-      route.fulfill({
+    await page.route("**/api/converse", async (route) => {
+      const postData = route.request().postDataJSON() as {
+        turns?: unknown[];
+      } | null;
+      const hasTurns =
+        Array.isArray(postData?.turns) && postData.turns.length > 0;
+      const body = hasTurns ? MOCK_DONE : MOCK_TURN_0;
+      await route.fulfill({
         status: 200,
         contentType: "application/json",
         body: JSON.stringify(body),
