@@ -169,5 +169,14 @@
     "passed": true,
     "fail_at": null,
     "cost_usd": null
+  },
+  {
+    "task_id": "TASK-017",
+    "slug": "auto-leverage",
+    "title": "CLI-Based Deploy Pipeline (Production + PR Previews)",
+    "date": "2026-03-27T01:04:32.867270Z",
+    "passed": true,
+    "fail_at": null,
+    "cost_usd": null
   }
 ]

@@ -1,36 +1,35 @@
-# OMS Briefing — 2026-03-25T00:00Z | exec
+# OMS Briefing
+Workflow: work
+Date: 2026-03-26
+Project: auto-leverage
 
-## Workflow
-Type: exec (milestone selection)
-Task ID: 2026-03-25-exec-mvp-milestone-select
-Tier: 2 | Agents: cpo, cto | Rounds: 1 (short-circuited — convergence after R1)
+## What Happened
+oms-work ran a single ready task: TASK-017 (CLI-Based Deploy Pipeline).
 
-## Milestone Selected
-**MVP — Questionnaire to Output**
-Rationale: Validates core hypothesis (comprehension is the barrier) with minimum build. User routes to autoresearch component in ≤7 questions → copies LLM prompt → acts independently. No execution infrastructure required.
-
-## Features Drafted
-4 FEATURE blocks written to cleared-queue.md (all Status: draft):
-- FEATURE-001: Autoresearch Content Analysis + Routing Taxonomy — prerequisite; taxonomy is the load-bearing asset
-- FEATURE-002: Questionnaire + Output Engine (Backend) — static decision tree + 7 output templates; depends on 001
-- FEATURE-003: Frontend Application — home, flow, output, export; shell can start in parallel with 002
-- FEATURE-004: LLM Fallback Classifier — edge case handler; MVP-optional; depends on 002
+TASK-017 completed: Extended .github/workflows/ci.yml with a deploy job (needs: ci). Fixed branch references from main to master throughout the workflow. Production deploy fires on push to master via vercel --prod --token. Preview deploy fires on pull_request via vercel --token, capturing the output URL and posting it as a PR comment. Set three GitHub Actions secrets: VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID. Updated cto.ctx.md with confirmed pipeline status. All validators (cto, qa, em) passed.
 
 ## Queue State
-Milestone: MVP — Questionnaire to Output
-Total: 4 draft features | 0 queued | 0 done | 0 cto-stop
-Can start immediately: FEATURE-001 (no dependencies)
+- Done: 18 (all tasks complete)
+- Queued: 0
+- Blocked: 0
+- CTO-Stop: 0
 
-## Risks Surfaced
-- FEATURE-001 scope: content analysis is unbounded — Acceptance criteria include timebox constraint
-- LLM fallback scope creep: Exec-decision explicitly constrains fallback to classify-only → static output
-- Frontend/backend coupling: questionnaire flow blocked on FEATURE-002 API contract; shell work can start but flow implementation cannot
-
-## Unresolved
-None — no CEO escalation required.
+## Milestone
+- Name: MVP — Questionnaire to Output
+- Progress: 18/18 tasks done
+- Stage: complete
 
 ## Product Direction
-product-direction.ctx.md updated with active milestone and feature list.
+Advisory web platform where non-technical users describe their autoresearch problem, answer adaptive questions, and receive a step-by-step guide plus a copy-paste LLM prompt. Full user flow implemented, tests passing, CI pipeline active, automated deploy pipeline live. MVP is feature-complete and deployment-ready.
+
+## Decisions Made
+- CLI-only deploy pipeline (no GitHub App dependency): vercel CLI in GitHub Actions with token auth avoids OAuth issues that blocked the previous attempt.
+- Fixed branch mismatch proactively: existing CI targeted main but repo uses master — corrected in the same commit.
+
+## Task Quality
+- Passed: 3/3 validators (cto + qa + em)
+- Failed: none
+- CTO-Stop: none
 
 ## Session Cost
-Not available (first session, no baseline).
+null (Agent tool)

@@ -80,7 +80,8 @@ Tasks: TASK-014, TASK-015
 ---
 
 ## TASK-001: Autoresearch Routing Taxonomy Doc
-Status: queued
+Status: done
+Notes: docs/taxonomy.md exists with routing signals table
 Feature: FEATURE-001
 Agent: ux-researcher
 Spec: Produce a taxonomy document that maps user language to autoresearch components. Read the autoresearch repo's prepare.py, train.py, and program.md in full. Extract: (1) all user-facing decisions available per component, (2) routing signals — plain-language phrases non-tech users say that indicate each component, (3) business factor per component (what kind of business outcome each component unlocks), (4) component plain names (e.g. "Data Prep", "Model Trainer", "Experiment Instructions"). Output is docs/taxonomy.md — dense, table-heavy, no filler.
@@ -98,7 +99,8 @@ Depends: none
 ---
 
 ## TASK-002: Per-Use-Case Testing Plan
-Status: queued
+Status: done
+Notes: docs/testing-plan.md exists with 5 use cases
 Feature: FEATURE-001
 Agent: ux-researcher
 Spec: Produce a testing plan doc covering 3–5 use cases. Each use case must specify: (1) user type + what they describe in their own words, (2) expected component(s) recommended, (3) business outcome the user expects after running autoresearch, (4) success criteria for the platform output (what the step-by-step guide must say), (5) failure modes to validate against (what a bad output looks like). Output is docs/testing-plan.md.
@@ -115,7 +117,8 @@ Depends: TASK-001
 ---
 
 ## TASK-003: LLM Prompt Templates (3 Components)
-Status: queued
+Status: done
+Notes: docs/prompt-templates.md exists with all 3 templates
 Feature: FEATURE-001
 Agent: backend-developer
 Spec: Write 3 high-quality LLM prompt templates in program.md style — one per autoresearch component (prepare.py, train.py, program.md). Each template is what a user pastes into Claude/ChatGPT to act as their program.md. Template structure: Goal (what the experiment should optimize), Constraints (what must not change), Strategy (what approach to try), Success Signal (how to measure improvement). Templates must be written for a non-technical user's situation, not for an ML researcher. No setup instructions, no code. Output is docs/prompt-templates.md with all 3 templates.
@@ -133,7 +136,8 @@ Depends: TASK-001
 ---
 
 ## TASK-004: Question Stubs for Static Decision Tree
-Status: queued
+Status: done
+Notes: docs/question-stubs.md exists with all paths
 Feature: FEATURE-001
 Agent: ux-researcher
 Spec: Write the question stubs that will become the static branching tree in TASK-005. Based on the taxonomy (TASK-001) and testing plan (TASK-002), write: (1) the opening free-text prompt text (the main site headline + sub-prompt), (2) 3–5 branching questions per component path, (3) the "I'm not sure" fallback path question set, (4) confirmation screen copy for each of the 7 output combinations. All copy at Grade 8 reading level. Output is docs/question-stubs.md — structured by path, with routing logic notes inline.
@@ -150,7 +154,8 @@ Depends: TASK-001, TASK-002
 ---
 
 ## TASK-005: Questionnaire JSON Config (Source of Truth)
-Status: queued
+Status: done
+Notes: lib/questionnaire.json + lib/questionnaire-schema.ts implemented
 Feature: FEATURE-002
 Agent: backend-developer
 Spec: Build the static branching questionnaire as a JSON config file. Structure: nodes with id, question text, type (text|choice), options[], and next pointers (option → node id). Terminal nodes include component classification result and confidence score. Must include: 3 primary paths (prepare / train / program), multi-component paths (prepare+train, prepare+program, train+program, all), and the "I'm not sure" fallback routing to all. Schema validated with Zod. Config lives at lib/questionnaire.json with a Zod schema at lib/questionnaire-schema.ts. Config is the only source of truth — no classification logic hardcoded elsewhere.
@@ -169,7 +174,8 @@ Depends: TASK-004
 ---
 
 ## TASK-006: POST /api/classify Route
-Status: queued
+Status: done
+Notes: app/api/classify/route.ts implemented with confidence threshold
 Feature: FEATURE-002
 Agent: backend-developer
 Spec: Implement the /api/classify Next.js API route. Accepts: { answers: Record<string, string> } (question id → answer). Traverses the questionnaire config (TASK-005) using the answers to reach a terminal node. Returns: { data: { components: string[], confidence: number }, error: null } or { data: null, error: string }. Stateless — no DB, no session. If confidence < CONFIDENCE_THRESHOLD env var (default 0.6), sets a low_confidence flag in response for TASK-013 fallback to consume. Must not import the questionnaire JSON at build time — load dynamically so config changes don't require rebuild.
@@ -187,7 +193,8 @@ Depends: TASK-005
 ---
 
 ## TASK-007: Output Templates + POST /api/output Route
-Status: queued
+Status: done
+Notes: lib/output-templates.ts + app/api/output/route.ts implemented
 Feature: FEATURE-002
 Agent: backend-developer
 Spec: Build the 7 output templates and the /api/output route that serves them. Each template contains: guide_steps[] (plain-language step-by-step for the user), llm_prompt (the program.md-style template from TASK-003 composed for that component combination), and component_names[] (display names). Templates live in lib/output-templates.ts keyed by component combination string (e.g. "prepare", "train+program", "all"). /api/output accepts: { components: string[] } and returns: { data: { guide_steps: string[], llm_prompt: string, component_names: string[] }, error: null }. LLM prompt content sourced from docs/prompt-templates.md — do not rewrite, compose.
@@ -207,7 +214,8 @@ Depends: TASK-003, TASK-006
 ---
 
 ## TASK-008: Unit Tests — All 7 Output Combinations
-Status: queued
+Status: done
+Notes: 71 tests passing across 3 test files
 Feature: FEATURE-002
 Agent: backend-developer
 Spec: Write unit tests covering the full backend classification and output pipeline. Test coverage required: (1) all 7 output templates return correct shape, (2) /api/classify traverses each of the 3 primary paths + "I'm not sure" path correctly, (3) low_confidence flag fires at correct threshold, (4) /api/output returns correct guide_steps and llm_prompt per combination, (5) all error paths (empty input, unknown component, malformed request). Use Vitest. Tests co-located in __tests__/ directories next to the source files they test.
@@ -227,7 +235,8 @@ Depends: TASK-007
 ---
 
 ## TASK-009: Next.js App Scaffold
-Status: queued
+Status: done
+Notes: Next.js 14 App Router with Tailwind, next.config.mjs, full app structure
 Feature: FEATURE-003
 Agent: frontend-developer
 Spec: Initialize the Next.js 14 App Router TypeScript project with Tailwind CSS. Install and verify: drizzle-orm (@neondatabase/serverless), drizzle-kit, @anthropic-ai/sdk. All imports resolvable, zero peer conflicts. Create: app/layout.tsx (root layout, Tailwind base), app/page.tsx (stub landing — "Coming soon"), tailwind.config.ts, tsconfig.json, next.config.ts, .env.example (with ANTHROPIC_API_KEY and CONFIDENCE_THRESHOLD stubs). Dev server must start clean on localhost:3000.
@@ -250,7 +259,8 @@ Depends: none
 ---
 
 ## TASK-010: Home Page + Free-Text Entry Screen
-Status: queued
+Status: done
+Notes: app/page.tsx + components/EntryForm.tsx implemented
 Feature: FEATURE-003
 Agent: frontend-developer
 Spec: Build the home page at app/page.tsx. Content: headline (main entry prompt from TASK-004 question stubs), sub-prompt explaining the platform in 1 sentence, free-text textarea (min 3 words, max 500 chars), "Find My Strategy" CTA button. On submit: POST to /api/classify with { answers: { "q0": <user text> } }. Loading state on button during fetch. Error state if classify fails. On success: navigate to /questionnaire with classification result in URL search params (no localStorage). All copy at Grade 8 reading level. Responsive — works on mobile and desktop.
@@ -269,7 +279,8 @@ Depends: TASK-009, TASK-016
 ---
 
 ## TASK-011: Questionnaire Flow UI
-Status: queued
+Status: done
+Notes: app/questionnaire/page.tsx + QuestionCard.tsx + ProgressBar.tsx implemented
 Feature: FEATURE-003
 Agent: frontend-developer
 Spec: Build the adaptive questionnaire at app/questionnaire/page.tsx. Reads initial classification from URL params. Renders one question at a time using question nodes from the questionnaire config (via /api/classify). Shows: progress indicator (step X of Y), question text, answer options or text input, Back button (always available). On each answer: POST /api/classify with accumulated answers, re-render next question. On terminal node: navigate to /confirm with final classification. "I'm not sure" option must be present on every choice question. No scroll — one question per screen. No localStorage.
@@ -290,7 +301,8 @@ Depends: TASK-006, TASK-016
 ---
 
 ## TASK-012: Confirmation + Output Screen
-Status: queued
+Status: done
+Notes: app/confirm/page.tsx + app/output/page.tsx + OutputCard.tsx + ExportActions.tsx implemented
 Feature: FEATURE-003
 Agent: frontend-developer
 Spec: Build the confirmation screen at app/confirm/page.tsx and output screen at app/output/page.tsx. Confirm screen: shows component_names[] from classification, plain-language explanation of what each means for the user, "Yes, this fits" and "Start over" buttons. Output screen: fetches POST /api/output with components from URL params, renders guide_steps[] as numbered list, renders llm_prompt in a copyable code block, provides two export actions — (1) Copy to Clipboard button, (2) Download as .txt button (client-side Blob, no server call). No auth, no persistence — page refresh loses state by design. Loading and error states for /api/output fetch.
@@ -312,7 +324,8 @@ Depends: TASK-007, TASK-011, TASK-016
 ---
 
 ## TASK-013: LLM Fallback Classifier
-Status: queued
+Status: done
+Notes: lib/llm-classifier.ts + extended app/api/classify/route.ts
 Feature: FEATURE-004
 Agent: backend-developer
 Spec: Extend /api/classify to fire an LLM fallback when low_confidence is true. Fallback is a conditional branch inside the existing route — not a new endpoint. Implementation: if low_confidence flag is set after static traversal, call Anthropic API server-side with a structured prompt that extracts component classification from the user's free-text. Prompt must return a JSON object matching { components: string[], confidence: number }. Result is merged back into the classify response — output shape is identical to the static path. ANTHROPIC_API_KEY from env only — never in client bundle. CONFIDENCE_THRESHOLD from env (default 0.6). Fallback must complete in <5s p95.
@@ -332,7 +345,8 @@ Depends: TASK-006
 ---
 
 ## TASK-014: GitHub Actions CI Pipeline
-Status: queued
+Status: done
+Notes: .github/workflows/ci.yml exists
 Feature: FEATURE-005
 Agent: cto
 Spec: Create a GitHub Actions CI workflow that runs on every PR to main. Steps: (1) pnpm install, (2) tsc --noEmit, (3) ESLint, (4) Vitest unit tests. All steps must pass for the workflow to succeed. Branch protection rule: require CI to pass before merge (document the manual step in .claude/agents/cto.ctx.md — Vercel branch protection is set via GitHub repo settings, not via code). Secrets required: none for CI (no API key needed for unit tests — API calls are mocked). Workflow file at .github/workflows/ci.yml.
@@ -369,7 +383,8 @@ Depends: TASK-009
 ---
 
 ## TASK-016: UI Design — All 4 Screens (Stitch)
-Status: queued
+Status: done
+Notes: design/stitch/ has home.html, question-card.html, confirmation.html, output.html
 Feature: FEATURE-003
 Agent: frontend-developer
 Spec: Generate high-fidelity HTML mockups for all 4 app screens using the /stitch skill. Screens: (1) Home — headline, sub-prompt, free-text textarea, CTA button. (2) Question Card — one question, answer options, progress bar, Back button. (3) Confirmation — component name cards with plain-language descriptions, Yes/Start Over actions. (4) Output — numbered guide steps, copyable LLM prompt block, Copy + Download export buttons. Design direction: clean, trustworthy, minimal — non-technical users should feel guided not overwhelmed. Dark or light theme your call, but must pass WCAG AA contrast. All screens desktop + mobile responsive. Output lands in design/stitch/ — manifest.json updated after each screen. No component code written until all 4 screens are approved.
@@ -390,28 +405,29 @@ Depends: TASK-004
 
 ---
 
-## TASK-017: Vercel GitHub Connection + Disable All Authentication
-Status: cto-stop
+## TASK-017: CLI-Based Deploy Pipeline (Production + PR Previews)
+Status: done
 Feature: FEATURE-005
 Agent: cto
-Spec: Connect the GitHub repo (anhnguyensynctree/auto-leverage) to the Vercel project so pushes to master trigger auto-deploys and PRs get preview URLs. Then disable all Vercel deployment protection so the site is publicly accessible without any Vercel login. Steps: (1) User creates a Vercel API token at vercel.com/account/tokens and saves to ~/.claude/config/vercel/token; (2) CTO calls PATCH /v9/projects/prj_s8EAq4E7pwL8Rh3wsuGy66s1yDgm to connect the GitHub repo; (3) CTO calls PATCH to set ssoProtection: null and passwordProtection: null — disabling all deployment protection; (4) Verify: open a preview URL without Vercel login and confirm it loads.
+Spec: Set up a fully CLI-driven deploy pipeline using the Vercel CLI and GitHub Actions — no GitHub App, no webhook integration required. Production deploys and PR preview deploys are both triggered via `vercel` CLI commands in GitHub Actions workflows. Steps: (1) Add `VERCEL_TOKEN`, `VERCEL_ORG_ID`, and `VERCEL_PROJECT_ID` as GitHub Actions secrets — values sourced from `~/.config/vercel/key` (token) and `.vercel/project.json` (org + project IDs); (2) Extend `.github/workflows/ci.yml` with a deploy job: on push to master run `vercel --prod --token $VERCEL_TOKEN` (production); on pull_request run `vercel --token $VERCEL_TOKEN` (preview) and capture the output URL; (3) Post the preview URL as a PR comment using `gh pr comment` with the captured URL; (4) Verify: push to master triggers production deploy; open a PR and confirm preview URL appears as a comment; open both URLs in a browser with no Vercel session and confirm they load without auth prompt.
 Scenarios:
-- GIVEN a push to master WHEN Vercel picks it up THEN a production deploy triggers automatically
-- GIVEN a PR is opened WHEN Vercel picks it up THEN a preview URL is posted to the PR
-- GIVEN the production URL WHEN opened in a browser with no Vercel account THEN it loads without an auth prompt
-- GIVEN a preview URL WHEN opened in a browser with no Vercel account THEN it loads without an auth prompt
+- GIVEN push to master WHEN CI deploy job runs THEN `vercel --prod` completes and production URL is live
+- GIVEN a PR is opened WHEN CI deploy job runs THEN `vercel` outputs a preview URL and it is posted as a PR comment
+- GIVEN the production URL WHEN opened with no Vercel session THEN page loads without auth prompt
+- GIVEN a preview URL WHEN opened with no Vercel session THEN page loads without auth prompt
+- GIVEN VERCEL_TOKEN secret is missing WHEN deploy job runs THEN workflow fails with clear error (not a silent 500)
 Artifacts:
-- Vercel project GitHub connection (confirmed via vercel project ls)
-- .claude/agents/cto.ctx.md updated with confirmed deployment status
-Produces: Fully automated deploy pipeline — every push ships
-Verify: cto self-review — production URL loads publicly; preview URL loads publicly; auto-deploy confirmed
-Depends: none
-Blocked-by: user must provide Vercel API token at ~/.claude/config/vercel/token
+- .github/workflows/ci.yml (extended with deploy job — production on push to master, preview on PR)
+- .claude/agents/cto.ctx.md updated with confirmed deploy pipeline status and secret names
+Produces: Fully automated CLI deploy pipeline — no GitHub App dependency
+Verify: cto self-review — production deploy confirmed; preview URL posted on test PR; both URLs publicly accessible
+Depends: TASK-014
 
 ---
 
 ## TASK-018: Write Tests for Rate Limiter, Strategy Route, and LLM Client
-Status: queued
+Status: done
+Notes: branch worktree-agent-a6064ca7 — 192 tests passing, fixed JSON.parse bug in llm-strategy.ts
 Feature: FEATURE-002
 Agent: backend-developer
 Spec: Write unit tests for the three new lib files added in the LLM split: (1) llm-rate-limiter.ts — test allowed/blocked behaviour, window expiry, separate limits per callType, separate buckets per IP; (2) llm-client.ts — test that it throws when GLM_API_KEY is missing, test happy path with mocked fetch, test non-200 response handling; (3) llm-strategy.ts — test valid output, invalid JSON from GLM, missing steps, missing llmPrompt. Also write integration tests for POST /api/strategy — happy path, 429 on rate limit exceeded, 503 when GLM_API_KEY missing, 400 on bad body.

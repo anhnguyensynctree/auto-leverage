@@ -69,10 +69,15 @@ export async function llmStrategy(
     },
   ]);
 
-  const parsed = JSON.parse(text.trim()) as {
-    steps?: unknown[];
-    llmPrompt?: unknown;
-  };
+  let parsed: { steps?: unknown[]; llmPrompt?: unknown };
+  try {
+    parsed = JSON.parse(text.trim()) as {
+      steps?: unknown[];
+      llmPrompt?: unknown;
+    };
+  } catch {
+    return null;
+  }
 
   const steps = (parsed.steps ?? []).filter(
     (s): s is string => typeof s === "string" && s.length > 0,

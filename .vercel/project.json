@@ -1,1 +1,16 @@
-{"projectId":"prj_s8EAq4E7pwL8Rh3wsuGy66s1yDgm","orgId":"team_eJcotr6EtTLmLGdPnldLZhw3","projectName":"auto-leverage"}
+{
+  "projectId": "prj_s8EAq4E7pwL8Rh3wsuGy66s1yDgm",
+  "orgId": "team_eJcotr6EtTLmLGdPnldLZhw3",
+  "projectName": "auto-leverage",
+  "settings": {
+    "createdAt": 1774556396831,
+    "framework": "nextjs",
+    "devCommand": null,
+    "installCommand": null,
+    "buildCommand": null,
+    "outputDirectory": null,
+    "rootDirectory": null,
+    "directoryListing": false,
+    "nodeVersion": "24.x"
+  }
+}
