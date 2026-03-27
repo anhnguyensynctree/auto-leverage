@@ -470,7 +470,7 @@ describe("invalid body — 400", () => {
     const req = makeRequest({ intent: "tune optimizer", turns: [] });
 
     const res = await POST(req);
-    const json = await res.json();
+    await res.json();
 
     expect(res.status).toBe(400);
   });
@@ -479,7 +479,7 @@ describe("invalid body — 400", () => {
     const req = makeRequest({ intent: "   ", turns: [], turnCount: 0 });
 
     const res = await POST(req);
-    const json = await res.json();
+    await res.json();
 
     expect(res.status).toBe(400);
   });
