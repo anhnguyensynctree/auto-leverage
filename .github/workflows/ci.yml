@@ -2,9 +2,9 @@ name: CI
 
 on:
   pull_request:
-    branches: [main]
+    branches: [master]
   push:
-    branches: [main]
+    branches: [master]
 
 jobs:
   ci:
@@ -32,3 +32,31 @@ jobs:
 
       - name: Test
         run: pnpm test
+
+  deploy:
+    needs: ci
+    runs-on: ubuntu-latest
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel@latest
+
+      - name: Pull Vercel project settings
+        run: vercel pull --yes --token ${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy to production
+        if: github.event_name == 'push'
+        run: vercel --prod --token ${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy preview and comment on PR
+        if: github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PREVIEW_URL=$(vercel --token ${{ secrets.VERCEL_TOKEN }} 2>&1 | tail -1)
+          gh pr comment ${{ github.event.pull_request.number }} --body "Preview URL: $PREVIEW_URL"

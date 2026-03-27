@@ -37,11 +37,22 @@ The agent runs a fixed loop: reads program.md → edits train.py → runs 5-minu
 2. **train.py** — the full GPT-2-style model (CausalSelfAttention, MLP, Block), Muon optimizer for weights + AdamW for embeddings/biases, training loop with gradient accumulation. Agent edits this. Everything is fair game: architecture depth/width, optimizer settings, learning rate schedule, batch size, context length.
 3. **program.md** — plain-text mission briefing for the agent (e.g. "minimise val_bpb on Shakespeare, budget 1 hour"). Human edits this. This is the leverage point: better instructions = better research direction = faster progress. Karpathy frames it as "programming the research organisation, not individual experiments."
 
-## Deployment Pipeline (OMS-managed)
-- GitHub Actions CI: lint + type-check + unit tests on every PR
-- Vercel: preview deployments on PR, production deploy on merge to main
-- Env vars managed via Vercel dashboard (GLM_API_KEY, GLM_MODEL, CONFIDENCE_THRESHOLD)
-- OMS owns the full pipeline spec — no manual deploy steps
+## Deploy Pipeline — Automated (TASK-017)
+
+**Status**: Implemented and confirmed. Fully CLI-driven via GitHub Actions + Vercel CLI.
+
+**GitHub secrets required** (set via `gh secret set`):
+- `VERCEL_TOKEN` — Vercel API token (from `~/.config/vercel/key`)
+- `VERCEL_ORG_ID` — `team_eJcotr6EtTLmLGdPnldLZhw3`
+- `VERCEL_PROJECT_ID` — `prj_s8EAq4E7pwL8Rh3wsuGy66s1yDgm`
+
+**Production deploy**: push to `master` → `ci` job passes → `deploy` job runs `vercel --prod --token $VERCEL_TOKEN`
+
+**Preview deploy**: PR opened/updated → `ci` job passes → `deploy` job runs `vercel --token $VERCEL_TOKEN` → preview URL captured → posted as PR comment via `gh pr comment`
+
+**Missing VERCEL_TOKEN**: workflow fails at `vercel pull` step with a clear Vercel CLI error (no silent failure).
+
+**App env vars** (GLM_API_KEY, GLM_MODEL, CONFIDENCE_THRESHOLD) managed via Vercel dashboard — not in CI secrets.
 
 ## Vercel Setup — Manual Steps Required
 
@@ -49,7 +60,7 @@ The agent runs a fixed loop: reads program.md → edits train.py → runs 5-minu
 The project is already linked via CLI (`vercel link` completed). To connect GitHub for auto-deploys:
 1. Go to vercel.com → Project `auto-leverage` → Settings → Git
 2. Connect the GitHub repo — this enables push-to-deploy and PR preview URLs
-3. Set **Production Branch**: `main`
+3. Set **Production Branch**: `master`
 4. Preview deployments on PRs are enabled by default once the repo is connected
 
 ### 2. Disable Vercel Authentication on Previews
@@ -65,7 +76,7 @@ Apply each to both **Production** and **Preview** environments:
 
 | Variable | Value | Notes |
 |---|---|---|
-| `GLM_API_KEY` | `<zhipu-api-key>` | Server-side only — never expose to client bundle. Key stored at `~/.claude/config/glm5/key` |
+| `GLM_API_KEY` | `<zhipu-api-key>` | Server-side only — never expose to client bundle. Key stored at `~/.config/glm5/key` |
 | `GLM_MODEL` | `glm-5` | Optional; defaults to `glm-5`. Override via env if model name changes. |
 | `CONFIDENCE_THRESHOLD` | `0.75` | Below this value the LLM navigate fallback fires. Default 0.75 — only triggers for ambiguous inputs. |
 
@@ -73,7 +84,7 @@ Apply each to both **Production** and **Preview** environments:
 
 | Key | Path | Permissions |
 |---|---|---|
-| GLM-5 (Zhipu AI) | `~/.claude/config/glm5/key` | chmod 600 |
+| GLM-5 (Zhipu AI) | `~/.config/glm5/key` | chmod 600 |
 | Vercel API token | `~/.config/vercel/key` | chmod 600 |
 
 These paths are the canonical locations for Claude sessions to reference. Never hardcode values.
@@ -85,8 +96,8 @@ These paths are the canonical locations for Claude sessions to reference. Never 
 
 ### 4. Verification
 After linking:
-- Open a test PR → confirm preview URL appears in PR checks
-- Merge to main → confirm production deploy triggers in Vercel dashboard
+- Open a test PR → confirm preview URL appears as PR comment
+- Merge to master → confirm production deploy triggers in Vercel dashboard
 - Hit the production URL → confirm `/api/classify` returns `{ data, error }` shape (not 500)
 
 ## Key Constraints

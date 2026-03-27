@@ -142,5 +142,32 @@
     "passed": true,
     "fail_at": null,
     "cost_usd": null
+  },
+  {
+    "task_id": "TASK-018",
+    "slug": "auto-leverage",
+    "title": "Write Tests for Rate Limiter, Strategy Route, and LLM Client",
+    "date": "2026-03-26T23:14:23.632953Z",
+    "passed": true,
+    "fail_at": null,
+    "cost_usd": null
+  },
+  {
+    "task_id": "TASK-017",
+    "slug": "auto-leverage",
+    "title": "Vercel GitHub Connection + Public Access",
+    "date": "2026-03-26T23:14:23.632953Z",
+    "passed": false,
+    "fail_at": "qa",
+    "cost_usd": null
+  },
+  {
+    "task_id": "TASK-017",
+    "slug": "auto-leverage",
+    "title": "CLI-Based Deploy Pipeline",
+    "date": "2026-03-27T00:05:57.630611Z",
+    "passed": true,
+    "fail_at": null,
+    "cost_usd": null
   }
 ]
