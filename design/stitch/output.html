@@ -6,59 +6,18 @@
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Geist+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
       tailwind.config = {
         darkMode: "class",
         theme: {
           extend: {
             colors: {
-              "secondary-fixed": "#dbe1ff",
-              "on-surface": "#111c2d",
-              "inverse-primary": "#b4c5ff",
-              "error": "#ba1a1a",
-              "on-secondary": "#ffffff",
-              "tertiary-fixed-dim": "#ffb596",
-              "on-secondary-container": "#394c84",
-              "on-background": "#111c2d",
-              "on-tertiary-fixed-variant": "#7d2d00",
-              "on-primary-fixed": "#00174b",
-              "surface-container-low": "#f0f3ff",
-              "primary-fixed": "#dbe1ff",
-              "surface-tint": "#0053db",
-              "inverse-on-surface": "#ecf1ff",
-              "secondary-fixed-dim": "#b4c5ff",
-              "on-error-container": "#93000a",
-              "secondary": "#495c95",
-              "tertiary-container": "#bc4800",
-              "background": "#f9f9ff",
-              "on-secondary-fixed": "#00174b",
-              "tertiary-fixed": "#ffdbcd",
-              "surface-variant": "#d8e3fb",
-              "on-error": "#ffffff",
-              "outline-variant": "#c3c6d7",
-              "on-surface-variant": "#434655",
-              "on-tertiary": "#ffffff",
-              "on-primary-container": "#eeefff",
-              "surface": "#f9f9ff",
-              "surface-dim": "#cfdaf2",
-              "on-primary-fixed-variant": "#003ea8",
-              "inverse-surface": "#263143",
-              "secondary-container": "#acbfff",
-              "error-container": "#ffdad6",
-              "outline": "#737686",
-              "surface-bright": "#f9f9ff",
-              "primary-fixed-dim": "#b4c5ff",
-              "primary-container": "#2563eb",
-              "on-secondary-fixed-variant": "#31447b",
-              "tertiary": "#943700",
-              "on-tertiary-fixed": "#360f00",
-              "on-primary": "#ffffff",
-              "surface-container-high": "#dee8ff",
-              "on-tertiary-container": "#ffede6",
-              "primary": "#004ac6",
-              "surface-container-highest": "#d8e3fb",
-              "surface-container-lowest": "#ffffff"
+              "primary": "#6366f1",
+              "background": "#0a0a0f",
+              "surface": "#1a1a2e",
+              "on-surface": "#f1f5f9",
+              "secondary": "#94a3b8",
+              "outline": "#2d2d44"
             },
             fontFamily: {
               "headline": ["Inter", "sans-serif"],
@@ -73,31 +32,64 @@
     </script>
 <style>
         body {
-            background-color: #ffffff;
+            background-color: #0a0a0f;
             font-family: 'Inter', sans-serif;
+            color: #f1f5f9;
         }
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
-        .tonal-transition {
-            background: linear-gradient(180deg, rgba(249, 249, 255, 0) 0%, rgba(240, 243, 255, 0.5) 100%);
+        .glow-indigo {
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
         }
-        .signature-gradient {
-            background: linear-gradient(135deg, #004ac6 0%, #2563eb 100%);
+        .bg-mesh {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .shape {
+            position: absolute;
+            opacity: 0.03;
+            border: 1px solid #6366f1;
+        }
+        .circle { border-radius: 50%; width: 300px; height: 300px; top: 10%; left: -5%; }
+        .triangle { 
+            width: 0; height: 0; 
+            border-left: 150px solid transparent; 
+            border-right: 150px solid transparent; 
+            border-bottom: 260px solid #6366f1; 
+            border-top: 0;
+            background: none; border-left-color: transparent; border-right-color: transparent;
+            bottom: 15%; right: -5%; 
+        }
+        .hexagon {
+            width: 200px; height: 115px; background: none; border: 1px solid #6366f1;
+            top: 40%; left: 80%; transform: rotate(30deg);
         }
     </style>
 </head>
-<body class="text-on-background selection:bg-primary-container selection:text-on-primary-container">
+<body class="selection:bg-primary/30 selection:text-white">
+<!-- Ambient Decoration -->
+<div class="bg-mesh">
+<div class="shape circle"></div>
+<div class="shape triangle" style="border: none; border-bottom: 260px solid rgba(99, 102, 241, 0.1);"></div>
+<div class="shape hexagon"></div>
+</div>
 <!-- TopAppBar -->
-<nav class="fixed top-0 w-full z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl shadow-sm shadow-slate-200/50 dark:shadow-none">
+<nav class="fixed top-0 w-full z-50 bg-[#0a0a0f]/80 backdrop-blur-xl border-b border-white/5">
 <div class="flex items-center justify-between px-6 py-4 max-w-[680px] mx-auto w-full">
 <div class="flex items-center gap-3">
-<button class="flex items-center justify-center p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors active:scale-95 duration-200 text-blue-600 dark:text-blue-400">
+<button class="flex items-center justify-center p-2 rounded-full hover:bg-white/5 transition-colors active:scale-95 duration-200 text-primary">
 <span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
 </button>
-<span class="text-lg font-bold text-slate-900 dark:text-slate-50 tracking-tight">AI Research Configurator</span>
+<span class="text-lg font-bold text-on-surface tracking-tight">AI Research Configurator</span>
 </div>
-<span class="font-sans text-sm font-medium tracking-tight text-slate-600 dark:text-slate-400">Back</span>
+<span class="font-sans text-sm font-medium tracking-tight text-secondary">Back</span>
 </div>
 </nav>
 <!-- Main Content Canvas -->
@@ -112,77 +104,84 @@
             </p>
 </header>
 <!-- TOP SECTION — Guide Steps -->
-<section class="mb-8">
-<h2 class="text-[12px] font-bold text-slate-500 uppercase tracking-[0.08em] mb-6">Your guide</h2>
-<div class="space-y-8">
+<section class="mb-12">
+<h2 class="text-[12px] font-bold text-secondary uppercase tracking-[0.15em] mb-6 opacity-80">Your guide</h2>
+<div class="space-y-4">
 <!-- Step 1 -->
-<div class="flex gap-5">
-<div class="flex-shrink-0 w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-[14px] font-bold shadow-sm">1</div>
+<div class="flex gap-5 p-5 bg-surface border border-outline rounded-xl group transition-all hover:border-primary/50">
+<div class="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-[14px] font-bold glow-indigo">1</div>
 <div>
-<h3 class="text-[15px] font-semibold text-slate-900 mb-1">Verify Parameters</h3>
-<p class="text-[14px] text-slate-600 leading-relaxed">Ensure all hyper-parameters align with your hardware constraints and dataset scale.</p>
+<h3 class="text-[16px] font-semibold text-on-surface mb-1">Verify Parameters</h3>
+<p class="text-[14px] text-secondary leading-relaxed">Ensure all hyper-parameters align with your hardware constraints and dataset scale.</p>
 </div>
 </div>
 <!-- Step 2 -->
-<div class="flex gap-5">
-<div class="flex-shrink-0 w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-[14px] font-bold shadow-sm">2</div>
+<div class="flex gap-5 p-5 bg-surface border border-outline rounded-xl group transition-all hover:border-primary/50">
+<div class="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-[14px] font-bold glow-indigo">2</div>
 <div>
-<h3 class="text-[15px] font-semibold text-slate-900 mb-1">Review Architecture</h3>
-<p class="text-[14px] text-slate-600 leading-relaxed">Check the attention head distribution and layer normalization strategies in the draft.</p>
+<h3 class="text-[16px] font-semibold text-on-surface mb-1">Review Architecture</h3>
+<p class="text-[14px] text-secondary leading-relaxed">Check the attention head distribution and layer normalization strategies in the draft.</p>
 </div>
 </div>
 <!-- Step 3 -->
-<div class="flex gap-5">
-<div class="flex-shrink-0 w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-[14px] font-bold shadow-sm">3</div>
+<div class="flex gap-5 p-5 bg-surface border border-outline rounded-xl group transition-all hover:border-primary/50">
+<div class="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-[14px] font-bold glow-indigo">3</div>
 <div>
-<h3 class="text-[15px] font-semibold text-slate-900 mb-1">Execute Prompt</h3>
-<p class="text-[14px] text-slate-600 leading-relaxed">Copy the generated prompt below into your preferred AI research assistant for deep analysis.</p>
+<h3 class="text-[16px] font-semibold text-on-surface mb-1">Execute Prompt</h3>
+<p class="text-[14px] text-secondary leading-relaxed">Copy the generated prompt below into your preferred AI research assistant for deep analysis.</p>
 </div>
 </div>
 </div>
 </section>
 <!-- DIVIDER -->
-<hr class="border-t border-slate-200 my-10"/>
+<hr class="border-t border-white/5 my-10"/>
 <!-- BOTTOM SECTION — LLM Prompt Block -->
 <section class="mb-16">
-<h2 class="text-[12px] font-bold text-slate-500 uppercase tracking-[0.08em] mb-4">Prompt for your AI assistant</h2>
+<h2 class="text-[12px] font-bold text-secondary uppercase tracking-[0.15em] mb-4 opacity-80">Prompt for your AI assistant</h2>
 <!-- Prompt Card -->
-<div class="bg-slate-100 rounded-xl p-6 border-l-[3px] border-primary mb-6 shadow-sm">
-<code class="font-mono text-[13px] text-slate-800 leading-relaxed whitespace-pre-wrap block">I want you to analyze the following research configuration and suggest 3 ways to optimize the training loop. Specifically look for potential bottlenecks in the data preparation phase.</code>
+<div class="relative group">
+<div class="bg-black/40 rounded-xl p-6 border border-outline mb-6 font-mono relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-primary"></div>
+<code class="text-[13px] text-slate-300 leading-relaxed whitespace-pre-wrap block">I want you to analyze the following research configuration and suggest 3 ways to optimize the training loop. Specifically look for potential bottlenecks in the data preparation phase.</code>
+<button class="absolute top-4 right-4 p-2 rounded-lg bg-white/5 hover:bg-white/10 text-secondary hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="content_copy">content_copy</span>
+</button>
+</div>
 </div>
 <!-- Export Actions -->
 <div class="flex flex-col md:flex-row gap-3">
-<button class="flex-1 h-10 px-6 signature-gradient text-white rounded-lg font-semibold text-sm flex items-center justify-center gap-2 transition-all hover:shadow-lg hover:shadow-blue-200 active:scale-95">
+<button class="flex-1 h-11 px-6 bg-primary text-white rounded-lg font-bold text-sm flex items-center justify-center gap-2 transition-all hover:brightness-110 active:scale-95 glow-indigo">
 <span class="material-symbols-outlined text-[18px]" data-icon="content_copy">content_copy</span>
 <span>Copy to clipboard</span>
 </button>
-<button class="flex-1 h-10 px-6 bg-white border border-slate-200 text-slate-700 rounded-lg font-semibold text-sm flex items-center justify-center gap-2 hover:bg-slate-50 transition-colors active:scale-95">
+<button class="flex-1 h-11 px-6 bg-white/5 border border-outline text-on-surface rounded-lg font-semibold text-sm flex items-center justify-center gap-2 hover:bg-white/10 transition-colors active:scale-95">
 <span class="material-symbols-outlined text-[18px]" data-icon="download">download</span>
 <span>Download .txt</span>
 </button>
 </div>
 </section>
 <!-- Decorative Image for Context -->
-<div class="mb-16 rounded-xl overflow-hidden aspect-video bg-surface-container-low">
-<img alt="Neural network visualization" class="w-full h-full object-cover mix-blend-multiply opacity-80" data-alt="Abstract visualization of a complex neural network architecture with glowing nodes and digital connection lines in shades of deep blue" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFaDtNOTQqgzKsN5OTEKIxd2EdePLm6HyOCIn3fX-CfpkeXR7ra75NsD2R_-I1tHrkIrf56pnxrV7cKHJjdx7LJX2Yu2bVeb2Rs8i7ylMjy0WuCv85gBA3GNTURb-3h9AeGqT0S9pXsViVlnXkKhSiCMMKSeIlB9mwg1WQ15JWEM5S89uID-F_aW1omkPF-u0g29aVrQgacquXIV7V5YDhZM6-WSRiME3U-fLOI6Qt-CpQQQZKCx4csHw-8hlfOGcu729q1wB5lDlP"/>
+<div class="mb-16 rounded-2xl overflow-hidden aspect-video border border-white/5 bg-surface">
+<img alt="Neural network visualization" class="w-full h-full object-cover opacity-60 mix-blend-screen" data-alt="Abstract visualization of a complex neural network architecture with glowing nodes and digital connection lines in shades of deep blue" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFaDtNOTQqgzKsN5OTEKIxd2EdePLm6HyOCIn3fX-CfpkeXR7ra75NsD2R_-I1tHrkIrf56pnxrV7cKHJjdx7LJX2Yu2bVeb2Rs8i7ylMjy0WuCv85gBA3GNTURb-3h9AeGqT0S9pXsViVlnXkKhSiCMMKSeIlB9mwg1WQ15JWEM5S89uID-F_aW1omkPF-u0g29aVrQgacquXIV7V5YDhZM6-WSRiME3U-fLOI6Qt-CpQQQZKCx4csHw-8hlfOGcu729q1wB5lDlP"/>
 </div>
 </main>
 <!-- Footer -->
 <footer class="w-full py-12 bg-transparent">
-<div class="flex flex-col items-center justify-center space-y-4 max-w-[680px] mx-auto w-full">
-<button class="text-slate-400 hover:text-blue-600 transition-all font-sans text-[13px] font-medium tracking-tight">
+<div class="flex flex-col items-center justify-center space-y-4 max-w-[680px] mx-auto w-full border-t border-white/5 pt-12">
+<button class="text-secondary hover:text-primary transition-all font-sans text-[13px] font-medium tracking-tight">
                 Start over
             </button>
-<p class="font-sans text-[10px] uppercase tracking-widest font-semibold text-slate-400">
+<p class="font-sans text-[10px] uppercase tracking-widest font-semibold text-secondary/50">
                 © 2024 Precision Curator AI
             </p>
 </div>
 </footer>
-<!-- Progress Sentinel (Visual Decoration only as per design system) -->
+<!-- Progress Sentinel -->
 <div class="fixed right-8 top-1/2 -translate-y-1/2 hidden xl:flex flex-col gap-4 items-center">
-<div class="w-1 h-32 bg-slate-100 rounded-full relative overflow-hidden">
-<div class="absolute top-0 w-full h-1/3 bg-primary rounded-full"></div>
+<div class="w-1 h-32 bg-white/5 rounded-full relative overflow-hidden">
+<div class="absolute top-0 w-full h-full bg-primary/40 rounded-full"></div>
+<div class="absolute top-0 w-full h-1/3 bg-primary rounded-full glow-indigo"></div>
 </div>
-<span class="text-[10px] font-bold text-slate-400 rotate-90 origin-center whitespace-nowrap">STEP 03/03</span>
+<span class="text-[10px] font-bold text-secondary/60 rotate-90 origin-center whitespace-nowrap">STEP 03/03</span>
 </div>
 </body></html>

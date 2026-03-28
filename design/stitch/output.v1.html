@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Geist+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "secondary-fixed": "#dbe1ff",
+              "on-surface": "#111c2d",
+              "inverse-primary": "#b4c5ff",
+              "error": "#ba1a1a",
+              "on-secondary": "#ffffff",
+              "tertiary-fixed-dim": "#ffb596",
+              "on-secondary-container": "#394c84",
+              "on-background": "#111c2d",
+              "on-tertiary-fixed-variant": "#7d2d00",
+              "on-primary-fixed": "#00174b",
+              "surface-container-low": "#f0f3ff",
+              "primary-fixed": "#dbe1ff",
+              "surface-tint": "#0053db",
+              "inverse-on-surface": "#ecf1ff",
+              "secondary-fixed-dim": "#b4c5ff",
+              "on-error-container": "#93000a",
+              "secondary": "#495c95",
+              "tertiary-container": "#bc4800",
+              "background": "#f9f9ff",
+              "on-secondary-fixed": "#00174b",
+              "tertiary-fixed": "#ffdbcd",
+              "surface-variant": "#d8e3fb",
+              "on-error": "#ffffff",
+              "outline-variant": "#c3c6d7",
+              "on-surface-variant": "#434655",
+              "on-tertiary": "#ffffff",
+              "on-primary-container": "#eeefff",
+              "surface": "#f9f9ff",
+              "surface-dim": "#cfdaf2",
+              "on-primary-fixed-variant": "#003ea8",
+              "inverse-surface": "#263143",
+              "secondary-container": "#acbfff",
+              "error-container": "#ffdad6",
+              "outline": "#737686",
+              "surface-bright": "#f9f9ff",
+              "primary-fixed-dim": "#b4c5ff",
+              "primary-container": "#2563eb",
+              "on-secondary-fixed-variant": "#31447b",
+              "tertiary": "#943700",
+              "on-tertiary-fixed": "#360f00",
+              "on-primary": "#ffffff",
+              "surface-container-high": "#dee8ff",
+              "on-tertiary-container": "#ffede6",
+              "primary": "#004ac6",
+              "surface-container-highest": "#d8e3fb",
+              "surface-container-lowest": "#ffffff"
+            },
+            fontFamily: {
+              "headline": ["Inter", "sans-serif"],
+              "body": ["Inter", "sans-serif"],
+              "label": ["Inter", "sans-serif"],
+              "mono": ["Geist Mono", "monospace"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #ffffff;
+            font-family: 'Inter', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .tonal-transition {
+            background: linear-gradient(180deg, rgba(249, 249, 255, 0) 0%, rgba(240, 243, 255, 0.5) 100%);
+        }
+        .signature-gradient {
+            background: linear-gradient(135deg, #004ac6 0%, #2563eb 100%);
+        }
+    </style>
+</head>
+<body class="text-on-background selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<nav class="fixed top-0 w-full z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl shadow-sm shadow-slate-200/50 dark:shadow-none">
+<div class="flex items-center justify-between px-6 py-4 max-w-[680px] mx-auto w-full">
+<div class="flex items-center gap-3">
+<button class="flex items-center justify-center p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors active:scale-95 duration-200 text-blue-600 dark:text-blue-400">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<span class="text-lg font-bold text-slate-900 dark:text-slate-50 tracking-tight">AI Research Configurator</span>
+</div>
+<span class="font-sans text-sm font-medium tracking-tight text-slate-600 dark:text-slate-400">Back</span>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="pt-24 pb-12 px-6 max-w-[680px] mx-auto min-h-screen">
+<!-- Header Hero Section -->
+<header class="mb-12">
+<h1 class="text-4xl md:text-[3.5rem] font-extrabold text-on-surface leading-tight tracking-tighter mb-4">
+                Refine Your Model
+            </h1>
+<p class="text-lg text-secondary leading-relaxed max-w-[600px]">
+                Follow the guided steps below to optimize your training architecture using precision-curated insights.
+            </p>
+</header>
+<!-- TOP SECTION — Guide Steps -->
+<section class="mb-8">
+<h2 class="text-[12px] font-bold text-slate-500 uppercase tracking-[0.08em] mb-6">Your guide</h2>
+<div class="space-y-8">
+<!-- Step 1 -->
+<div class="flex gap-5">
+<div class="flex-shrink-0 w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-[14px] font-bold shadow-sm">1</div>
+<div>
+<h3 class="text-[15px] font-semibold text-slate-900 mb-1">Verify Parameters</h3>
+<p class="text-[14px] text-slate-600 leading-relaxed">Ensure all hyper-parameters align with your hardware constraints and dataset scale.</p>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="flex gap-5">
+<div class="flex-shrink-0 w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-[14px] font-bold shadow-sm">2</div>
+<div>
+<h3 class="text-[15px] font-semibold text-slate-900 mb-1">Review Architecture</h3>
+<p class="text-[14px] text-slate-600 leading-relaxed">Check the attention head distribution and layer normalization strategies in the draft.</p>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="flex gap-5">
+<div class="flex-shrink-0 w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-[14px] font-bold shadow-sm">3</div>
+<div>
+<h3 class="text-[15px] font-semibold text-slate-900 mb-1">Execute Prompt</h3>
+<p class="text-[14px] text-slate-600 leading-relaxed">Copy the generated prompt below into your preferred AI research assistant for deep analysis.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- DIVIDER -->
+<hr class="border-t border-slate-200 my-10"/>
+<!-- BOTTOM SECTION — LLM Prompt Block -->
+<section class="mb-16">
+<h2 class="text-[12px] font-bold text-slate-500 uppercase tracking-[0.08em] mb-4">Prompt for your AI assistant</h2>
+<!-- Prompt Card -->
+<div class="bg-slate-100 rounded-xl p-6 border-l-[3px] border-primary mb-6 shadow-sm">
+<code class="font-mono text-[13px] text-slate-800 leading-relaxed whitespace-pre-wrap block">I want you to analyze the following research configuration and suggest 3 ways to optimize the training loop. Specifically look for potential bottlenecks in the data preparation phase.</code>
+</div>
+<!-- Export Actions -->
+<div class="flex flex-col md:flex-row gap-3">
+<button class="flex-1 h-10 px-6 signature-gradient text-white rounded-lg font-semibold text-sm flex items-center justify-center gap-2 transition-all hover:shadow-lg hover:shadow-blue-200 active:scale-95">
+<span class="material-symbols-outlined text-[18px]" data-icon="content_copy">content_copy</span>
+<span>Copy to clipboard</span>
+</button>
+<button class="flex-1 h-10 px-6 bg-white border border-slate-200 text-slate-700 rounded-lg font-semibold text-sm flex items-center justify-center gap-2 hover:bg-slate-50 transition-colors active:scale-95">
+<span class="material-symbols-outlined text-[18px]" data-icon="download">download</span>
+<span>Download .txt</span>
+</button>
+</div>
+</section>
+<!-- Decorative Image for Context -->
+<div class="mb-16 rounded-xl overflow-hidden aspect-video bg-surface-container-low">
+<img alt="Neural network visualization" class="w-full h-full object-cover mix-blend-multiply opacity-80" data-alt="Abstract visualization of a complex neural network architecture with glowing nodes and digital connection lines in shades of deep blue" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFaDtNOTQqgzKsN5OTEKIxd2EdePLm6HyOCIn3fX-CfpkeXR7ra75NsD2R_-I1tHrkIrf56pnxrV7cKHJjdx7LJX2Yu2bVeb2Rs8i7ylMjy0WuCv85gBA3GNTURb-3h9AeGqT0S9pXsViVlnXkKhSiCMMKSeIlB9mwg1WQ15JWEM5S89uID-F_aW1omkPF-u0g29aVrQgacquXIV7V5YDhZM6-WSRiME3U-fLOI6Qt-CpQQQZKCx4csHw-8hlfOGcu729q1wB5lDlP"/>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-12 bg-transparent">
+<div class="flex flex-col items-center justify-center space-y-4 max-w-[680px] mx-auto w-full">
+<button class="text-slate-400 hover:text-blue-600 transition-all font-sans text-[13px] font-medium tracking-tight">
+                Start over
+            </button>
+<p class="font-sans text-[10px] uppercase tracking-widest font-semibold text-slate-400">
+                © 2024 Precision Curator AI
+            </p>
+</div>
+</footer>
+<!-- Progress Sentinel (Visual Decoration only as per design system) -->
+<div class="fixed right-8 top-1/2 -translate-y-1/2 hidden xl:flex flex-col gap-4 items-center">
+<div class="w-1 h-32 bg-slate-100 rounded-full relative overflow-hidden">
+<div class="absolute top-0 w-full h-1/3 bg-primary rounded-full"></div>
+</div>
+<span class="text-[10px] font-bold text-slate-400 rotate-90 origin-center whitespace-nowrap">STEP 03/03</span>
+</div>
+</body></html>

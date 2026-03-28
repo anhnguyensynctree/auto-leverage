@@ -1,3 +1,81 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ---- Geometric Background Layer ---- */
+.geo-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.geo-glow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 72% 12%, rgba(99, 102, 241, 0.13) 0%, transparent 55%),
+    radial-gradient(ellipse at 12% 88%, rgba(124, 58, 237, 0.09) 0%, transparent 48%);
+}
+
+.geo-dot-grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.07;
+  background-image: radial-gradient(rgba(99, 102, 241, 1) 0.6px, transparent 0.6px);
+  background-size: 32px 32px;
+}
+
+.geo-circle {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(99, 102, 241, 0.12);
+}
+
+.geo-circle-lg {
+  width: 520px;
+  height: 520px;
+  top: -180px;
+  right: -130px;
+}
+
+.geo-circle-sm {
+  width: 260px;
+  height: 260px;
+  bottom: 6%;
+  left: -90px;
+}
+
+.geo-circle-md {
+  width: 160px;
+  height: 160px;
+  top: 38%;
+  right: 4%;
+  border-color: rgba(124, 58, 237, 0.1);
+}
+
+.geo-hex {
+  position: absolute;
+  top: 44%;
+  left: 3%;
+  width: 72px;
+  height: 83px;
+  opacity: 0.1;
+}
+
+.geo-triangle {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-left: 56px solid transparent;
+  border-right: 56px solid transparent;
+  border-bottom: 96px solid rgba(99, 102, 241, 0.045);
+  bottom: 18%;
+  right: 7%;
+}
+
+/* ---- Elevates page content above the geo layer ---- */
+.page-content {
+  position: relative;
+  z-index: 10;
+}

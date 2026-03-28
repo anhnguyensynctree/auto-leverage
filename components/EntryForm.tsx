@@ -53,6 +53,7 @@ export default function EntryForm() {
       }
 
       const params = new URLSearchParams({
+        intent: value.trim(),
         components: json.data.components.join(","),
         confidence: String(json.data.confidence),
       });
@@ -68,21 +69,23 @@ export default function EntryForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-6">
+    <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-4">
       <div className="flex flex-col gap-2">
-        <div className="relative">
+        <div className="relative group">
+          {/* Glow ring on focus */}
+          <div className="absolute -inset-px rounded-xl bg-primary/20 blur opacity-0 group-focus-within:opacity-100 transition-opacity duration-300 pointer-events-none" />
           <textarea
             value={value}
             onChange={handleChange}
-            rows={3}
+            rows={4}
             placeholder='e.g. "I want to download more training data" or "the model keeps crashing"'
             aria-label="Describe your goal"
             aria-describedby={error ? "entry-error" : undefined}
-            className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg p-4 text-base text-on-surface placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all resize-none shadow-sm"
+            className="relative w-full bg-surface-container-lowest border border-outline-variant rounded-xl p-5 text-base text-on-surface placeholder:text-secondary/50 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all resize-none shadow-lg"
           />
         </div>
         <div className="flex justify-between items-center px-1">
-          <span className="text-xs text-outline" aria-live="polite">
+          <span className="text-xs text-secondary" aria-live="polite">
             {error ? (
               <span id="entry-error" className="text-error font-medium">
                 {error}
@@ -91,7 +94,7 @@ export default function EntryForm() {
           </span>
           <span
             className={`text-xs tabular-nums ${
-              charCount >= MAX_CHARS ? "text-error" : "text-outline"
+              charCount >= MAX_CHARS ? "text-error" : "text-secondary"
             }`}
             aria-live="polite"
           >
@@ -103,7 +106,7 @@ export default function EntryForm() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full h-12 bg-primary hover:bg-on-primary-fixed-variant disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold rounded-lg text-sm transition-all active:scale-[0.98] shadow-sm flex items-center justify-center gap-2"
+        className="w-full h-[52px] bg-primary hover:bg-on-primary-fixed-variant disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold rounded-xl text-sm transition-all active:scale-[0.98] shadow-glow flex items-center justify-center gap-2"
       >
         {loading ? (
           <>
@@ -114,7 +117,10 @@ export default function EntryForm() {
             Finding your strategy…
           </>
         ) : (
-          "Find my answer"
+          <>
+            Analyze Goal
+            <span className="material-symbols-outlined text-[18px]">bolt</span>
+          </>
         )}
       </button>
     </form>

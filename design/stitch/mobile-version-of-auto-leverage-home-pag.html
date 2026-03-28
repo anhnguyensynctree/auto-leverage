@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Auto-Leverage | Neon Scribe Terminal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&amp;family=Geist+Mono:wght@400;700&amp;family=Space+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-container-lowest": "#0e0e13",
+              "inverse-surface": "#e4e1e9",
+              "secondary-fixed": "#eaddff",
+              "error": "#ffb4ab",
+              "surface-bright": "#39383e",
+              "on-tertiary-fixed": "#301400",
+              "on-secondary-fixed": "#25005a",
+              "on-surface": "#e4e1e9",
+              "primary": "#c0c1ff",
+              "surface": "#131318",
+              "on-primary-fixed-variant": "#2f2ebe",
+              "tertiary-fixed": "#ffdcc5",
+              "background": "#131318",
+              "surface-container-high": "#2a292f",
+              "on-primary": "#1000a9",
+              "on-error-container": "#ffdad6",
+              "secondary-fixed-dim": "#d2bbff",
+              "inverse-primary": "#494bd6",
+              "on-secondary-fixed-variant": "#5a00c6",
+              "surface-container-highest": "#35343a",
+              "tertiary-fixed-dim": "#ffb783",
+              "primary-fixed": "#e1e0ff",
+              "on-secondary-container": "#c9aeff",
+              "on-secondary": "#3f008e",
+              "on-primary-container": "#0d0096",
+              "secondary-container": "#6001d1",
+              "on-primary-fixed": "#07006c",
+              "on-background": "#e4e1e9",
+              "on-tertiary": "#4f2500",
+              "surface-container": "#1f1f25",
+              "secondary": "#d2bbff",
+              "surface-container-low": "#1b1b20",
+              "on-error": "#690005",
+              "error-container": "#93000a",
+              "tertiary-container": "#d97721",
+              "on-tertiary-fixed-variant": "#703700",
+              "on-surface-variant": "#c7c4d7",
+              "primary-container": "#8083ff",
+              "surface-dim": "#131318",
+              "surface-tint": "#c0c1ff",
+              "surface-variant": "#35343a",
+              "inverse-on-surface": "#303036",
+              "tertiary": "#ffb783",
+              "primary-fixed-dim": "#c0c1ff",
+              "outline-variant": "#464554",
+              "outline": "#908fa0",
+              "on-tertiary-container": "#452000"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Space Grotesk"],
+              "mono": ["Geist Mono"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glow-indigo {
+            box-shadow: 0px 12px 32px rgba(99, 102, 241, 0.12);
+        }
+        .bg-mesh {
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.05) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(210, 187, 255, 0.05) 0px, transparent 50%);
+        }
+        .bg-geometric {
+            mask-image: linear-gradient(to bottom, black, transparent);
+            -webkit-mask-image: linear-gradient(to bottom, black, transparent);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary selection:text-on-primary">
+<!-- Top Navigation Anchor -->
+<header class="fixed top-0 w-full z-50 bg-[#131318]/70 backdrop-blur-xl shadow-[0px_12px_32px_rgba(99,102,241,0.08)]">
+<div class="flex items-center justify-between px-6 h-16 w-full">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-indigo-200">terminal</span>
+<span class="text-lg font-black text-indigo-300 tracking-widest font-headline uppercase">NEON_SCRIBE</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-slate-400 hover:bg-indigo-500/10 transition-colors p-2 rounded-full active:scale-95 duration-200">more_vert</span>
+</div>
+</div>
+</header>
+<main class="relative min-h-screen pt-24 pb-32 px-6 overflow-hidden bg-mesh">
+<!-- Ambient Background Decoration -->
+<div class="absolute inset-0 z-0 pointer-events-none opacity-20 bg-geometric">
+<svg class="absolute top-20 right-[-10%] w-64 h-64 text-primary/10" fill="currentColor" viewbox="0 0 100 100">
+<circle cx="50" cy="50" r="40"></circle>
+</svg>
+<svg class="absolute bottom-[20%] left-[-20%] w-80 h-80 text-secondary/10 rotate-12" fill="currentColor" viewbox="0 0 100 100">
+<polygon points="50,15 90,85 10,85"></polygon>
+</svg>
+<svg class="absolute top-[40%] left-[10%] w-32 h-32 text-tertiary/10 opacity-50" fill="currentColor" viewbox="0 0 100 100">
+<path d="M50 0 L93.3 25 L93.3 75 L50 100 L6.7 75 L6.7 25 Z"></path>
+</svg>
+</div>
+<section class="relative z-10 flex flex-col gap-10 max-w-[342px] mx-auto">
+<!-- Hero Section -->
+<div class="flex flex-col gap-4">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container-high border border-outline-variant/15 w-fit">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+<span class="font-mono text-[10px] uppercase tracking-widest text-primary">v2.4.0 High-Frequency Live</span>
+</div>
+<h1 class="text-4xl font-black font-headline tracking-tighter leading-[0.95] text-on-surface">
+                    Redefine Your Research Goals
+                </h1>
+<p class="text-on-surface-variant text-base leading-relaxed">
+                    Experience the first high-frequency analytical terminal. Leveraged datasets, real-time synthesis, and autonomous execution layers designed for the modern architect.
+                </p>
+</div>
+<!-- Terminal Interaction Input -->
+<div class="flex flex-col gap-3">
+<div class="group relative bg-surface-container-lowest border border-outline-variant/10 rounded-xl p-1 transition-all focus-within:ring-1 focus-within:ring-primary/30">
+<div class="flex items-center px-4 py-3 gap-3">
+<span class="material-symbols-outlined text-primary text-xl">query_stats</span>
+<input class="bg-transparent border-none focus:ring-0 w-full font-mono text-sm placeholder:text-outline/50 text-on-surface" placeholder="Enter research objective or ticker symbol..." type="text"/>
+</div>
+</div>
+<button class="w-full h-14 bg-gradient-to-br from-primary to-primary-container text-on-primary font-bold rounded-xl flex items-center justify-center gap-2 glow-indigo active:scale-[0.98] transition-all">
+<span>Initialize Terminal</span>
+<span class="material-symbols-outlined text-xl">bolt</span>
+</button>
+<p class="text-[10px] font-mono text-center text-outline/60 uppercase tracking-widest mt-2">
+                    Secured by Quantum-Ready Encryption
+                </p>
+</div>
+<!-- Feature/Metadata Grid (Bento Style) -->
+<div class="grid grid-cols-2 gap-3 mt-4">
+<div class="p-4 bg-surface-container-low rounded-xl flex flex-col gap-2">
+<span class="material-symbols-outlined text-primary text-xl">database</span>
+<span class="font-mono text-[10px] text-primary uppercase">Dataset Velocity</span>
+<div class="text-xl font-bold font-headline">1.2TB/s</div>
+</div>
+<div class="p-4 bg-surface-container-low rounded-xl flex flex-col gap-2">
+<span class="material-symbols-outlined text-tertiary text-xl">memory</span>
+<span class="font-mono text-[10px] text-tertiary uppercase">Latency Threshold</span>
+<div class="text-xl font-bold font-headline">&lt;2ms</div>
+</div>
+<div class="col-span-2 p-4 bg-surface-container-high rounded-xl flex items-center justify-between">
+<div class="flex flex-col gap-1">
+<span class="font-mono text-[10px] text-secondary uppercase">Market Sentiment Index</span>
+<div class="flex items-baseline gap-1">
+<span class="text-2xl font-black font-headline">94.8</span>
+<span class="text-xs text-primary font-mono">+2.4%</span>
+</div>
+</div>
+<div class="h-12 w-24 overflow-hidden rounded-md opacity-40">
+<img alt="Sparkline" class="w-full h-full object-cover grayscale invert" data-alt="A minimalist abstract sparkline chart showing a rising trend with soft neon glow against a dark tech background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAhTfLV2v6XQGALb8OoKWEK2m6ifJf1wCTxRWe5JQApa37rJb8BNG7FKtLqinfvLwzzkSWyZOmeKupCF7HfQz6aGEtXv1lekgN57S89hCFmBnxTsWlBuPbTM9MQM0GmSxLnSsnO15qo9-LizSteYgQvfnJELfR27q0ZC5PJE8alDTUBDgaIJWzdmpKPO6f89S7YsU43PrNujMX-uTjtOF4E_nIdZAht-WphW3TGbgguLd2oVArWae__Zp8_mAaecs_GwsrFZpWtmnct"/>
+</div>
+</div>
+</div>
+</section>
+<!-- Thumb-friendly Bottom Navigation Suppressed as per Task Intent (Hero/Landing Focus) -->
+<!-- However, we use a Footer as required by JSON -->
+</main>
+<!-- Footer Anchor -->
+<footer class="w-full pt-12 pb-24 bg-[#131318] border-t border-indigo-500/10">
+<div class="flex flex-col items-center gap-6 px-8 w-full">
+<div class="text-indigo-300 font-bold font-headline tracking-widest text-sm uppercase">NEON_SCRIBE</div>
+<div class="flex items-center gap-6">
+<a class="font-['Geist_Mono'] text-[10px] uppercase tracking-widest text-slate-500 hover:text-indigo-300 transition-all" href="#">Privacy</a>
+<a class="font-['Geist_Mono'] text-[10px] uppercase tracking-widest text-slate-500 hover:text-indigo-300 transition-all" href="#">Terms</a>
+<a class="font-['Geist_Mono'] text-[10px] uppercase tracking-widest text-slate-500 hover:text-indigo-300 transition-all" href="#">System_Status</a>
+</div>
+<div class="flex flex-col items-center gap-1">
+<span class="font-['Geist_Mono'] text-[10px] uppercase tracking-widest text-slate-500">No account needed.</span>
+<span class="font-['Geist_Mono'] text-[8px] text-slate-700 tracking-[0.2em]">© 2024 AUTO-LEVERAGE ANALYTICS</span>
+</div>
+</div>
+</footer>
+</body></html>

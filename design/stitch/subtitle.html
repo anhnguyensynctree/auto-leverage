@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MONOLITH | Redefine Your Research</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&amp;family=Geist+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-container-high": "#1f1f26",
+              "on-primary": "#0f00a4",
+              "tertiary-dim": "#d7d4f0",
+              "background": "#0e0e13",
+              "secondary-fixed-dim": "#d0b8ff",
+              "surface-container-highest": "#25252d",
+              "on-error-container": "#ffb2b9",
+              "inverse-surface": "#fcf8ff",
+              "secondary-fixed": "#dcc9ff",
+              "primary-dim": "#6063ee",
+              "surface-container-lowest": "#000000",
+              "error": "#ff6e84",
+              "surface-bright": "#2c2b33",
+              "on-tertiary-fixed": "#3f3f55",
+              "on-surface-variant": "#acaab1",
+              "surface-dim": "#0e0e13",
+              "primary-container": "#9396ff",
+              "tertiary-container": "#e5e2ff",
+              "secondary-dim": "#8a4cfc",
+              "on-tertiary-container": "#525168",
+              "outline": "#76747b",
+              "tertiary": "#f5f2ff",
+              "inverse-on-surface": "#55545b",
+              "tertiary-fixed-dim": "#d7d4f0",
+              "secondary": "#af88ff",
+              "on-tertiary": "#5a5a71",
+              "on-background": "#f9f5fd",
+              "secondary-container": "#6001d1",
+              "on-primary-fixed": "#000000",
+              "inverse-primary": "#494bd7",
+              "on-secondary-fixed-variant": "#6514d6",
+              "error-dim": "#d73357",
+              "tertiary-fixed": "#e5e2ff",
+              "primary": "#a3a6ff",
+              "surface": "#0e0e13",
+              "on-primary-fixed-variant": "#0e009d",
+              "on-surface": "#f9f5fd",
+              "on-secondary-fixed": "#430097",
+              "on-tertiary-fixed-variant": "#5c5b72",
+              "error-container": "#a70138",
+              "primary-fixed-dim": "#8387ff",
+              "outline-variant": "#48474d",
+              "surface-variant": "#25252d",
+              "surface-tint": "#a3a6ff",
+              "on-secondary": "#2b0065",
+              "on-primary-container": "#0a0081",
+              "on-secondary-container": "#e1d0ff",
+              "primary-fixed": "#9396ff",
+              "surface-container": "#19191f",
+              "on-error": "#490013",
+              "surface-container-low": "#131319"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Geist Mono"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #0e0e13;
+            color: #f9f5fd;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .geometric-bg {
+            background-image: radial-gradient(circle at 2px 2px, rgba(172, 170, 177, 0.03) 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body selection:bg-primary-dim selection:text-white overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="bg-[#0e0e13] transition-colors duration-300 docked full-width top-0 sticky z-40">
+<div class="flex justify-between items-center w-full px-6 py-4 max-w-full">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[#a3a6ff]" data-icon="terminal">terminal</span>
+<span class="text-lg font-black tracking-widest text-[#f9f5fd] font-headline uppercase">MONOLITH</span>
+</div>
+<button class="text-[#48474d] hover:bg-[#2c2b33]/40 p-2 rounded-full transition-all duration-200 active:scale-95">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</header>
+<main class="relative min-h-[calc(100vh-128px)] flex flex-col px-6 pt-12 pb-24 max-w-[390px] mx-auto geometric-bg">
+<!-- Ambient Decor -->
+<div class="absolute top-0 right-0 w-64 h-64 bg-primary-dim/5 rounded-full blur-[100px] -z-10 translate-x-1/2 -translate-y-1/2"></div>
+<div class="absolute bottom-40 left-0 w-48 h-48 bg-secondary-container/5 rounded-full blur-[80px] -z-10 -translate-x-1/2"></div>
+<!-- Hero Section -->
+<section class="mb-12">
+<div class="inline-flex items-center gap-2 px-3 py-1 bg-surface-container-highest border border-outline-variant/15 rounded-full mb-6">
+<div class="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_8px_rgba(163,166,255,0.6)]"></div>
+<span class="font-label text-[10px] uppercase tracking-[0.2em] text-on-surface-variant">System Ready</span>
+</div>
+<h1 class="font-headline font-black text-4xl leading-[1.1] tracking-tighter mb-4 text-on-surface">
+                Redefine Your<br/>Research
+            </h1>
+<p class="text-on-surface-variant leading-relaxed text-sm max-w-[320px]">
+                Accelerate discovery with a neural-architectural engine designed for high-precision synthesis and complex pattern recognition.
+            </p>
+</section>
+<!-- Input Section -->
+<section class="flex flex-col gap-6">
+<div class="group relative">
+<label class="font-label text-[10px] uppercase tracking-widest text-primary mb-3 block opacity-80" for="research-goal">
+                    Define Research Objective
+                </label>
+<div class="relative">
+<textarea class="w-full bg-surface-container-lowest border-0 rounded-xl p-5 text-on-surface text-sm placeholder:text-outline/40 focus:ring-0 focus:outline-none transition-all duration-300 resize-none ring-1 ring-outline-variant/20 focus:ring-2 focus:ring-primary/30" id="research-goal" placeholder="e.g., impact of synthetic biology on urban infrastructure" rows="4"></textarea>
+<div class="absolute bottom-0 left-0 h-[2px] w-0 bg-primary transition-all duration-500 group-focus-within:w-full"></div>
+</div>
+</div>
+<!-- CTA -->
+<button class="w-full py-5 rounded-xl bg-gradient-to-br from-primary to-primary-dim text-on-primary-fixed font-headline font-extrabold uppercase tracking-widest text-sm shadow-[0_12px_40px_-12px_rgba(96,99,238,0.4)] hover:shadow-[0_12px_48px_-8px_rgba(96,99,238,0.6)] transition-all duration-300 active:scale-[0.98]">
+                Initialize Analysis
+            </button>
+<!-- Technical Metadata -->
+<div class="flex flex-col gap-3 mt-8">
+<div class="flex items-center justify-between py-3 border-b border-outline-variant/10">
+<span class="font-label text-[10px] uppercase text-outline">Engine Version</span>
+<span class="font-label text-[10px] text-on-surface">M-ALPHA.24.09</span>
+</div>
+<div class="flex items-center justify-between py-3 border-b border-outline-variant/10">
+<span class="font-label text-[10px] uppercase text-outline">Database Latency</span>
+<span class="font-label text-[10px] text-primary">12ms</span>
+</div>
+<div class="flex items-center justify-between py-3">
+<span class="font-label text-[10px] uppercase text-outline">Compute Units</span>
+<span class="font-label text-[10px] text-on-surface">Available</span>
+</div>
+</div>
+</section>
+<!-- Visual Anchor (Asymmetric) -->
+<div class="mt-16 w-full flex justify-end opacity-20 grayscale transition-all duration-500 hover:opacity-40">
+<div class="w-32 h-32 relative">
+<div class="absolute inset-0 border border-outline-variant rotate-45"></div>
+<div class="absolute inset-4 border border-outline rotate-[15deg]"></div>
+<div class="absolute inset-8 border border-primary-dim rotate-[-30deg]"></div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full h-16 flex justify-around items-center px-8 pb-safe bg-[#0e0e13]/80 backdrop-blur-xl z-50 shadow-[0_-8px_24px_rgba(96,99,238,0.08)] border-t border-[#48474d]/15">
+<a class="flex flex-col items-center justify-center text-[#a3a6ff] scale-110 transition-transform duration-300 cubic-bezier(0.16,1,0.3,1) hover:text-[#a3a6ff]" href="#">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#48474d] opacity-60 transition-transform duration-300 cubic-bezier(0.16,1,0.3,1) hover:text-[#a3a6ff] hover:opacity-100" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#48474d] opacity-60 transition-transform duration-300 cubic-bezier(0.16,1,0.3,1) hover:text-[#a3a6ff] hover:opacity-100" href="#">
+<span class="material-symbols-outlined" data-icon="folder_open">folder_open</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#48474d] opacity-60 transition-transform duration-300 cubic-bezier(0.16,1,0.3,1) hover:text-[#a3a6ff] hover:opacity-100" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</a>
+</nav>
+</body></html>

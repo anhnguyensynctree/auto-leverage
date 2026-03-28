@@ -177,21 +177,21 @@ function QuestionnaireContent() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-surface flex items-center justify-center px-6">
-        <div className="max-w-[400px] w-full bg-error-container rounded-xl p-6 space-y-4">
+      <div className="min-h-screen flex items-center justify-center px-6">
+        <div className="max-w-[400px] w-full bg-error-container border border-error/20 rounded-xl p-6 space-y-4">
           <p className="text-on-error-container font-medium text-sm">
             Something went wrong — try again
           </p>
           <div className="flex gap-3">
             <button
               onClick={handleRetry}
-              className="flex-1 h-10 bg-primary text-white text-sm font-semibold rounded-lg hover:bg-on-primary-fixed-variant transition-colors"
+              className="flex-1 h-10 bg-primary text-white text-sm font-semibold rounded-xl hover:bg-on-primary-fixed-variant transition-colors"
             >
               Retry
             </button>
             <button
               onClick={handleBack}
-              className="flex-1 h-10 border border-outline-variant text-on-surface text-sm font-medium rounded-lg hover:bg-surface-container transition-colors"
+              className="flex-1 h-10 border border-outline-variant/40 text-on-surface-variant text-sm font-medium rounded-xl hover:bg-surface-container transition-colors"
             >
               Go back
             </button>
@@ -207,7 +207,7 @@ function QuestionnaireContent() {
 
   if (loading && !currentQuestion) {
     return (
-      <div className="min-h-screen bg-surface flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <span className="animate-spin material-symbols-outlined text-primary text-3xl">
           progress_activity
         </span>

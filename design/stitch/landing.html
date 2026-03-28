@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&amp;family=Geist+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-tertiary-fixed": "#25005a",
+              "on-primary-fixed-variant": "#2f2ebe",
+              "outline": "#908fa0",
+              "on-primary-fixed": "#07006c",
+              "surface-container-lowest": "#0e0e13",
+              "primary": "#c0c1ff",
+              "outline-variant": "#464554",
+              "on-surface-variant": "#c7c4d7",
+              "tertiary-fixed": "#eaddff",
+              "surface-bright": "#39383e",
+              "surface-container-highest": "#35343a",
+              "on-background": "#e4e1e9",
+              "surface-container-low": "#1b1b20",
+              "surface-dim": "#131318",
+              "tertiary-fixed-dim": "#d2bbff",
+              "surface": "#131318",
+              "surface-tint": "#c0c1ff",
+              "primary-fixed-dim": "#c0c1ff",
+              "on-tertiary-container": "#36007d",
+              "surface-container": "#1f1f25",
+              "secondary-fixed-dim": "#c6c4df",
+              "surface-variant": "#35343a",
+              "on-tertiary": "#3f008e",
+              "on-primary-container": "#0d0096",
+              "on-primary": "#1000a9",
+              "surface-container-high": "#2a292f",
+              "on-tertiary-fixed-variant": "#5a00c6",
+              "secondary-container": "#47475d",
+              "on-error-container": "#ffdad6",
+              "inverse-primary": "#494bd6",
+              "on-secondary-container": "#b8b6d0",
+              "on-secondary-fixed": "#1a1a2e",
+              "inverse-surface": "#e4e1e9",
+              "error": "#ffb4ab",
+              "on-surface": "#e4e1e9",
+              "on-error": "#690005",
+              "inverse-on-surface": "#303036",
+              "primary-container": "#8083ff",
+              "background": "#131318",
+              "secondary": "#c6c4df",
+              "primary-fixed": "#e1e0ff",
+              "on-secondary": "#2f2e43",
+              "secondary-fixed": "#e2e0fc",
+              "error-container": "#93000a",
+              "tertiary-container": "#a476ff",
+              "on-secondary-fixed-variant": "#45455b",
+              "tertiary": "#d2bbff"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"],
+              "mono": ["Geist Mono"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      body {
+        background-color: #0e0e13; /* surface-container-lowest as requested for dark depth */
+      }
+      .ambient-glow {
+        background: radial-gradient(circle at center, rgba(192, 193, 255, 0.05) 0%, transparent 70%);
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body text-on-background max-w-[390px] mx-auto min-h-screen relative overflow-x-hidden">
+<!-- Ambient Geometric Shapes -->
+<div class="fixed inset-0 pointer-events-none z-0">
+<div class="absolute top-20 left-[-10%] w-64 h-64 rounded-full border border-primary/5 opacity-20"></div>
+<div class="absolute top-[40%] right-[-20%] w-80 h-80 rotate-45 border border-primary/10 opacity-10"></div>
+<div class="absolute bottom-20 left-10 w-32 h-32 border border-tertiary/5 opacity-20" style="clip-path: polygon(50% 0%, 0% 100%, 100% 100%);"></div>
+</div>
+<!-- TopAppBar -->
+<header class="bg-[#131318]/80 backdrop-blur-xl text-[#c0c1ff] fixed top-0 w-full z-50 bg-[#0e0e13] border-none shadow-[0_4px_40px_rgba(228,225,233,0.04)]">
+<div class="flex items-center justify-between px-6 h-16 w-full max-w-[390px] mx-auto">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#c0c1ff]" data-icon="terminal">terminal</span>
+<span class="text-lg font-black tracking-widest text-[#c0c1ff]">AUTO-LEVERAGE</span>
+</div>
+<button class="hover:opacity-80 transition-opacity active:scale-95 duration-200">
+<span class="material-symbols-outlined text-[#c0c1ff]" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</header>
+<main class="relative z-10 pt-24 pb-32 px-6">
+<!-- Hero Section -->
+<section class="mb-12">
+<h1 class="font-headline font-black text-[3.5rem] leading-[1] tracking-tighter mb-4">
+                Optimize your AI research runs
+            </h1>
+<p class="text-secondary text-lg leading-relaxed max-w-[320px]">
+                High-performance laboratory for technical synthesis and automated analysis.
+            </p>
+</section>
+<!-- Input Section -->
+<section class="space-y-4 mb-16">
+<div class="group relative">
+<textarea class="w-full h-32 bg-surface-container-lowest border-none rounded-xl p-4 text-on-surface placeholder:text-outline-variant focus:ring-1 focus:ring-primary/30 transition-all resize-none font-body" placeholder="Enter research objective..."></textarea>
+<div class="absolute bottom-3 right-3 flex gap-2">
+<span class="material-symbols-outlined text-outline-variant text-sm" data-icon="attachment">attachment</span>
+<span class="material-symbols-outlined text-outline-variant text-sm" data-icon="settings_ethernet">settings_ethernet</span>
+</div>
+</div>
+<button class="w-full h-14 bg-gradient-to-br from-primary to-primary-container text-on-primary font-bold rounded-xl flex items-center justify-center gap-2 active:scale-95 transition-transform">
+                Initialize Analysis
+                <span class="material-symbols-outlined text-xl" data-icon="bolt" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</button>
+</section>
+<!-- Editorial Content: Tech Metrics -->
+<section class="space-y-8">
+<div class="space-y-2">
+<span class="font-label text-[10px] uppercase tracking-[0.1em] text-primary">System Status</span>
+<div class="bg-surface-container-low p-6 rounded-xl space-y-4">
+<div class="flex justify-between items-end">
+<div>
+<p class="text-xs text-outline mb-1">Compute Latency</p>
+<p class="font-mono text-2xl text-on-background">12.4ms</p>
+</div>
+<div class="h-8 w-24 flex items-end gap-1">
+<div class="bg-primary/20 h-2 w-full rounded-t-sm"></div>
+<div class="bg-primary/40 h-4 w-full rounded-t-sm"></div>
+<div class="bg-primary/20 h-3 w-full rounded-t-sm"></div>
+<div class="bg-primary/60 h-6 w-full rounded-t-sm"></div>
+<div class="bg-primary h-5 w-full rounded-t-sm"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="space-y-4">
+<span class="font-label text-[10px] uppercase tracking-[0.1em] text-primary">Active Modules</span>
+<div class="grid grid-cols-1 gap-4">
+<div class="bg-surface-container-high p-5 rounded-xl flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-surface-container-lowest flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="memory">memory</span>
+</div>
+<div>
+<h4 class="font-bold text-sm">Neural Synthesis</h4>
+<p class="text-xs text-outline">Layer optimization active</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary text-sm" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="bg-surface-container-low p-5 rounded-xl flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-surface-container-lowest flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary" data-icon="database">database</span>
+</div>
+<div>
+<h4 class="font-bold text-sm text-secondary">Data Vectorization</h4>
+<p class="text-xs text-outline-variant">Indexing complete</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline-variant text-sm" data-icon="pause_circle">pause_circle</span>
+</div>
+</div>
+</div>
+<!-- Technical Snippet -->
+<div class="space-y-2">
+<span class="font-label text-[10px] uppercase tracking-[0.1em] text-primary">Prompt Manifest</span>
+<div class="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/10">
+<code class="font-mono text-[11px] text-primary/80 leading-relaxed">
+                        {<br/>
+                          "engine": "al-390-core",<br/>
+                          "parameters": {<br/>
+                            "depth": "EDITORIAL",<br/>
+                            "precision": 0.998<br/>
+                          }<br/>
+                        }
+                    </code>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="mt-20 text-center space-y-4">
+<p class="font-label text-[10px] uppercase tracking-[0.2em] text-outline-variant">
+                Precision Engineered © 2024
+            </p>
+<div class="flex justify-center gap-4">
+<span class="w-1 h-1 rounded-full bg-primary/30"></span>
+<span class="w-1 h-1 rounded-full bg-primary/30"></span>
+<span class="w-1 h-1 rounded-full bg-primary/30"></span>
+</div>
+</footer>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 right-0 flex justify-around items-center px-4 pb-6 pt-3 max-w-[390px] mx-auto bg-[#131318]/90 backdrop-blur-2xl z-50 border-t border-white/5">
+<a class="flex items-center justify-center bg-[#c0c1ff]/10 text-[#c0c1ff] rounded-lg p-2 active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="home" style="font-variation-settings: 'FILL' 1;">home</span>
+</a>
+<a class="flex items-center justify-center text-[#c6c4df]/50 p-2 hover:text-[#c0c1ff] transition-colors active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</a>
+<a class="flex items-center justify-center text-[#c6c4df]/50 p-2 hover:text-[#c0c1ff] transition-colors active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="insights">insights</span>
+</a>
+<a class="flex items-center justify-center text-[#c6c4df]/50 p-2 hover:text-[#c0c1ff] transition-colors active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+</a>
+</nav>
+</body></html>

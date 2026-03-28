@@ -36,14 +36,14 @@ export default function ExportActions({
     <div className="flex flex-col md:flex-row gap-3">
       <button
         onClick={handleCopy}
-        className="flex-1 h-10 px-6 bg-primary text-white rounded-lg font-semibold text-sm flex items-center justify-center gap-2 transition-all hover:bg-primary-container active:scale-95"
+        className="flex-1 h-10 px-6 bg-primary text-white rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition-all hover:bg-on-primary-fixed-variant active:scale-95 shadow-glow-sm"
       >
         <span className="text-base">{copied ? "✓" : "⎘"}</span>
         <span>{copied ? "Copied!" : "Copy to clipboard"}</span>
       </button>
       <button
         onClick={handleDownload}
-        className="flex-1 h-10 px-6 bg-white border border-slate-200 text-slate-700 rounded-lg font-semibold text-sm flex items-center justify-center gap-2 hover:bg-slate-50 transition-colors active:scale-95"
+        className="flex-1 h-10 px-6 bg-surface-container border border-outline-variant/40 text-on-surface-variant rounded-xl font-semibold text-sm flex items-center justify-center gap-2 hover:bg-surface-container-high hover:text-on-surface transition-all active:scale-95"
       >
         <span className="text-base">↓</span>
         <span>Download .txt</span>

@@ -178,5 +178,86 @@
     "passed": true,
     "fail_at": null,
     "cost_usd": null
+  },
+  {
+    "task_id": "TASK-019",
+    "slug": "auto-leverage",
+    "title": "Fix questionnaire traversal crash",
+    "date": "2026-03-27T04:52:48.739311Z",
+    "passed": true,
+    "fail_at": null,
+    "cost_usd": null
+  },
+  {
+    "task_id": "TASK-021",
+    "slug": "auto-leverage",
+    "title": "POST /api/converse adaptive question generation",
+    "date": "2026-03-27T04:52:48.739879Z",
+    "passed": true,
+    "fail_at": null,
+    "cost_usd": null
+  },
+  {
+    "task_id": "TASK-022",
+    "slug": "auto-leverage",
+    "title": "Replace questionnaire UI with adaptive conversation",
+    "date": "2026-03-27T04:52:48.740104Z",
+    "passed": true,
+    "fail_at": null,
+    "cost_usd": null
+  },
+  {
+    "task_id": "TASK-023",
+    "slug": "auto-leverage",
+    "title": "Personalise confirmation + output with useCase",
+    "date": "2026-03-27T04:52:48.740187Z",
+    "passed": true,
+    "fail_at": null,
+    "cost_usd": null
+  },
+  {
+    "task_id": "TASK-024",
+    "slug": "auto-leverage",
+    "title": "Playwright Setup + CI Integration",
+    "date": "2026-03-27T06:06:59.600995Z",
+    "passed": true,
+    "fail_at": null,
+    "cost_usd": null
+  },
+  {
+    "task_id": "TASK-025",
+    "slug": "auto-leverage",
+    "title": "E2E \u2014 home-entry.spec.ts",
+    "date": "2026-03-27T06:11:12.936729Z",
+    "passed": true,
+    "fail_at": null,
+    "cost_usd": null
+  },
+  {
+    "task_id": "TASK-026",
+    "slug": "auto-leverage",
+    "title": "E2E \u2014 questionnaire-flow.spec.ts",
+    "date": "2026-03-27T06:12:03.201364Z",
+    "passed": true,
+    "fail_at": null,
+    "cost_usd": null
+  },
+  {
+    "task_id": "TASK-027",
+    "slug": "auto-leverage",
+    "title": "E2E \u2014 confirm-to-output.spec.ts",
+    "date": "2026-03-27T06:17:05.046571Z",
+    "passed": true,
+    "fail_at": null,
+    "cost_usd": null
+  },
+  {
+    "task_id": "TASK-028",
+    "slug": "auto-leverage",
+    "title": "E2E \u2014 full-happy-path.spec.ts",
+    "date": "2026-03-27T06:26:24.267954Z",
+    "passed": true,
+    "fail_at": null,
+    "cost_usd": null
   }
 ]

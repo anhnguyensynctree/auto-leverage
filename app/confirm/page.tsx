@@ -52,7 +52,6 @@ function ConfirmContent() {
   }
 
   const sortedKey = [...components].sort().join("+");
-
   const multiDescription = MULTI_DESCRIPTIONS[sortedKey];
   const isSingle = components.length === 1;
 
@@ -78,41 +77,46 @@ function ConfirmContent() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-[#f9f9ff] selection:bg-[#dbe1ff]">
-      <header className="fixed top-0 w-full flex justify-start items-center px-8 py-6 bg-transparent">
-        <span className="text-[12px] font-medium text-slate-400 uppercase tracking-wider">
+    <div className="min-h-screen flex flex-col items-center justify-center">
+      <header className="fixed top-0 w-full flex justify-start items-center px-8 py-6">
+        <span className="text-[11px] font-semibold text-secondary uppercase tracking-widest">
           auto-leverage
         </span>
       </header>
 
-      <main className="w-full max-w-[560px] px-6 py-20 flex flex-col items-center">
-        <div className="mb-10 w-24 h-24 rounded-full bg-[#6bff8f] flex items-center justify-center">
-          <span className="text-4xl text-[#006229]">✓</span>
+      <main className="w-full max-w-[520px] px-6 py-20 flex flex-col items-center">
+        {/* Check mark */}
+        <div className="mb-10 w-20 h-20 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center shadow-glow-sm">
+          <span className="material-symbols-outlined text-3xl text-primary">
+            check_circle
+          </span>
         </div>
 
-        <h1 className="text-xl font-semibold text-slate-900 text-center mb-8">
+        <h1 className="text-xl font-bold text-on-surface text-center mb-8 tracking-tight">
           Here&apos;s where we&apos;ll start
         </h1>
 
         {useCase && (
-          <div className="w-full bg-[#f8f9ff] border border-[#dbe1ff] rounded-xl px-6 py-4 mb-6">
-            <p className="text-[13px] text-slate-500 uppercase tracking-wider font-medium mb-1">
-              Here&apos;s what we understood
+          <div className="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-xl px-5 py-4 mb-5">
+            <p className="text-[11px] text-secondary uppercase tracking-widest font-semibold mb-1">
+              What we understood
             </p>
-            <p className="text-[15px] text-slate-800 leading-relaxed">
+            <p className="text-[14px] text-on-surface leading-relaxed">
               {useCase}
             </p>
           </div>
         )}
 
-        <div className="w-full bg-[#f0fdf4] border border-[#bbf7d0] rounded-xl p-8 mb-10 transition-all duration-300 hover:shadow-sm">
-          <div className="flex items-center gap-3 mb-4">
-            <span className="text-[#006229] text-xl">⚙</span>
-            <h2 className="text-[18px] font-semibold text-slate-900">
-              {title}
-            </h2>
+        <div className="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-xl p-7 mb-8 hover:border-primary/30 transition-colors duration-300">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-7 h-7 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center">
+              <span className="material-symbols-outlined text-[16px] text-primary">
+                settings
+              </span>
+            </div>
+            <h2 className="text-[16px] font-bold text-on-surface">{title}</h2>
           </div>
-          <p className="text-[14px] leading-relaxed text-slate-600">
+          <p className="text-[13px] leading-relaxed text-on-surface-variant">
             {isSingle && displayComponents[0]
               ? displayComponents[0].description
               : (multiDescription ??
@@ -123,30 +127,27 @@ function ConfirmContent() {
         <div className="w-full flex flex-col gap-3">
           <button
             onClick={handleConfirm}
-            className="w-full h-[48px] rounded-lg bg-primary hover:bg-primary-container text-white font-medium transition-all duration-200 active:scale-95 flex items-center justify-center gap-2"
+            className="w-full h-12 rounded-xl bg-primary hover:bg-on-primary-fixed-variant text-white font-semibold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2 shadow-glow"
           >
             Yes, this fits
-            <span className="text-sm">→</span>
+            <span className="material-symbols-outlined text-[18px]">
+              arrow_forward
+            </span>
           </button>
           <button
             onClick={handleStartOver}
-            className="w-full py-2 text-[14px] text-slate-500 hover:text-slate-700 transition-colors text-center font-medium"
+            className="w-full py-2 text-[13px] text-secondary hover:text-on-surface transition-colors text-center font-medium"
           >
             Start over
           </button>
         </div>
       </main>
 
-      <footer className="fixed bottom-0 w-full mb-12 flex justify-center items-center px-4 text-center bg-transparent">
-        <p className="font-sans text-[12px] text-slate-400 leading-relaxed">
+      <footer className="fixed bottom-0 w-full mb-10 flex justify-center items-center px-4 text-center">
+        <p className="text-[11px] text-secondary/60 leading-relaxed">
           You can always go back and change your answers.
         </p>
       </footer>
-
-      <div className="fixed top-0 left-0 -z-10 w-full h-full overflow-hidden pointer-events-none">
-        <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-[#e7eeff] rounded-full blur-[120px] opacity-40" />
-        <div className="absolute bottom-[-5%] left-[-5%] w-[40%] h-[40%] bg-[#dbe1ff] rounded-full blur-[100px] opacity-20" />
-      </div>
     </div>
   );
 }

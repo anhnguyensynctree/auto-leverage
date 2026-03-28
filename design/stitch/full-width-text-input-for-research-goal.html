@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Space+Grotesk:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#c0c1ff",
+              "inverse-on-surface": "#303036",
+              "surface-variant": "#35343a",
+              "on-tertiary-fixed-variant": "#703700",
+              "on-tertiary": "#4f2500",
+              "on-surface-variant": "#c7c4d7",
+              "on-primary": "#1000a9",
+              "outline": "#908fa0",
+              "tertiary-fixed-dim": "#ffb783",
+              "background": "#131318",
+              "on-secondary-container": "#b8b6d0",
+              "surface-container-high": "#2a292f",
+              "on-secondary-fixed": "#1a1a2e",
+              "surface": "#131318",
+              "on-primary-container": "#0d0096",
+              "on-secondary": "#2f2e43",
+              "on-primary-fixed": "#07006c",
+              "error-container": "#93000a",
+              "on-surface": "#e4e1e9",
+              "surface-container": "#1f1f25",
+              "on-error": "#690005",
+              "primary-fixed": "#e1e0ff",
+              "tertiary": "#ffb783",
+              "on-tertiary-fixed": "#301400",
+              "on-error-container": "#ffdad6",
+              "surface-tint": "#c0c1ff",
+              "error": "#ffb4ab",
+              "on-primary-fixed-variant": "#2f2ebe",
+              "inverse-surface": "#e4e1e9",
+              "secondary": "#c6c4df",
+              "surface-container-highest": "#35343a",
+              "secondary-fixed": "#e2e0fc",
+              "surface-dim": "#131318",
+              "on-secondary-fixed-variant": "#45455b",
+              "on-background": "#e4e1e9",
+              "tertiary-container": "#d97721",
+              "primary-fixed-dim": "#c0c1ff",
+              "surface-container-lowest": "#0e0e13",
+              "secondary-container": "#47475d",
+              "surface-bright": "#39383e",
+              "on-tertiary-container": "#452000",
+              "surface-container-low": "#1b1b20",
+              "inverse-primary": "#494bd6",
+              "primary-container": "#8083ff",
+              "outline-variant": "#464554",
+              "tertiary-fixed": "#ffdcc5",
+              "secondary-fixed-dim": "#c6c4df"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Space Grotesk"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .kinetic-bg {
+            background-color: #0a0a0f;
+            background-image: radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.05) 0%, transparent 50%);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container">
+<!-- Ambient Geometric Textures -->
+<div class="fixed inset-0 pointer-events-none overflow-hidden z-0 opacity-20">
+<svg class="absolute top-[10%] left-[5%] text-outline" height="120" viewbox="0 0 100 100" width="120">
+<circle cx="50" cy="50" fill="none" r="40" stroke="currentColor" stroke-width="0.5"></circle>
+</svg>
+<svg class="absolute bottom-[15%] right-[10%] text-outline" height="160" viewbox="0 0 100 100" width="160">
+<polygon fill="none" points="50,5 95,95 5,95" stroke="currentColor" stroke-width="0.5"></polygon>
+</svg>
+<svg class="absolute top-[60%] left-[80%] text-outline" height="80" viewbox="0 0 100 100" width="80">
+<path d="M50 0 L93.3 25 L93.3 75 L50 100 L6.7 75 L6.7 25 Z" fill="none" stroke="currentColor" stroke-width="0.5"></path>
+</svg>
+</div>
+<div class="relative z-10 min-h-screen flex flex-col kinetic-bg">
+<!-- Top Navigation Shell -->
+<header class="bg-[#0a0a0f] dark:bg-[#0a0a0f] flex justify-between items-center w-full px-6 py-4 max-w-full mx-auto fixed top-0 z-50">
+<div class="flex items-center gap-2">
+<span class="text-indigo-400 font-['Space_Grotesk'] font-bold tracking-tighter text-lg uppercase">GOAL_RESEARCH</span>
+</div>
+<nav class="hidden md:flex items-center space-x-8 font-['Inter'] font-medium text-sm tracking-tight">
+<a class="text-white border-b-2 border-indigo-500 pb-1" href="#">Dashboard</a>
+<a class="text-slate-400 hover:text-indigo-300 transition-colors" href="#">History</a>
+<a class="text-slate-400 hover:text-indigo-300 transition-colors" href="#">Settings</a>
+<button class="text-slate-400 hover:bg-white/5 p-2 rounded-full transition-all duration-200">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</nav>
+<div class="md:hidden">
+<span class="material-symbols-outlined text-slate-400" data-icon="menu">menu</span>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 flex flex-col items-center justify-center px-6 py-24 max-w-3xl mx-auto w-full">
+<!-- Hero Section -->
+<div class="w-full space-y-2 mb-12">
+<div class="flex items-center gap-3 mb-6">
+<div class="h-px flex-1 bg-gradient-to-r from-transparent via-outline-variant to-transparent opacity-20"></div>
+<span class="font-label text-[10px] uppercase tracking-[0.2em] text-primary/60">Analytical Framework v4.2</span>
+<div class="h-px flex-1 bg-gradient-to-r from-transparent via-outline-variant to-transparent opacity-20"></div>
+</div>
+<h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-on-surface text-center">
+                    Define your research goal.
+                </h1>
+<p class="text-on-surface-variant text-base md:text-lg text-center max-w-xl mx-auto font-body leading-relaxed">
+                    Specify the objective, target parameters, and scope for the autonomous intelligence engine to begin synthesis.
+                </p>
+</div>
+<!-- Input System -->
+<div class="w-full space-y-8">
+<div class="group relative">
+<div class="absolute -inset-1 bg-primary/5 rounded-xl blur-xl transition duration-500 group-focus-within:bg-primary/10"></div>
+<div class="relative bg-surface-container-lowest p-1 rounded-xl shadow-2xl">
+<textarea class="w-full bg-transparent border-none focus:ring-0 text-on-surface placeholder:text-on-surface-variant/40 font-body text-lg md:text-xl resize-none p-4" placeholder="Example: Analyze the correlation between decentralized finance protocols and institutional liquidity shifts in Q3..." rows="4"></textarea>
+</div>
+</div>
+<div class="flex flex-col gap-4">
+<button class="w-full bg-primary text-on-primary font-bold py-5 rounded-lg text-sm uppercase tracking-widest shadow-[0_0_20px_rgba(192,193,255,0.2)] hover:shadow-[0_0_30px_rgba(192,193,255,0.4)] transition-all duration-300 active:scale-[0.98]">
+                        Start Analysis
+                    </button>
+<div class="flex justify-between items-center px-2">
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors text-xs font-label uppercase tracking-wider">
+<span class="material-symbols-outlined text-sm" data-icon="attach_file">attach_file</span>
+                                Add Context
+                            </button>
+<button class="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors text-xs font-label uppercase tracking-wider">
+<span class="material-symbols-outlined text-sm" data-icon="settings_suggest">settings_suggest</span>
+                                Advanced Params
+                            </button>
+</div>
+<span class="text-[10px] font-label text-outline uppercase tracking-tighter">System Ready</span>
+</div>
+</div>
+</div>
+<!-- Contextual Cards (Bento Hints) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-20 w-full">
+<div class="bg-surface-container-low p-6 rounded-xl relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+<svg height="48" viewbox="0 0 100 100" width="48">
+<path d="M50 0 L93.3 25 L93.3 75 L50 100 L6.7 75 L6.7 25 Z" fill="currentColor"></path>
+</svg>
+</div>
+<div class="relative z-10">
+<h3 class="text-xs font-label text-primary uppercase tracking-[0.2em] mb-3">Recent Inquiries</h3>
+<p class="text-sm text-on-surface-variant font-medium">Market volatility impacts on renewable energy stocks...</p>
+<div class="mt-4 flex items-center gap-2">
+<span class="px-2 py-0.5 bg-surface-container-high rounded text-[10px] font-label text-outline uppercase">Active</span>
+<span class="text-[10px] font-label text-outline/50 uppercase">12m ago</span>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-low p-6 rounded-xl relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+<circle cx="50" cy="50" fill="currentColor" r="40"></circle>
+</div>
+<div class="relative z-10">
+<h3 class="text-xs font-label text-primary uppercase tracking-[0.2em] mb-3">Performance Data</h3>
+<div class="flex items-end gap-2">
+<span class="text-2xl font-bold text-on-surface">98.4</span>
+<span class="text-xs font-label text-outline mb-1 uppercase">Accuracy Score</span>
+</div>
+<div class="mt-4 h-1 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[85%]"></div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer / Mobile Nav -->
+<footer class="md:hidden fixed bottom-0 left-0 w-full z-50 bg-[#0a0a0f]/80 backdrop-blur-3xl border-t border-white/5 flex justify-around items-center px-4 pb-6 pt-3 shadow-[0_-20px_40px_-12px_rgba(99,102,241,0.08)]">
+<button class="flex flex-col items-center justify-center bg-indigo-500/10 text-indigo-300 rounded-xl px-4 py-1">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest mt-1">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center text-slate-500 opacity-60 hover:text-indigo-200">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest mt-1">Search</span>
+</button>
+<button class="flex flex-col items-center justify-center text-slate-500 opacity-60 hover:text-indigo-200">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest mt-1">Activity</span>
+</button>
+<button class="flex flex-col items-center justify-center text-slate-500 opacity-60 hover:text-indigo-200">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest mt-1">Profile</span>
+</button>
+</footer>
+</div>
+</body></html>

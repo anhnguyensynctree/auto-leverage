@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MONOLITH | Auto-Leverage</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&amp;family=Space+Grotesk:wght@500&amp;family=Geist+Mono:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-tertiary": "#4f2500",
+              "surface-variant": "#35343a",
+              "on-surface-variant": "#c7c4d7",
+              "on-secondary-fixed-variant": "#45455b",
+              "on-background": "#e4e1e9",
+              "inverse-surface": "#e4e1e9",
+              "on-primary-fixed": "#07006c",
+              "on-tertiary-fixed-variant": "#703700",
+              "surface": "#131318",
+              "on-surface": "#e4e1e9",
+              "error": "#ffb4ab",
+              "on-tertiary-fixed": "#301400",
+              "primary": "#c0c1ff",
+              "error-container": "#93000a",
+              "surface-bright": "#39383e",
+              "inverse-on-surface": "#303036",
+              "on-primary": "#1000a9",
+              "tertiary-fixed-dim": "#ffb783",
+              "on-error-container": "#ffdad6",
+              "on-error": "#690005",
+              "surface-container-low": "#1b1b20",
+              "on-secondary-container": "#b8b6d0",
+              "secondary-fixed": "#e2e0fc",
+              "on-primary-fixed-variant": "#2f2ebe",
+              "surface-tint": "#c0c1ff",
+              "tertiary-fixed": "#ffdcc5",
+              "background": "#131318",
+              "secondary-container": "#47475d",
+              "inverse-primary": "#494bd6",
+              "tertiary-container": "#d97721",
+              "tertiary": "#ffb783",
+              "primary-fixed-dim": "#c0c1ff",
+              "surface-container-lowest": "#0e0e13",
+              "outline": "#908fa0",
+              "on-tertiary-container": "#452000",
+              "primary-fixed": "#e1e0ff",
+              "primary-container": "#8083ff",
+              "surface-container": "#1f1f25",
+              "surface-container-high": "#2a292f",
+              "secondary-fixed-dim": "#c6c4df",
+              "surface-container-highest": "#35343a",
+              "surface-dim": "#131318",
+              "on-primary-container": "#0d0096",
+              "outline-variant": "#464554",
+              "on-secondary": "#2f2e43",
+              "secondary": "#c6c4df",
+              "on-secondary-fixed": "#1a1a2e"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Space Grotesk"],
+              "mono": ["Geist Mono"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #131318;
+            color: #e4e1e9;
+            overflow-x: hidden;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom glow effects for geometric shapes */
+        .glow-indigo {
+            filter: blur(80px);
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(99, 102, 241, 0) 70%);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body selection:bg-primary-container selection:text-on-primary-container">
+<!-- Background Elements (Geometric & Glows) -->
+<div class="fixed inset-0 -z-10 pointer-events-none">
+<div class="absolute top-[-10%] right-[-10%] w-[300px] h-[300px] glow-indigo rounded-full"></div>
+<div class="absolute bottom-[20%] left-[-20%] w-[400px] h-[400px] glow-indigo rounded-full"></div>
+<!-- Subtle Geometric Patterns -->
+<svg class="absolute top-20 left-10 opacity-[0.03] text-primary" height="60" viewbox="0 0 60 60" width="60">
+<polygon fill="currentColor" points="30,5 55,50 5,50"></polygon>
+</svg>
+<svg class="absolute top-[40%] right-8 opacity-[0.02] text-primary" height="80" viewbox="0 0 80 80" width="80">
+<path d="M40 0 L74.6 20 V60 L40 80 L5.4 60 V20 Z" fill="currentColor"></path>
+</svg>
+<div class="absolute bottom-40 right-20 w-12 h-12 border-2 border-primary/5 rounded-full"></div>
+</div>
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full flex justify-between items-center px-6 py-4 max-w-[390px] mx-auto bg-[#131318]/80 backdrop-blur-xl z-50 left-1/2 -translate-x-1/2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-indigo-500">terminal</span>
+<span class="text-xl font-black tracking-tighter text-[#e4e1e9] uppercase font-headline">MONOLITH</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#94a3b8] hover:text-[#6366f1] transition-colors cursor-pointer active:scale-95">menu</span>
+</div>
+</header>
+<main class="w-full max-w-[390px] mx-auto px-6 pt-28 pb-12 overflow-hidden">
+<!-- Hero Section -->
+<section class="flex flex-col gap-6 mb-20">
+<div class="flex flex-col gap-2">
+<span class="font-mono text-[10px] tracking-[0.2em] text-primary uppercase font-semibold">Autonomous Research v1.0</span>
+<h1 class="font-headline font-black text-4xl leading-[1.1] tracking-tighter text-[#e4e1e9]">
+                    Auto-Leverage Your Intelligence.
+                </h1>
+<p class="text-on-surface-variant text-lg leading-relaxed font-light mt-2">
+                    Transform complex inquiries into structured technical repositories with zero-touch automation.
+                </p>
+</div>
+<div class="flex flex-col gap-4 mt-4">
+<div class="relative">
+<input class="w-full bg-surface-container-lowest border-none rounded-xl p-5 text-on-surface placeholder:text-outline/50 focus:ring-1 focus:ring-primary/50 transition-all font-body text-base" placeholder="Describe your research goal..." type="text"/>
+<div class="absolute right-4 top-1/2 -translate-y-1/2 opacity-20">
+<span class="material-symbols-outlined text-sm">keyboard_command_key</span>
+</div>
+</div>
+<button class="w-full bg-primary-container text-on-primary-container font-headline font-bold py-5 rounded-xl text-lg flex items-center justify-center gap-2 hover:opacity-90 active:scale-[0.98] transition-all">
+                    Initialize Analysis
+                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</button>
+</div>
+</section>
+<!-- Technical Editorial Section (Bento Inspired) -->
+<section class="flex flex-col gap-4 mb-20">
+<div class="flex items-center gap-3 mb-2">
+<div class="h-[1px] flex-1 bg-outline-variant/20"></div>
+<span class="font-label text-[10px] tracking-widest text-outline uppercase">Core Protocol</span>
+<div class="h-[1px] flex-1 bg-outline-variant/20"></div>
+</div>
+<!-- Asymmetric Grid Content -->
+<div class="bg-surface-container-low rounded-xl p-6 flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-primary p-2 bg-primary/10 rounded-lg">schema</span>
+<span class="font-mono text-[10px] text-primary/60">0x7F42A</span>
+</div>
+<h3 class="font-headline font-extrabold text-xl">Semantic Extraction</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed">
+                    Our monolithic engine deconstructs abstract goals into actionable data points using high-precision neural mapping.
+                </p>
+</div>
+<div class="flex gap-4">
+<div class="flex-1 bg-surface-container-low rounded-xl p-5 flex flex-col gap-3">
+<span class="material-symbols-outlined text-primary text-xl">database</span>
+<h4 class="font-label font-bold text-xs uppercase tracking-wider">Storage</h4>
+<span class="font-mono text-xl font-bold">128TB</span>
+</div>
+<div class="flex-1 bg-surface-container-low rounded-xl p-5 flex flex-col gap-3">
+<span class="material-symbols-outlined text-primary text-xl">speed</span>
+<h4 class="font-label font-bold text-xs uppercase tracking-wider">Latency</h4>
+<span class="font-mono text-xl font-bold">12ms</span>
+</div>
+</div>
+<div class="relative overflow-hidden bg-surface-container-low rounded-xl aspect-video">
+<img class="w-full h-full object-cover opacity-60" data-alt="abstract architectural landscape of glowing glass pillars in a dark digital space with cyan and indigo accents" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCBJPA0P1_0Qw5CgTX1IXpByoXJGqhbOcOyT5D6fJjpvaYNeH44jeYwm-LlAt1bXyazFZN-2mQwtsxZWJ30lVDZsF9sxuKH_SdJp_176nZ_Ys_3G8HtjfCB8Ee8KdmrALtwnJIBMr7hUOGtcJeTy-55e9O5cBjfF7XPp-I_ohfAqKTvDHOiXhVtsMlgcl5h2GgGzG-omhSkGvjAmoJqVljLcXHBOBbsbzVXarYQuzcIg-RwVFmOffP-z2M4wtoW5vmti0VLmO7Brkbd"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-low to-transparent"></div>
+<div class="absolute bottom-4 left-4">
+<div class="flex items-center gap-2 bg-background/80 backdrop-blur px-3 py-1.5 rounded-full border border-outline-variant/20">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="font-mono text-[10px] text-on-surface uppercase tracking-tighter">System Synchronized</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Task-Focused Detail Section -->
+<section class="bg-surface-container-lowest border border-outline-variant/10 rounded-2xl p-8 mb-20 relative overflow-hidden">
+<!-- Decorative Hexagon -->
+<div class="absolute top-[-20px] right-[-20px] opacity-10">
+<svg height="120" viewbox="0 0 100 100" width="120">
+<path class="text-primary" d="M50 0 L93.3 25 V75 L50 100 L6.7 75 V25 Z" fill="none" stroke="currentColor" stroke-width="2"></path>
+</svg>
+</div>
+<h2 class="font-headline font-black text-2xl mb-6">Built for precision.</h2>
+<ul class="flex flex-col gap-8">
+<li class="flex gap-4">
+<span class="font-mono text-primary font-bold">01</span>
+<div class="flex flex-col gap-1">
+<h4 class="font-headline font-bold text-[#e4e1e9]">Automated Synthesis</h4>
+<p class="text-on-surface-variant text-sm">Condense thousands of documents into a single source of truth within seconds.</p>
+</div>
+</li>
+<li class="flex gap-4">
+<span class="font-mono text-primary font-bold">02</span>
+<div class="flex flex-col gap-1">
+<h4 class="font-headline font-bold text-[#e4e1e9]">Editorial Output</h4>
+<p class="text-on-surface-variant text-sm">Results are formatted for publication-ready clarity and technical depth.</p>
+</div>
+</li>
+<li class="flex gap-4">
+<span class="font-mono text-primary font-bold">03</span>
+<div class="flex flex-col gap-1">
+<h4 class="font-headline font-bold text-[#e4e1e9]">Immutable Audit</h4>
+<p class="text-on-surface-variant text-sm">Every data point is tracked and verifiable via our proprietary lineage engine.</p>
+</div>
+</li>
+</ul>
+</section>
+<!-- Final CTA Panel -->
+<section class="bg-[#1a1a2e] rounded-3xl p-10 flex flex-col gap-6 text-center items-center">
+<h3 class="font-headline font-extrabold text-2xl">Ready to escalate?</h3>
+<p class="text-[#94a3b8] text-sm leading-relaxed max-w-[280px]">
+                Deploy the MONOLITH engine on your proprietary dataset today.
+            </p>
+<button class="bg-primary text-on-primary-fixed font-headline font-black py-4 px-8 rounded-full tracking-tight hover:scale-105 active:scale-95 transition-transform">
+                GET ACCESS
+            </button>
+<div class="font-mono text-[9px] text-primary/40 uppercase tracking-[0.3em] mt-2">
+                Secure SSL • Enterprise Ready • v1.0.4
+            </div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-[#131318] flex flex-col gap-8 px-8 w-full max-w-[390px] mx-auto pb-12 pt-20">
+<div class="flex flex-col gap-6">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-indigo-500">terminal</span>
+<span class="text-[#e4e1e9] font-bold font-headline uppercase tracking-tighter">MONOLITH TERMINAL</span>
+</div>
+<div class="grid grid-cols-2 gap-y-4 gap-x-8">
+<a class="font-mono text-[10px] tracking-widest uppercase text-[#475569] hover:text-[#e4e1e9] transition-colors" href="#">DOCUMENTATION</a>
+<a class="font-mono text-[10px] tracking-widest uppercase text-[#475569] hover:text-[#e4e1e9] transition-colors" href="#">CHANGELOG</a>
+<a class="font-mono text-[10px] tracking-widest uppercase text-[#475569] hover:text-[#e4e1e9] transition-colors" href="#">STATUS</a>
+<a class="font-mono text-[10px] tracking-widest uppercase text-[#475569] hover:text-[#e4e1e9] transition-colors" href="#">PRIVACY</a>
+</div>
+</div>
+<div class="h-[1px] w-full bg-outline-variant/10"></div>
+<p class="font-mono text-[10px] tracking-widest uppercase text-[#94a3b8]">© 2024 MONOLITH TERMINAL. ALL RIGHTS RESERVED.</p>
+</footer>
+</body></html>

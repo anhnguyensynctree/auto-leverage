@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sovereign | Intelligent Research Architect</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Geist+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #131318;
+            color: #e4e1e9;
+        }
+        .font-geist-mono {
+            font-family: 'Geist Mono', monospace;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "secondary-fixed": "#e2e0fc",
+                "primary": "#c0c1ff",
+                "on-surface": "#e4e1e9",
+                "inverse-surface": "#e4e1e9",
+                "surface": "#131318",
+                "primary-container": "#8083ff",
+                "on-tertiary-fixed": "#301400",
+                "secondary": "#c6c4df",
+                "inverse-primary": "#494bd6",
+                "surface-variant": "#35343a",
+                "primary-fixed-dim": "#c0c1ff",
+                "background": "#131318",
+                "tertiary": "#ffb783",
+                "on-primary": "#1000a9",
+                "on-tertiary-container": "#452000",
+                "on-primary-container": "#0d0096",
+                "error": "#ffb4ab",
+                "surface-container-lowest": "#0e0e13",
+                "on-background": "#e4e1e9",
+                "primary-fixed": "#e1e0ff",
+                "on-tertiary": "#4f2500",
+                "on-surface-variant": "#c7c4d7",
+                "tertiary-fixed": "#ffdcc5",
+                "on-error": "#690005",
+                "outline": "#908fa0",
+                "on-primary-fixed-variant": "#2f2ebe",
+                "surface-container-low": "#1b1b20",
+                "secondary-fixed-dim": "#c6c4df",
+                "on-secondary-fixed": "#1a1a2e",
+                "outline-variant": "#464554",
+                "on-tertiary-fixed-variant": "#703700",
+                "surface-container-highest": "#35343a",
+                "on-error-container": "#ffdad6",
+                "surface-container": "#1f1f25",
+                "secondary-container": "#47475d",
+                "surface-container-high": "#2a292f",
+                "tertiary-fixed-dim": "#ffb783",
+                "error-container": "#93000a",
+                "surface-bright": "#39383e",
+                "surface-dim": "#131318",
+                "on-secondary-fixed-variant": "#45455b",
+                "on-secondary-container": "#b8b6d0",
+                "surface-tint": "#c0c1ff",
+                "on-primary-fixed": "#07006c",
+                "on-secondary": "#2f2e43",
+                "inverse-on-surface": "#303036",
+                "tertiary-container": "#d97721"
+              },
+              fontFamily: {
+                "headline": ["Inter"],
+                "body": ["Inter"],
+                "label": ["Inter"]
+              },
+              borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface selection:bg-primary/30 min-h-screen flex flex-col relative overflow-x-hidden">
+<!-- Ambient Geometric Background -->
+<div class="fixed inset-0 pointer-events-none z-0">
+<div class="absolute top-[10%] left-[5%] w-64 h-64 border border-primary/5 rounded-full"></div>
+<div class="absolute top-[60%] right-[10%] w-96 h-96 border border-primary/5 rotate-45"></div>
+<div class="absolute bottom-[5%] left-[15%] w-48 h-48 border border-primary/5 rounded-lg opacity-20"></div>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent"></div>
+</div>
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-[#131318]/80 backdrop-blur-xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] no-border bg-surface-container-low/30">
+<div class="flex justify-between items-center px-6 md:px-12 py-6 max-w-[1440px] mx-auto">
+<div class="text-xl font-bold tracking-tighter text-[#e4e1e9] flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">architecture</span>
+                Sovereign
+            </div>
+<div class="hidden md:flex items-center gap-8">
+<a class="font-inter tracking-tight text-sm font-medium transition-all duration-300 text-[#c0c1ff] font-semibold" href="#">Product</a>
+<a class="font-inter tracking-tight text-sm font-medium transition-all duration-300 text-[#e4e1e9]/60 hover:text-[#c0c1ff]" href="#">Intelligence</a>
+<a class="font-inter tracking-tight text-sm font-medium transition-all duration-300 text-[#e4e1e9]/60 hover:text-[#c0c1ff]" href="#">Architect</a>
+<a class="font-inter tracking-tight text-sm font-medium transition-all duration-300 text-[#e4e1e9]/60 hover:text-[#c0c1ff]" href="#">Changelog</a>
+</div>
+<button class="bg-gradient-to-br from-primary to-primary-container text-on-primary px-5 py-2 rounded-lg font-semibold text-sm transition-all active:scale-95 duration-200">
+                Get Started
+            </button>
+</div>
+</nav>
+<!-- Hero Content -->
+<main class="relative z-10 flex-grow flex items-center justify-center pt-32 pb-24 px-6">
+<div class="max-w-4xl w-full text-center space-y-12">
+<!-- Headline Cluster -->
+<div class="space-y-6">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-surface-container-highest border border-outline-variant/15 text-[10px] font-geist-mono uppercase tracking-widest text-primary">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+</span>
+                    Intelligence Engine v2.4
+                </div>
+<h1 class="text-5xl md:text-7xl font-extrabold tracking-tighter text-on-surface leading-[1.1]">
+                    Architect your research with <br class="hidden md:block"/> mathematical precision.
+                </h1>
+<p class="text-lg md:text-xl text-on-surface-variant max-w-2xl mx-auto leading-relaxed">
+                    Sovereign synthesizes complex data landscapes into actionable intelligence. For researchers who demand clarity over noise.
+                </p>
+</div>
+<!-- Input & CTA Area -->
+<div class="w-full max-w-3xl mx-auto space-y-4">
+<div class="group relative">
+<div class="absolute -inset-0.5 bg-primary/20 blur opacity-0 group-focus-within:opacity-100 transition duration-500 rounded-xl"></div>
+<div class="relative flex flex-col md:flex-row gap-3 bg-surface-container-low p-3 rounded-xl border border-outline-variant/15">
+<div class="flex-grow relative flex items-center">
+<span class="material-symbols-outlined absolute left-4 text-outline-variant">search</span>
+<input class="w-full bg-surface-container-lowest border-none focus:ring-0 text-on-surface placeholder:text-outline-variant/60 pl-12 py-4 rounded-lg text-lg font-medium" placeholder="Describe your research goal (e.g., impact of synthetic biology on food security)" type="text"/>
+</div>
+<button class="bg-gradient-to-br from-primary to-primary-container text-on-primary px-8 py-4 rounded-lg font-bold text-lg shadow-lg transition-all hover:brightness-110 active:scale-[0.98]">
+                            Analyze
+                        </button>
+</div>
+</div>
+<!-- Quick Suggestion Labels -->
+<div class="flex flex-wrap justify-center gap-3">
+<span class="text-[10px] font-geist-mono uppercase tracking-widest text-outline-variant self-center mr-2">Quick Start:</span>
+<button class="px-3 py-1.5 rounded-md bg-surface-container-high text-[11px] font-geist-mono text-secondary hover:bg-surface-container-highest transition-colors border border-outline-variant/10">MARKET_VOLATILITY</button>
+<button class="px-3 py-1.5 rounded-md bg-surface-container-high text-[11px] font-geist-mono text-secondary hover:bg-surface-container-highest transition-colors border border-outline-variant/10">GENOMIC_SEQUENCING</button>
+<button class="px-3 py-1.5 rounded-md bg-surface-container-high text-[11px] font-geist-mono text-secondary hover:bg-surface-container-highest transition-colors border border-outline-variant/10">URBAN_INFRASTRUCTURE</button>
+</div>
+</div>
+<!-- Visual Anchor / Bento-ish Preview -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-12">
+<div class="bg-surface-container p-8 rounded-xl border border-outline-variant/10 text-left space-y-4 shadow-xl">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'opsz' 40;">hub</span>
+<h3 class="text-lg font-semibold text-on-surface">Neural Mapping</h3>
+<p class="text-sm text-on-surface-variant leading-relaxed">Visualize connections across disparate datasets using our proprietary graph architecture.</p>
+</div>
+<div class="bg-surface-container p-8 rounded-xl border border-outline-variant/10 text-left space-y-4 shadow-xl">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'opsz' 40;">query_stats</span>
+<h3 class="text-lg font-semibold text-on-surface">Precision Synthesis</h3>
+<p class="text-sm text-on-surface-variant leading-relaxed">Automated literature reviews with zero-hallucination guarantees and full citation audit trails.</p>
+</div>
+<div class="bg-surface-container p-8 rounded-xl border border-outline-variant/10 text-left space-y-4 shadow-xl">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'opsz' 40;">security</span>
+<h3 class="text-lg font-semibold text-on-surface">Sovereign Privacy</h3>
+<p class="text-sm text-on-surface-variant leading-relaxed">Your research remains yours. Local-first processing ensures sensitive data never leaves your edge.</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-12 bg-[#131318] tonal-shift bg-[#1b1b20] border-t border-[#464554]/15">
+<div class="flex flex-col md:flex-row justify-between items-center px-12 max-w-[1440px] mx-auto gap-8">
+<div class="text-lg font-bold text-[#e4e1e9] flex items-center gap-2">
+<span class="material-symbols-outlined text-primary/60">architecture</span>
+                Sovereign
+            </div>
+<div class="flex gap-8">
+<a class="font-geist-mono text-[10px] uppercase tracking-widest text-[#464554] hover:text-[#e4e1e9] transition-colors" href="#">Privacy</a>
+<a class="font-geist-mono text-[10px] uppercase tracking-widest text-[#464554] hover:text-[#e4e1e9] transition-colors" href="#">Terms</a>
+<a class="font-geist-mono text-[10px] uppercase tracking-widest text-[#464554] hover:text-[#e4e1e9] transition-colors" href="#">Security</a>
+<a class="font-geist-mono text-[10px] uppercase tracking-widest text-[#464554] hover:text-[#e4e1e9] transition-colors" href="#">System Status</a>
+</div>
+<div class="font-geist-mono text-[10px] uppercase tracking-widest text-[#464554]">
+                © 2024 Sovereign Architect. Precision Engineered.
+            </div>
+</div>
+</footer>
+<!-- Decorative Bottom Gradient -->
+<div class="fixed bottom-0 left-1/2 -translate-x-1/2 w-[80%] h-[1px] bg-gradient-to-r from-transparent via-primary/20 to-transparent pointer-events-none"></div>
+</body></html>

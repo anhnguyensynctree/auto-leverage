@@ -16,27 +16,30 @@ export default function OutputCard({
   return (
     <div className="w-full">
       <header className="mb-12">
-        <h1 className="text-4xl font-extrabold text-on-surface leading-tight tracking-tighter mb-4">
+        <p className="text-[11px] font-bold text-primary uppercase tracking-widest mb-3">
+          Your Plan
+        </p>
+        <h1 className="text-3xl md:text-4xl font-extrabold text-on-surface leading-tight tracking-tight mb-4">
           {componentNames.join(" + ")}
         </h1>
-        <p className="text-lg text-slate-500 leading-relaxed">
+        <p className="text-[15px] text-on-surface-variant leading-relaxed">
           Follow the steps below, then paste the prompt into your AI assistant.
         </p>
       </header>
 
-      <section className="mb-8">
-        <h2 className="text-[12px] font-bold text-slate-500 uppercase tracking-[0.08em] mb-6">
-          Your guide
+      <section className="mb-10">
+        <h2 className="text-[11px] font-bold text-secondary uppercase tracking-widest mb-6">
+          Your Guide
         </h2>
-        <ol className="space-y-8 list-none p-0 m-0">
+        <ol className="space-y-6 list-none p-0 m-0">
           {guideSteps.map((step, index) => {
             const text = step.replace(/^\d+\.\s*/, "");
             return (
               <li key={index} className="flex gap-5">
-                <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-[14px] font-bold shadow-sm">
+                <div className="flex-shrink-0 w-7 h-7 rounded-full bg-primary text-white flex items-center justify-center text-[13px] font-bold shadow-glow-sm mt-0.5">
                   {index + 1}
                 </div>
-                <p className="text-[14px] text-slate-600 leading-relaxed pt-0.5">
+                <p className="text-[14px] text-on-surface-variant leading-relaxed pt-1">
                   {text}
                 </p>
               </li>
@@ -45,14 +48,14 @@ export default function OutputCard({
         </ol>
       </section>
 
-      <hr className="border-t border-slate-200 my-10" />
+      <hr className="border-t border-outline-variant/40 my-8" />
 
       <section className="mb-16">
-        <h2 className="text-[12px] font-bold text-slate-500 uppercase tracking-[0.08em] mb-4">
+        <h2 className="text-[11px] font-bold text-secondary uppercase tracking-widest mb-4">
           Prompt for your AI assistant
         </h2>
-        <div className="bg-slate-100 rounded-xl p-6 border-l-[3px] border-primary mb-6 shadow-sm">
-          <pre className="font-mono text-[13px] text-slate-800 leading-relaxed whitespace-pre-wrap break-words">
+        <div className="bg-surface-container-lowest rounded-xl p-6 border border-outline-variant/40 border-l-[3px] border-l-primary mb-6">
+          <pre className="font-mono text-[13px] text-on-surface-variant leading-relaxed whitespace-pre-wrap break-words">
             <code>{llmPrompt}</code>
           </pre>
         </div>

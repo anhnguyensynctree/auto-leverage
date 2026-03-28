@@ -551,3 +551,222 @@ Artifacts:
 Produces: Output feels tailored to user's specific problem
 Verify: cpo — useCase on confirm; first output step personalised; no regression on missing useCase
 Depends: TASK-022
+
+---
+# FEATURE-007: E2E Test Suite
+Status: queued
+Milestone: Quality Hardening
+Rationale: Adaptive conversation milestone shipped without E2E coverage. URL param contract between EntryForm and questionnaire was invisible to unit tests — caused the intent bug. Every flow boundary needs an E2E spec before further features ship.
+Tasks: TASK-024, TASK-025, TASK-026, TASK-027, TASK-028
+
+---
+## TASK-024: Playwright Setup + CI Integration
+Status: done
+Notes: committed 437e1ba — playwright.config.ts, e2e/.gitkeep, CI e2e job, @playwright/test installed
+Feature: FEATURE-007
+Agent: frontend-developer
+Spec: Install and configure Playwright for the project. Add @playwright/test to devDependencies. Create playwright.config.ts at project root: baseURL pointing to http://localhost:3000, webServer.command="pnpm dev", webServer.reuseExistingServer=!process.env.CI, single chromium browser, retries:1 on CI. Add pnpm script: "test:e2e": "playwright test". Update .github/workflows/ci.yml to add a new e2e job with needs:ci (runs after unit job, not in parallel): install playwright browsers (pnpm exec playwright install --with-deps chromium), run pnpm test:e2e. Add e2e/ directory with a .gitkeep. Add /e2e to .eslintignore.
+Scenarios:
+- GIVEN playwright.config.ts exists WHEN pnpm test:e2e runs THEN Playwright finds the config and starts the dev server
+- GIVEN CI workflow updated WHEN push to main THEN E2E job runs after unit test job (needs: ci)
+- GIVEN local dev server already running WHEN pnpm test:e2e runs locally THEN reuseExistingServer reuses it without starting a second instance
+Artifacts:
+- playwright.config.ts
+- e2e/.gitkeep
+- .github/workflows/ci.yml (updated — new e2e job with needs:ci)
+- package.json (test:e2e script + @playwright/test in devDependencies)
+- .eslintignore (e2e/ added)
+Produces: Playwright infrastructure — unlocks TASK-025 through TASK-028
+Verify: cto + qa-engineer — config valid, CI e2e job has needs:ci, reuseExistingServer set, devDep present
+Depends: none
+
+---
+## TASK-025: E2E — home-entry.spec.ts
+Status: done
+Notes: 4/4 chromium passing — intent URL param contract covered
+Feature: FEATURE-007
+Agent: frontend-developer
+Spec: Write e2e/home-entry.spec.ts covering the home page entry form. Mock POST /api/classify via page.route('**/api/classify', route => route.fulfill({...})) to return { data: { components: ["prepare","train","program"], confidence: 0.9 }, error: null }. Tests: (1) happy path — user types 4+ words, submits, mock fires, page navigates to /questionnaire with intent= param set to the user's text; (2) validation — fewer than 3 words shows inline error, no navigation; (3) char limit — typing past 500 chars is blocked; (4) URL param contract — after navigation, searchParams.get("intent") equals the submitted text exactly.
+Scenarios:
+- GIVEN user types "I want to download training data" WHEN form submitted THEN navigated to /questionnaire?intent=I+want+to+download+training+data&...
+- GIVEN user types "hi" WHEN form submitted THEN error message shown, no navigation
+- GIVEN 500 chars typed WHEN user types one more THEN textarea value stays at 500
+Artifacts:
+- e2e/home-entry.spec.ts
+Produces: Home form + URL param contract covered
+Verify: qa-engineer — all 4 scenarios pass, intent param present in URL after navigation
+Depends: TASK-024
+
+---
+## TASK-026: E2E — questionnaire-flow.spec.ts
+Status: done
+Notes: 4/4 chromium passing — adaptive flow + back nav covered
+Feature: FEATURE-007
+Agent: frontend-developer
+Spec: Write e2e/questionnaire-flow.spec.ts covering in-page questionnaire behaviour. Mock POST /api/converse via page.route('**/api/converse', ...) with call-count tracking: first call returns { data: { done: false, question: "What are you optimising?", options: ["Loss function", "Learning rate", "Something else — I'll describe it"] }, error: null }; second call returns done:true with components + useCase. Tests: (1) initial load renders the first question; (2) selecting an option enables the Next button; (3) selecting "Something else" reveals free-text input; (4) clicking Back on turn 1 navigates to previous page; (5) after answering turn 1 and Next, second API call fires with turns array containing the first answer; (6) when done:true received, page navigates to /confirm with components, useCase, confidence params.
+Scenarios:
+- GIVEN page loads with intent param WHEN first mock resolves THEN question text and radio options render
+- GIVEN "Something else" selected WHEN rendered THEN free-text textarea appears
+- GIVEN Back on turn 0 WHEN clicked THEN router.back() fires (no API call)
+- GIVEN turn 1 answered WHEN done:true returned THEN /confirm?components=...&useCase=...&confidence=... navigated
+Artifacts:
+- e2e/questionnaire-flow.spec.ts
+Produces: Adaptive conversation UI fully covered
+Verify: qa-engineer — all 6 scenarios pass including back nav and free-text reveal
+Depends: TASK-024
+
+---
+## TASK-027: E2E — confirm-to-output.spec.ts
+Status: done
+Notes: 4/4 chromium passing — useCase display + start over + output render covered
+Feature: FEATURE-007
+Agent: frontend-developer
+Spec: Write e2e/confirm-to-output.spec.ts covering the confirmation and output pages. Mock POST /api/output via page.route('**/api/output', route => route.fulfill({...})) to return { data: { guide_steps: ["Step 1: ...", "Step 2: ..."], prompt: "Here is your prompt..." }, error: null }. Tests: (1) /confirm renders component cards for each component in the URL params; (2) useCase string from URL renders as "Here's what we understood: [useCase]"; (3) "Start over" navigates to / with no stale params; (4) "Confirm" navigates to /output; (5) /output renders guide steps and prompt text; (6) copy button for the prompt is present and clickable.
+Scenarios:
+- GIVEN /confirm?components=prepare,train&useCase=tune+my+model&confidence=0.8 WHEN rendered THEN "prepare" and "train" cards visible + useCase text present
+- GIVEN "Start over" clicked WHEN navigation fires THEN URL is / with no params
+- GIVEN "Confirm" clicked WHEN /output renders THEN guide steps and prompt visible
+Artifacts:
+- e2e/confirm-to-output.spec.ts
+Produces: Confirmation + output pages covered
+Verify: qa-engineer — all 6 scenarios pass, useCase displayed, Start over clears params
+Depends: TASK-024
+
+---
+## TASK-028: E2E — full-happy-path.spec.ts (smoke test)
+Status: done
+Notes: 1/1 chromium passing — full journey covered, mock uses turns.length>0 not call-count (React 18 Strict Mode safe)
+Feature: FEATURE-007
+Agent: frontend-developer
+Spec: Write e2e/full-happy-path.spec.ts as a single end-to-end smoke test covering the complete user journey. Mock all three API routes via page.route(): /api/classify, /api/converse (call-count tracked for 2 calls), /api/output. Flow: (1) land on /; (2) type a goal and submit; (3) answer the questionnaire question; (4) reach /confirm with correct params; (5) click Confirm; (6) reach /output with guide and prompt rendered. This test must pass on every deploy — it is the canonical regression guard for the full flow.
+Scenarios:
+- GIVEN a fresh browser session WHEN user completes the full flow THEN output page renders with guide and prompt — zero errors
+Artifacts:
+- e2e/full-happy-path.spec.ts
+Produces: End-to-end smoke test — catches any cross-page contract regressions
+Verify: qa-engineer + cto — single passing run covers the full user journey, no flakiness
+Depends: TASK-025, TASK-026, TASK-027
+
+---
+
+## TASK-029: Fix "The Lucid Researcher" branding in QuestionCard header
+Status: queued
+Milestone: MVP — Questionnaire to Output
+Type: fix
+Depends: —
+Validation: dev → qa → em
+Spec: Replace the hardcoded "The Lucid Researcher" text in `components/QuestionCard.tsx:41` with "auto-leverage" to match the rest of the app branding.
+Acceptance:
+- Header in QuestionCard shows "auto-leverage" (not "The Lucid Researcher")
+- All other header styles unchanged
+- No regressions in questionnaire-flow.spec.ts
+Context: components/QuestionCard.tsx, app/questionnaire/page.tsx
+
+---
+
+## TASK-030: Confirm page — richer analysis summary using conversation turns
+Status: queued
+Milestone: MVP — Questionnaire to Output
+Type: feature
+Depends: —
+Validation: dev → qa → em
+Spec: |
+  The confirm page currently shows only the raw user input and component names. It has no
+  access to the Q&A turns from the conversation, so it cannot show what was learned.
+
+  Two changes required:
+
+  1. **Pass turns to confirm page** — when questionnaire navigates to /confirm on `done: true`,
+     include the serialised turns in the URL (JSON.stringify + encodeURIComponent, or use
+     sessionStorage to avoid URL length limits). Confirm page reads and deserialises them.
+
+  2. **Redesign the summary card** — replace the single "HERE'S WHAT WE UNDERSTOOD" card with:
+     - A "What we asked" section: list each Q&A pair from turns (question label + chosen answer)
+     - A "What we identified" section: component cards with name + one-line description of what
+       that component handles (not generic — specific to the user's useCase)
+     - Keep the existing "Yes, this fits" CTA and "Start over" link
+
+  The goal: user should be able to read the confirm page and feel confident the system
+  understood their specific situation — not just see their raw input echoed back.
+
+Acceptance:
+- Confirm page receives and displays the Q&A turns from the conversation
+- Each turn shown as: question text + selected answer (not raw API shape)
+- Component cards show name + useCase-contextualised description
+- "Yes, this fits" and "Start over" still work
+- confirm-to-output.spec.ts updated to cover the new summary structure
+Context: app/confirm/page.tsx, app/questionnaire/page.tsx, components/QuestionCard.tsx
+
+---
+
+## TASK-031: Rewrite output guide steps in plain language for non-tech users
+Status: queued
+Milestone: MVP — Questionnaire to Output
+Type: fix
+Depends: —
+Validation: dev → qa → em
+Spec: |
+  The guide steps on the output page use autoresearch internals that non-tech users
+  don't understand (e.g. "val_bpb", "prepare.py", "rebuild your dataset"). The product
+  is advisory-only for non-technical people — guide language must match that audience.
+
+  Changes required:
+  1. Audit the LLM prompt that generates guide steps — identify where jargon leaks in
+  2. Add an explicit instruction to the prompt: no filenames, no metric variable names,
+     no CLI commands — translate every technical concept to plain English
+  3. Replace `val_bpb` → "your model's current accuracy score"
+  4. Replace file references (prepare.py, train.py) → "the data preparation step", 
+     "the training step"
+  5. Replace "the agent" → "the AI" or "autoresearch"
+  6. Test with 3 different use cases (NBA, optimizer, image classifier) and confirm
+     zero jargon in any generated guide
+
+Acceptance:
+- No technical variable names, filenames, or CLI terms in any guide step
+- A non-technical user can read all 6 steps without needing to look anything up
+- Prompt change validated against 3 different useCase inputs
+Context: app/output/page.tsx, app/api/converse/route.ts (or wherever guide generation lives)
+
+---
+
+## TASK-032: Output page — worked example simulation panel
+Status: queued
+Milestone: MVP — Questionnaire to Output
+Type: feature
+Depends: TASK-031
+Validation: dev → qa → em
+Spec: |
+  After seeing the guide and prompt, users have no concrete sense of what running
+  autoresearch actually looks like. Add a "See it in action" panel on the output page
+  that shows a minimal worked example tailored to their use case.
+
+  The simulation is not a real run — it is a pre-rendered / LLM-generated walkthrough
+  that shows what the process looks like step by step:
+
+  1. **Drafted input** — show an example of what their input data might look like
+     (e.g. for NBA: a small CSV of team stats; for optimizer: a loss curve table).
+     Generated by LLM based on useCase, shown as a code block or table.
+
+  2. **Metric chosen** — show which metric autoresearch would track for their goal
+     (plain English: "We'd watch prediction accuracy improve over each experiment").
+
+  3. **Simulated run** — show 3–5 rows of fake experiment results with the metric
+     improving across iterations. A simple table: Experiment | Result | Status.
+     Numbers should be plausible for the domain, not random.
+
+  4. **Outcome summary** — one sentence: "By experiment 4, the model exceeded the
+     target — autoresearch would stop here and report the winning setup."
+
+  This is entirely LLM-generated on the server at output time, added as a new section
+  below the existing guide. No real compute required.
+
+  New API call: POST /api/simulate with { useCase, components } → returns the four
+  panels above as structured JSON. Rendered client-side below the guide.
+
+Acceptance:
+- "See it in action" section appears on output page for all component combinations
+- Shows drafted input, chosen metric, simulated experiment table, outcome summary
+- Language is non-technical throughout (follows TASK-031 plain-language rules)
+- Loads after the guide (non-blocking — show skeleton, then populate)
+- E2E spec covers the section appearing and containing expected structure
+Context: app/output/page.tsx, app/api/ (new simulate endpoint)

@@ -20,3 +20,25 @@ Built: Queue audit (15 stale tasks → done) — queue now reflects actual state
 • No decision required
 Built: CLI deploy pipeline — production and preview deploys now fully automated via GitHub Actions
 Built: CI branch fix (main→master) — CI was silently never running; corrected in same commit
+
+## 2026-03-26T21:50Z | oms-work
+• Live site crash fixed + adaptive conversation flow deployed to Vercel
+• All 4 tasks done: 115 tests passing, zero CTO-stops
+• No decision required — queue is clear
+Built: Fixed production crash (TASK-019) — any free-text input now resolves cleanly
+Built: POST /api/converse (TASK-021) — GLM-5 drives 3-5 targeted turns with hard cap and graceful degrade
+Built: Replaced questionnaire UI (TASK-022) — static tree retired, LLM-generated questions live
+Built: Personalised output (TASK-023) — useCase shown on confirm, goal prefix in first guide step
+
+## 2026-03-26T22:45Z | oms-all
+• FEATURE-007 elaborated — 5 E2E tasks queued for Quality Hardening milestone
+• Spec gaps closed: CI job ordering, devDep artifact, reuseExistingServer, mock syntax
+• No decision required
+Built: FEATURE-007 E2E Test Suite specs — covers all 4 user flows + smoke test with Playwright
+
+## 2026-03-26T23:20Z | oms-work
+• Quality Hardening complete — 5 E2E tasks shipped, zero stops
+• React 18 Strict Mode insight: mock on turns.length > 0, not call count — applied across all specs
+• No decision required
+Built: Playwright E2E suite (4 specs + smoke test) — every URL param contract between pages is now tested on every push
+Built: CI e2e job (needs:ci gate) — E2E runs after unit tests, blocks deploys on failure

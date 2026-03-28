@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Geist+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary-container": "#e5e2ff",
+              "tertiary-dim": "#d7d4f0",
+              "on-surface-variant": "#acaab1",
+              "inverse-on-surface": "#55545b",
+              "primary-container": "#9396ff",
+              "inverse-primary": "#494bd7",
+              "outline-variant": "#48474d",
+              "inverse-surface": "#fcf8ff",
+              "on-primary": "#0f00a4",
+              "secondary-fixed-dim": "#d0b8ff",
+              "surface-container-lowest": "#000000",
+              "secondary-fixed": "#dcc9ff",
+              "on-tertiary": "#5a5a71",
+              "on-tertiary-fixed": "#3f3f55",
+              "surface-container": "#19191f",
+              "on-tertiary-container": "#525168",
+              "tertiary": "#f5f2ff",
+              "primary-fixed-dim": "#8387ff",
+              "primary-dim": "#6063ee",
+              "on-tertiary-fixed-variant": "#5c5b72",
+              "error": "#ff6e84",
+              "on-primary-fixed-variant": "#0e009d",
+              "on-background": "#f9f5fd",
+              "error-container": "#a70138",
+              "on-primary-fixed": "#000000",
+              "secondary-dim": "#8a4cfc",
+              "on-surface": "#f9f5fd",
+              "surface-bright": "#2c2b33",
+              "on-secondary": "#2b0065",
+              "primary": "#a3a6ff",
+              "error-dim": "#d73357",
+              "on-secondary-container": "#e1d0ff",
+              "tertiary-fixed": "#e5e2ff",
+              "secondary-container": "#6001d1",
+              "surface": "#0e0e13",
+              "surface-container-high": "#1f1f26",
+              "primary-fixed": "#9396ff",
+              "on-secondary-fixed-variant": "#6514d6",
+              "secondary": "#af88ff",
+              "on-secondary-fixed": "#430097",
+              "on-error-container": "#ffb2b9",
+              "surface-container-low": "#131319",
+              "on-primary-container": "#0a0081",
+              "surface-variant": "#25252d",
+              "outline": "#76747b",
+              "surface-tint": "#a3a6ff",
+              "surface-dim": "#0e0e13",
+              "tertiary-fixed-dim": "#d7d4f0",
+              "background": "#0e0e13",
+              "on-error": "#490013",
+              "surface-container-highest": "#25252d"
+            },
+            fontFamily: {
+              "headline": ["Inter", "sans-serif"],
+              "body": ["Inter", "sans-serif"],
+              "label": ["Inter", "sans-serif"],
+              "mono": ["Geist Mono", "monospace"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glow-node {
+            filter: blur(12px);
+            opacity: 0.15;
+        }
+        .bg-grid-subtle {
+            background-image: radial-gradient(circle, rgba(163, 166, 255, 0.05) 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary/30 selection:text-primary min-h-screen overflow-x-hidden">
+<!-- Top Navigation -->
+<nav class="fixed top-0 w-full z-50 bg-[#0e0e13]/80 backdrop-blur-xl shadow-[0_20px_40px_rgba(249,245,253,0.04)]">
+<div class="flex justify-between items-center h-16 px-8 max-w-full">
+<div class="flex items-center gap-8">
+<span class="text-xl font-bold tracking-tighter text-slate-50 uppercase">Auto-Leverage</span>
+<div class="hidden md:flex gap-6">
+<a class="font-['Inter'] tracking-wider uppercase text-[11px] font-medium text-indigo-400 border-b-2 border-indigo-500 pb-1" href="#">Simulation</a>
+<a class="font-['Inter'] tracking-wider uppercase text-[11px] font-medium text-slate-400 hover:text-slate-200 transition-colors" href="#">Network</a>
+<a class="font-['Inter'] tracking-wider uppercase text-[11px] font-medium text-slate-400 hover:text-slate-200 transition-colors" href="#">Research</a>
+<a class="font-['Inter'] tracking-wider uppercase text-[11px] font-medium text-slate-400 hover:text-slate-200 transition-colors" href="#">Vault</a>
+</div>
+</div>
+<button class="bg-primary-container text-on-primary-fixed px-5 py-2 rounded-lg font-medium text-sm transition-all duration-300 hover:scale-[1.02] active:scale-95 shadow-[0_0_20px_rgba(163,166,255,0.2)]">
+                Launch Node
+            </button>
+</div>
+</nav>
+<!-- Main Canvas -->
+<main class="relative pt-32 pb-24 px-8 md:px-16 lg:px-32 bg-grid-subtle">
+<!-- Background Decorative Elements -->
+<div class="absolute inset-0 pointer-events-none overflow-hidden">
+<div class="absolute top-[15%] left-[5%] w-16 h-16 border border-primary/10 rounded-full glow-node bg-primary"></div>
+<div class="absolute top-[40%] right-[10%] w-24 h-24 border border-secondary/10 rotate-45 glow-node bg-secondary"></div>
+<div class="absolute bottom-[20%] left-[20%] w-12 h-12 border border-primary/10 glow-node bg-primary" style="clip-path: polygon(50% 0%, 0% 100%, 100% 100%);"></div>
+<div class="absolute top-[60%] left-[45%] w-8 h-8 border border-outline-variant/20 rounded-lg"></div>
+<div class="absolute bottom-[10%] right-[30%] w-20 h-20 border border-primary/5 rounded-full"></div>
+</div>
+<!-- Section Header -->
+<div class="relative z-10 mb-20 text-center md:text-left">
+<p class="font-mono text-primary text-[11px] tracking-[0.2em] uppercase mb-4">Real-time Telemetry</p>
+<h1 class="text-6xl md:text-8xl font-bold tracking-tighter text-on-surface leading-tight">
+                See how it <span class="text-primary-dim">runs</span>
+</h1>
+<div class="w-24 h-1 bg-gradient-to-r from-primary to-transparent mt-8"></div>
+</div>
+<!-- Simulation Grid -->
+<div class="relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Panel 1: Example Data -->
+<section class="bg-surface-container-low rounded-xl p-6 border border-white/5 shadow-2xl">
+<div class="flex items-center justify-between mb-8">
+<h3 class="font-label text-xs uppercase tracking-widest font-semibold text-on-surface-variant">Live Dataset</h3>
+<span class="material-symbols-outlined text-primary text-sm">database</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full font-mono text-[11px] text-on-surface-variant text-left">
+<thead>
+<tr class="border-b border-outline-variant/20">
+<th class="pb-3 font-medium uppercase text-[10px] tracking-wider text-slate-500">Player</th>
+<th class="pb-3 font-medium uppercase text-[10px] tracking-wider text-slate-500">Pts</th>
+<th class="pb-3 font-medium uppercase text-[10px] tracking-wider text-slate-500">Reb</th>
+<th class="pb-3 font-medium uppercase text-[10px] tracking-wider text-slate-500">Eff</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10">
+<tr>
+<td class="py-4 text-slate-200">L. James</td>
+<td class="py-4">28.4</td>
+<td class="py-4">8.1</td>
+<td class="py-4 text-primary">0.94</td>
+</tr>
+<tr>
+<td class="py-4 text-slate-200">S. Curry</td>
+<td class="py-4">31.2</td>
+<td class="py-4">5.2</td>
+<td class="py-4 text-primary">0.98</td>
+</tr>
+<tr>
+<td class="py-4 text-slate-200">G. Anteto</td>
+<td class="py-4">29.9</td>
+<td class="py-4">11.6</td>
+<td class="py-4 text-primary">0.96</td>
+</tr>
+<tr>
+<td class="py-4 text-slate-200">N. Jokic</td>
+<td class="py-4">26.1</td>
+<td class="py-4">12.2</td>
+<td class="py-4 text-primary">0.99</td>
+</tr>
+<tr>
+<td class="py-4 text-slate-200">K. Durant</td>
+<td class="py-4">27.5</td>
+<td class="py-4">6.9</td>
+<td class="py-4 text-primary">0.92</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Panel 2: Example Strategy -->
+<section class="bg-surface-container rounded-xl p-6 border border-white/5 flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-10">
+<h3 class="font-label text-xs uppercase tracking-widest font-semibold text-on-surface-variant">Active Strategy</h3>
+<span class="material-symbols-outlined text-primary text-sm">settings_input_component</span>
+</div>
+<ul class="space-y-6">
+<li class="flex items-start gap-4">
+<span class="material-symbols-outlined text-primary mt-1 text-lg">check_circle</span>
+<div>
+<p class="text-sm font-semibold text-on-surface">Starting hyperparams</p>
+<p class="text-xs text-on-surface-variant mt-1">Initialize with k=47, learning_rate=1e-5.</p>
+</div>
+</li>
+<li class="flex items-start gap-4">
+<span class="material-symbols-outlined text-primary mt-1 text-lg">check_circle</span>
+<div>
+<p class="text-sm font-semibold text-on-surface">Stopping rule</p>
+<p class="text-xs text-on-surface-variant mt-1">Epsilon decay &lt; 0.001 over 500 epochs.</p>
+</div>
+</li>
+<li class="flex items-start gap-4">
+<span class="material-symbols-outlined text-primary mt-1 text-lg">check_circle</span>
+<div>
+<p class="text-sm font-semibold text-on-surface">Win condition</p>
+<p class="text-xs text-on-surface-variant mt-1">Model consistency &gt; 98.4% variance floor.</p>
+</div>
+</li>
+</ul>
+</div>
+<div class="mt-12 p-4 bg-surface-container-high rounded-lg border border-outline-variant/20">
+<p class="font-mono text-[10px] text-on-tertiary-container">STRATEGY_ID: SIM-8892-Z</p>
+</div>
+</section>
+<!-- Panel 3: Example Metrics -->
+<section class="space-y-6">
+<!-- Metric Card 1 -->
+<div class="bg-surface-container rounded-xl p-5 border border-white/5 relative overflow-hidden group">
+<div class="flex justify-between items-start mb-4">
+<p class="font-label text-[10px] uppercase tracking-[0.15em] text-slate-500">Model Precision</p>
+<div class="h-8 w-16 opacity-30 group-hover:opacity-100 transition-opacity">
+<svg class="w-full h-full" viewbox="0 0 100 40">
+<path class="text-primary" d="M0 35 Q 25 35, 40 20 T 80 15 T 100 5" fill="none" stroke="currentColor" stroke-width="2"></path>
+</svg>
+</div>
+</div>
+<div class="flex items-end gap-3">
+<span class="font-mono text-2xl font-medium">0.82</span>
+<span class="material-symbols-outlined text-primary mb-1">trending_up</span>
+<span class="font-mono text-2xl font-bold text-primary">0.95</span>
+</div>
+<div class="absolute bottom-0 left-0 w-full h-1 bg-primary/20">
+<div class="h-full bg-primary w-[82%] shadow-[0_0_10px_#a3a6ff]"></div>
+</div>
+</div>
+<!-- Metric Card 2 -->
+<div class="bg-surface-container rounded-xl p-5 border border-white/5 relative overflow-hidden group">
+<div class="flex justify-between items-start mb-4">
+<p class="font-label text-[10px] uppercase tracking-[0.15em] text-slate-500">Inference Latency</p>
+<div class="h-8 w-16 opacity-30 group-hover:opacity-100 transition-opacity">
+<svg class="w-full h-full" viewbox="0 0 100 40">
+<path class="text-primary" d="M0 5 Q 20 10, 40 25 T 70 30 T 100 35" fill="none" stroke="currentColor" stroke-width="2"></path>
+</svg>
+</div>
+</div>
+<div class="flex items-end gap-3">
+<span class="font-mono text-2xl font-medium">45ms</span>
+<span class="material-symbols-outlined text-primary mb-1">keyboard_double_arrow_right</span>
+<span class="font-mono text-2xl font-bold text-primary">12ms</span>
+</div>
+<div class="absolute bottom-0 left-0 w-full h-1 bg-primary/20">
+<div class="h-full bg-primary w-[45%] shadow-[0_0_10px_#a3a6ff]"></div>
+</div>
+</div>
+<!-- Metric Card 3 -->
+<div class="bg-surface-container rounded-xl p-5 border border-white/5 relative overflow-hidden group">
+<div class="flex justify-between items-start mb-4">
+<p class="font-label text-[10px] uppercase tracking-[0.15em] text-slate-500">Node Convergence</p>
+<div class="h-8 w-16 opacity-30 group-hover:opacity-100 transition-opacity">
+<svg class="w-full h-full" viewbox="0 0 100 40">
+<path class="text-primary" d="M0 30 L 20 25 L 40 32 L 60 15 L 80 20 L 100 5" fill="none" stroke="currentColor" stroke-width="2"></path>
+</svg>
+</div>
+</div>
+<div class="flex items-end gap-3">
+<span class="font-mono text-2xl font-medium">0.64</span>
+<span class="material-symbols-outlined text-primary mb-1">arrow_forward</span>
+<span class="font-mono text-2xl font-bold text-primary">0.99</span>
+</div>
+<div class="absolute bottom-0 left-0 w-full h-1 bg-primary/20">
+<div class="h-full bg-primary w-[64%] shadow-[0_0_10px_#a3a6ff]"></div>
+</div>
+</div>
+</section>
+</div>
+<!-- Asymmetric Detail Section -->
+<div class="mt-32 flex flex-col md:flex-row items-center gap-16">
+<div class="w-full md:w-2/3 h-64 bg-surface-container-high rounded-xl border border-white/5 relative overflow-hidden flex items-center justify-center">
+<div class="absolute inset-0 opacity-20">
+<div class="grid grid-cols-12 h-full">
+<div class="border-r border-outline-variant/30 h-full"></div><div class="border-r border-outline-variant/30 h-full"></div><div class="border-r border-outline-variant/30 h-full"></div><div class="border-r border-outline-variant/30 h-full"></div><div class="border-r border-outline-variant/30 h-full"></div><div class="border-r border-outline-variant/30 h-full"></div><div class="border-r border-outline-variant/30 h-full"></div><div class="border-r border-outline-variant/30 h-full"></div><div class="border-r border-outline-variant/30 h-full"></div><div class="border-r border-outline-variant/30 h-full"></div><div class="border-r border-outline-variant/30 h-full"></div><div class="border-r border-outline-variant/30 h-full"></div>
+</div>
+</div>
+<div class="relative z-10 text-center px-8">
+<p class="font-mono text-[10px] text-primary mb-2">Simulating multi-node consensus...</p>
+<div class="flex gap-2 justify-center items-center">
+<div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+<div class="w-32 h-[1px] bg-gradient-to-r from-primary to-transparent"></div>
+<div class="w-4 h-4 rounded-full border border-primary/40 flex items-center justify-center">
+<div class="w-1.5 h-1.5 rounded-full bg-primary"></div>
+</div>
+<div class="w-32 h-[1px] bg-gradient-to-l from-primary to-transparent"></div>
+<div class="w-2 h-2 rounded-full bg-primary opacity-50"></div>
+</div>
+</div>
+</div>
+<div class="w-full md:w-1/3">
+<h2 class="text-3xl font-bold tracking-tight mb-6">Neural Network Topology</h2>
+<p class="text-on-surface-variant text-sm leading-relaxed mb-8">
+                    Our simulation engine maps complex data vectors across a non-linear topology, allowing researchers to observe emergent patterns before deployment.
+                </p>
+<button class="text-primary font-label text-[11px] uppercase tracking-widest font-bold flex items-center gap-2 group">
+                    Explore Network Specs
+                    <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-12 border-t border-white/5 bg-[#0e0e13]">
+<div class="flex flex-col md:flex-row justify-between items-center px-12 gap-6">
+<div class="flex flex-col gap-1 items-center md:items-start">
+<p class="font-['Geist_Mono'] text-[10px] tracking-tight text-slate-500">© 2024 Auto-Leverage Research Labs. All telemetry encrypted.</p>
+</div>
+<div class="flex gap-8">
+<a class="font-['Geist_Mono'] text-[10px] tracking-tight text-slate-500 hover:text-indigo-400 transition-colors" href="#">Documentation</a>
+<a class="font-['Geist_Mono'] text-[10px] tracking-tight text-slate-500 hover:text-indigo-400 transition-colors" href="#">Terms</a>
+<a class="font-['Geist_Mono'] text-[10px] tracking-tight text-slate-500 hover:text-indigo-400 transition-colors" href="#">Privacy</a>
+<a class="font-['Geist_Mono'] text-[10px] tracking-tight text-slate-500 hover:text-indigo-400 transition-colors" href="#">System Status</a>
+</div>
+</div>
+</footer>
+</body></html>

@@ -12,13 +12,13 @@ export default function ProgressBar({ turnCount, max = 5 }: ProgressBarProps) {
   return (
     <div className="space-y-2">
       <div className="flex justify-end">
-        <span className="text-[13px] font-medium text-secondary uppercase tracking-wider">
+        <span className="text-[11px] font-semibold text-secondary uppercase tracking-widest">
           Question {current} of {max}
         </span>
       </div>
-      <div className="w-full bg-surface-container-low h-[4px] rounded-full overflow-hidden">
+      <div className="w-full bg-surface-container-high h-[3px] rounded-full overflow-hidden">
         <div
-          className="bg-primary h-full rounded-full transition-all duration-300"
+          className="bg-primary h-full rounded-full transition-all duration-500 shadow-glow-sm"
           style={{ width: `${percent}%` }}
         />
       </div>

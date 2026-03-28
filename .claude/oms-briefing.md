@@ -1,35 +1,27 @@
-# OMS Briefing
-Workflow: work
-Date: 2026-03-26
-Project: auto-leverage
+# OMS Briefing — auto-leverage
+Date: 2026-03-26 | Workflow: oms-work | Milestone: Quality Hardening
 
-## What Happened
-oms-work ran a single ready task: TASK-017 (CLI-Based Deploy Pipeline).
+## Tasks Completed
+- TASK-024: Playwright Setup + CI Integration — dev ✓ cto ✓ qa ✓
+- TASK-025: E2E — home-entry.spec.ts — 4/4 passing
+- TASK-026: E2E — questionnaire-flow.spec.ts — 4/4 passing
+- TASK-027: E2E — confirm-to-output.spec.ts — 4/4 passing
+- TASK-028: E2E — full-happy-path.spec.ts — 1/1 passing
 
-TASK-017 completed: Extended .github/workflows/ci.yml with a deploy job (needs: ci). Fixed branch references from main to master throughout the workflow. Production deploy fires on push to master via vercel --prod --token. Preview deploy fires on pull_request via vercel --token, capturing the output URL and posting it as a PR comment. Set three GitHub Actions secrets: VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID. Updated cto.ctx.md with confirmed pipeline status. All validators (cto, qa, em) passed.
+## Tasks Stopped
+None.
 
-## Queue State
-- Done: 18 (all tasks complete)
-- Queued: 0
-- Blocked: 0
-- CTO-Stop: 0
+### 📊 Executive TL;DR
+- Quality Hardening milestone complete — 5/5 tasks done, zero CTO-stops
+- 4 E2E spec files covering every user-facing flow boundary; full happy-path smoke test as regression guard
+- Key pattern discovered: React 18 Strict Mode double-fires useEffect — all converse mocks route on turns.length > 0, not call count
 
-## Milestone
-- Name: MVP — Questionnaire to Output
-- Progress: 18/18 tasks done
-- Stage: complete
+### 🚀 What Was Done
+- Playwright infrastructure wired up with CI gate (needs:ci, chromium only, reuseExistingServer for local dev)
+- home-entry.spec.ts — covers form validation, char limit, intent URL param contract (the bug class that caused the production incident)
+- questionnaire-flow.spec.ts — covers question render, option selection, Something Else free-text, Back nav, done:true routing
+- confirm-to-output.spec.ts — covers component cards, useCase display, Start over, Confirm → output render
+- full-happy-path.spec.ts — end-to-end smoke test; catches cross-page URL param regressions on every push
 
-## Product Direction
-Advisory web platform where non-technical users describe their autoresearch problem, answer adaptive questions, and receive a step-by-step guide plus a copy-paste LLM prompt. Full user flow implemented, tests passing, CI pipeline active, automated deploy pipeline live. MVP is feature-complete and deployment-ready.
-
-## Decisions Made
-- CLI-only deploy pipeline (no GitHub App dependency): vercel CLI in GitHub Actions with token auth avoids OAuth issues that blocked the previous attempt.
-- Fixed branch mismatch proactively: existing CI targeted main but repo uses master — corrected in the same commit.
-
-## Task Quality
-- Passed: 3/3 validators (cto + qa + em)
-- Failed: none
-- CTO-Stop: none
-
-## Session Cost
-null (Agent tool)
+## Product State
+Production at https://auto-leverage.vercel.app — intent bug patched, E2E suite now prevents recurrence. Next milestone TBD.

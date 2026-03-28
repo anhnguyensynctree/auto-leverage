@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Research Wizard - Data Prep</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-surface-variant": "#434655",
+              "surface-dim": "#cbdbf5",
+              "error-container": "#ffdad6",
+              "inverse-on-surface": "#eaf1ff",
+              "on-background": "#0b1c30",
+              "inverse-surface": "#213145",
+              "secondary-container": "#d0e1fb",
+              "tertiary-container": "#bc4800",
+              "surface-bright": "#f8f9ff",
+              "on-secondary-fixed": "#0b1c30",
+              "on-tertiary-fixed": "#360f00",
+              "outline": "#737686",
+              "surface": "#f8f9ff",
+              "surface-container-low": "#eff4ff",
+              "on-secondary": "#ffffff",
+              "tertiary-fixed": "#ffdbcd",
+              "secondary-fixed-dim": "#b7c8e1",
+              "on-error": "#ffffff",
+              "on-tertiary": "#ffffff",
+              "tertiary": "#943700",
+              "inverse-primary": "#b4c5ff",
+              "on-primary-fixed-variant": "#003ea8",
+              "error": "#ba1a1a",
+              "on-error-container": "#93000a",
+              "secondary-fixed": "#d3e4fe",
+              "background": "#f8f9ff",
+              "on-primary": "#ffffff",
+              "secondary": "#505f76",
+              "on-surface": "#0b1c30",
+              "surface-variant": "#d3e4fe",
+              "on-tertiary-fixed-variant": "#7d2d00",
+              "surface-container-lowest": "#ffffff",
+              "surface-container": "#e5eeff",
+              "primary-fixed-dim": "#b4c5ff",
+              "surface-container-highest": "#d3e4fe",
+              "primary-container": "#2563eb",
+              "outline-variant": "#c3c6d7",
+              "tertiary-fixed-dim": "#ffb596",
+              "on-secondary-container": "#54647a",
+              "surface-container-high": "#dce9ff",
+              "on-primary-container": "#eeefff",
+              "on-secondary-fixed-variant": "#38485d",
+              "on-tertiary-container": "#ffede6",
+              "on-primary-fixed": "#00174b",
+              "primary": "#004ac6",
+              "surface-tint": "#0053db",
+              "primary-fixed": "#dbe1ff"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+            line-height: 1;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9ff; /* Surface */
+        }
+        .editorial-shadow {
+            box-shadow: 0 4px 40px rgba(11, 28, 48, 0.06);
+        }
+    </style>
+</head>
+<body class="antialiased text-on-surface">
+<!-- TopAppBar Shell (Execution from JSON) -->
+<header class="sticky top-0 w-full z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-lg shadow-[0_4px_40px_rgba(11,28,48,0.06)]">
+<div class="flex items-center justify-between px-6 py-4 max-w-[600px] mx-auto w-full">
+<div class="text-lg font-semibold tracking-tight text-slate-900 dark:text-slate-50">
+                The Lucid Researcher
+            </div>
+<div class="flex items-center gap-4">
+<button class="active:scale-95 duration-200 cursor-pointer text-slate-500 hover:text-blue-600 transition-colors">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+</div>
+</div>
+<div class="bg-slate-100 dark:bg-slate-800 h-px w-full"></div>
+</header>
+<main class="max-w-[600px] mx-auto px-6 pt-12 pb-24">
+<!-- Navigation & Progress -->
+<nav class="flex flex-col gap-4">
+<button class="flex items-center gap-2 text-secondary text-sm font-medium hover:text-primary transition-colors group w-fit">
+<span class="material-symbols-outlined text-lg group-hover:-translate-x-1 transition-transform" data-icon="arrow_back">arrow_back</span>
+                Back
+            </button>
+<div class="space-y-2">
+<div class="flex justify-end">
+<span class="text-[13px] font-medium text-secondary uppercase tracking-wider">Step 2 of 4</span>
+</div>
+<div class="w-full bg-surface-container-low h-[4px] rounded-full overflow-hidden">
+<div class="bg-primary h-full w-2/4 rounded-full"></div>
+</div>
+</div>
+</nav>
+<!-- Question Section -->
+<section class="mt-8">
+<h1 class="text-[22px] font-semibold text-on-background tracking-tight leading-tight">
+                What brings you to the data prep step?
+            </h1>
+</section>
+<!-- Options Container -->
+<div class="mt-8 flex flex-col gap-2">
+<!-- Option A -->
+<button class="group flex items-center justify-between w-full p-4 bg-surface-container-lowest border border-outline-variant/40 rounded-xl text-left transition-all hover:bg-surface-container hover:border-primary active:scale-[0.99]">
+<span class="text-on-surface-variant font-medium group-hover:text-primary">I want to download more data shards</span>
+<span class="material-symbols-outlined opacity-0 group-hover:opacity-100 text-primary transition-opacity" data-icon="chevron_right">chevron_right</span>
+</button>
+<!-- Option B -->
+<button class="group flex items-center justify-between w-full p-4 bg-surface-container-lowest border border-outline-variant/40 rounded-xl text-left transition-all hover:bg-surface-container hover:border-primary active:scale-[0.99]">
+<span class="text-on-surface-variant font-medium group-hover:text-primary">I need to change where data is stored on disk</span>
+<span class="material-symbols-outlined opacity-0 group-hover:opacity-100 text-primary transition-opacity" data-icon="chevron_right">chevron_right</span>
+</button>
+<!-- Option C -->
+<button class="group flex items-center justify-between w-full p-4 bg-surface-container-lowest border border-outline-variant/40 rounded-xl text-left transition-all hover:bg-surface-container hover:border-primary active:scale-[0.99]">
+<span class="text-on-surface-variant font-medium group-hover:text-primary">I want to adjust the tokenizer or vocabulary size</span>
+<span class="material-symbols-outlined opacity-0 group-hover:opacity-100 text-primary transition-opacity" data-icon="chevron_right">chevron_right</span>
+</button>
+<!-- Option D (Special State) -->
+<button class="flex items-center justify-between w-full p-4 bg-surface-container-low rounded-xl text-left transition-all hover:bg-surface-container-high active:scale-[0.99] mt-2">
+<span class="text-secondary italic text-sm">I'm not sure</span>
+<span class="material-symbols-outlined text-secondary text-sm" data-icon="help_outline">help_outline</span>
+</button>
+</div>
+<!-- Signature Editorial Component: Researcher Insight -->
+<div class="mt-16 p-6 bg-surface-container-highest rounded-xl rounded-tl-[2.5rem] relative overflow-hidden">
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-primary-container" data-icon="lightbulb" style="font-variation-settings: 'FILL' 1;">lightbulb</span>
+<div class="space-y-1">
+<p class="text-xs font-bold uppercase tracking-widest text-primary">Researcher Insight</p>
+<p class="text-sm leading-relaxed text-on-secondary-container">
+                        Preparing your data shards correctly at this stage can reduce training latency by up to 40% in later phases.
+                    </p>
+</div>
+</div>
+</div>
+<!-- Contextual Visual Element -->
+<div class="mt-12 rounded-xl overflow-hidden aspect-[21/9] editorial-shadow grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-500">
+<img alt="Guided Research Visualization" class="w-full h-full object-cover" data-alt="abstract data visualization with interconnected nodes and glowing light particles on a clean white laboratory background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCb2Dk7IhhU7VOSXHfGhgelStqcoqF0uKnWSsrhZ1CnbhPVceDinyQYUuUA7Vkpx5A6Wkp5uD17GEaFRM-zH8pc4-D8HNbtzSsm44lAIEEjAxjsGrR_8B47LWF3iM3Nl8Mt7q_6pRC7aWsSZV-el-0pEH1dTFzypk3kwQXBDUc7MiTWQt-q0kmOn0qOafzxUY3i7LGF-XaC_xtvwOhPmdoqW8ffLWHAUoIMIGZM-OvqsD5UBMUtVA8Ki1ZfRL8atOkhxeDUsTxD_Ho3"/>
+</div>
+</main>
+<!-- Navigation Shell Logic Suppression: No BottomNavBar/SideNav as this is a Task-Focused linear wizard step -->
+</body></html>

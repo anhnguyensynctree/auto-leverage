@@ -25,7 +25,31 @@ export default function RootLayout({
       <body
         className={`${inter.className} min-h-screen bg-surface text-on-surface antialiased`}
       >
-        {children}
+        {/* Geometric background — fixed, behind all page content */}
+        <div className="geo-bg" aria-hidden="true">
+          <div className="geo-glow" />
+          <div className="geo-dot-grid" />
+          <div className="geo-circle geo-circle-lg" />
+          <div className="geo-circle geo-circle-sm" />
+          <div className="geo-circle geo-circle-md" />
+          <div className="geo-triangle" />
+          <svg
+            className="geo-hex"
+            viewBox="0 0 100 115"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <polygon
+              points="50,2 98,26 98,89 50,113 2,89 2,26"
+              stroke="rgb(99,102,241)"
+              strokeWidth="1.5"
+              fill="none"
+            />
+          </svg>
+        </div>
+
+        {/* Page content — floats above the geo layer */}
+        <div className="page-content">{children}</div>
       </body>
     </html>
   );

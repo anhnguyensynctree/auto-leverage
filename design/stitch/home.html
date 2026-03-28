@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 
-<html class="light" lang="en"><head>
+<html class="dark" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>auto-leverage</title>
+<title>auto-leverage | AI Research Optimizer</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
       tailwind.config = {
@@ -14,60 +13,16 @@
         theme: {
           extend: {
             colors: {
-              "on-primary-fixed-variant": "#003ea8",
-              "on-surface-variant": "#434655",
-              "on-background": "#111c2d",
-              "secondary-container": "#acbfff",
-              "tertiary-fixed-dim": "#ffb596",
-              "surface-container-lowest": "#ffffff",
-              "surface-container": "#e7eeff",
-              "on-primary": "#ffffff",
-              "surface": "#f9f9ff",
-              "inverse-surface": "#263143",
-              "primary-fixed": "#dbe1ff",
-              "primary-fixed-dim": "#b4c5ff",
-              "surface-container-high": "#dee8ff",
-              "secondary": "#495c95",
-              "primary-container": "#2563eb",
-              "on-primary-container": "#eeefff",
-              "on-tertiary-fixed-variant": "#7d2d00",
-              "tertiary-container": "#bc4800",
-              "surface-bright": "#f9f9ff",
-              "surface-dim": "#cfdaf2",
-              "on-secondary-container": "#394c84",
-              "outline-variant": "#c3c6d7",
-              "surface-tint": "#0053db",
-              "on-tertiary-fixed": "#360f00",
-              "outline": "#737686",
-              "on-primary-fixed": "#00174b",
-              "on-tertiary": "#ffffff",
-              "on-surface": "#111c2d",
-              "secondary-fixed-dim": "#b4c5ff",
-              "on-error": "#ffffff",
-              "inverse-primary": "#b4c5ff",
-              "on-error-container": "#93000a",
-              "surface-container-highest": "#d8e3fb",
-              "error-container": "#ffdad6",
-              "on-secondary-fixed-variant": "#31447b",
-              "background": "#f9f9ff",
-              "tertiary": "#943700",
-              "surface-variant": "#d8e3fb",
-              "surface-container-low": "#f0f3ff",
-              "secondary-fixed": "#dbe1ff",
-              "inverse-on-surface": "#ecf1ff",
-              "on-secondary": "#ffffff",
-              "tertiary-fixed": "#ffdbcd",
-              "on-secondary-fixed": "#00174b",
-              "primary": "#004ac6",
-              "error": "#ba1a1a",
-              "on-tertiary-container": "#ffede6"
+              "primary": "#6366f1",
+              "background-dark": "#0a0a0f",
+              "panel-dark": "#1a1a2e",
+              "text-primary": "#f1f5f9",
+              "text-secondary": "#94a3b8",
             },
             fontFamily: {
               "headline": ["Inter"],
               "body": ["Inter"],
-              "label": ["Inter"]
             },
-            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
           },
         },
       }
@@ -75,50 +30,108 @@
 <style>
         body {
             font-family: 'Inter', sans-serif;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+            background-color: #0a0a0f;
+            overflow-x: hidden;
         }
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        .glow-effect {
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
         }
+        .bg-glow {
+            background: radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.15) 0%, rgba(10, 10, 15, 0) 70%);
+        }
+        /* Geometric Background Elements */
+        .geo-shape {
+            position: absolute;
+            opacity: 0.05;
+            pointer-events: none;
+            border: 1px solid #6366f1;
+        }
+        .circle { border-radius: 50%; width: 300px; height: 300px; top: 10%; left: -150px; }
+        .triangle { 
+            width: 0; height: 0; 
+            border-left: 100px solid transparent; 
+            border-right: 100px solid transparent; 
+            border-bottom: 173px solid #6366f1;
+            background: transparent;
+            border-top: none;
+            bottom: 15%; right: 5%;
+        }
+        .hexagon {
+            width: 100px; height: 57px;
+            background-color: transparent;
+            position: absolute;
+            top: 20%; right: 15%;
+        }
+        .hexagon:before, .hexagon:after {
+            content: "";
+            position: absolute; width: 0; border-left: 50px solid transparent; border-right: 50px solid transparent;
+        }
+        .hexagon:before { bottom: 100%; border-bottom: 28px solid #6366f1; }
+        .hexagon:after { top: 100%; width: 0; border-top: 28px solid #6366f1; }
     </style>
 </head>
-<body class="bg-[#ffffff] text-on-surface min-h-screen flex flex-col items-center">
-<!-- TopAppBar Mapping -->
-<header class="bg-[#f9f9ff] dark:bg-slate-950 flex items-center w-full px-8 py-6 max-w-[640px] mx-auto docked full-width top-0 no-line tonal-layering flat no-shadows font-['Inter'] antialiased tracking-tight">
-<div class="text-sm font-light text-slate-500 dark:text-slate-400">
+<body class="text-text-primary min-h-screen flex flex-col relative antialiased">
+<!-- Ambient Background Elements -->
+<div class="fixed inset-0 bg-glow z-0"></div>
+<div class="geo-shape circle"></div>
+<div class="geo-shape triangle"></div>
+<div class="geo-shape hexagon"></div>
+<div class="fixed inset-0 pointer-events-none opacity-[0.03]" style="background-image: radial-gradient(#6366f1 0.5px, transparent 0.5px); background-size: 30px 30px;"></div>
+<!-- Top Navigation -->
+<header class="relative z-10 w-full px-8 py-6 max-w-[1200px] mx-auto flex items-center justify-between">
+<div class="text-lg font-bold tracking-tighter text-text-primary flex items-center gap-2">
+<span class="w-2 h-2 bg-primary rounded-full"></span>
             auto-leverage
         </div>
+<nav class="flex gap-8 items-center">
+<a class="text-sm font-medium text-text-secondary hover:text-primary transition-colors" href="#">Documentation</a>
+<a class="text-sm font-medium text-text-secondary hover:text-primary transition-colors" href="#">API</a>
+<a class="text-sm font-medium text-text-secondary hover:text-primary transition-colors" href="#">Pricing</a>
+</nav>
 </header>
-<!-- Main Content Canvas -->
-<main class="flex-grow w-full max-w-[640px] px-8 pt-12 md:pt-24 flex flex-col gap-12">
-<!-- Hero Branding & Question -->
-<section class="flex flex-col gap-6 text-center">
-<h1 class="text-[28px] font-semibold text-on-surface leading-tight tracking-tight">
-                What do you want to change about your AI research run?
-            </h1>
-<p class="text-[15px] text-outline leading-relaxed max-w-[480px] mx-auto">
-                Tell us what you're trying to do and we'll point you to the right place.
+<!-- Main Content -->
+<main class="relative z-10 flex-grow w-full max-w-[800px] px-8 pt-20 md:pt-32 flex flex-col gap-12 mx-auto">
+<!-- Hero Section -->
+<section class="flex flex-col gap-8 text-center">
+<h1 class="text-4xl md:text-6xl font-bold text-text-primary leading-[1.1] tracking-tight">
+                Optimize your <br/><span class="text-primary">AI research runs</span>
+</h1>
+<p class="text-lg md:text-xl text-text-secondary leading-relaxed max-w-[600px] mx-auto">
+                What do you want to change about your current run? Tell us your goal and we'll handle the configuration.
             </p>
 </section>
-<!-- Search Input Section -->
-<section class="flex flex-col gap-6">
+<!-- Search/Input Section -->
+<section class="flex flex-col gap-4">
+<div class="relative group">
+<div class="absolute -inset-1 bg-primary/20 rounded-xl blur opacity-25 group-focus-within:opacity-50 transition duration-500"></div>
 <div class="relative">
-<textarea class="w-full bg-surface-container-lowest border border-outline-variant/20 rounded-lg p-4 text-[1rem] text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary-container focus:ring-opacity-10 focus:border-primary-container transition-all resize-none shadow-sm" placeholder='e.g. "I want to download more training data" or "the model keeps crashing"' rows="3"></textarea>
+<textarea class="w-full bg-panel-dark border border-white/10 rounded-xl p-6 text-lg text-text-primary placeholder:text-text-secondary/50 focus:ring-1 focus:ring-primary focus:border-primary transition-all resize-none shadow-2xl min-h-[160px]" placeholder='e.g. "I want to download more training data" or "the model keeps crashing"'></textarea>
 </div>
-<!-- Primary Action -->
-<button class="w-full h-[48px] bg-primary hover:bg-on-primary-fixed-variant text-white font-semibold rounded-lg text-[0.875rem] transition-all active:scale-[0.98] shadow-sm">
-                Find my answer
-            </button>
+</div>
+<button class="w-full h-[60px] bg-primary hover:bg-indigo-500 text-white font-bold rounded-xl text-lg transition-all active:scale-[0.99] glow-effect flex items-center justify-center gap-2">
+                Analyze Goal
+                <span class="material-symbols-outlined text-xl">bolt</span>
+</button>
 </section>
-<!-- Subtle Information Slot -->
-<section class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 hidden">
-<!-- Reserved for potential Bento items, hidden to maintain centered request focus -->
+<!-- Technical Accents -->
+<section class="mt-4 flex justify-center gap-12 text-[11px] font-mono text-text-secondary/40 uppercase tracking-widest">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 border border-primary/40"></span>
+                Status: Ready
+            </div>
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 border border-primary/40"></span>
+                Latency: 14ms
+            </div>
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 border border-primary/40"></span>
+                Nodes: Active
+            </div>
 </section>
 </main>
-<!-- Footer Mapping -->
-<footer class="bg-transparent flex justify-center w-full text-center full-width bottom-0 pb-12 no-line spacing-12 flat no-shadows opacity-90">
-<div class="text-[0.75rem] font-medium uppercase tracking-[0.05em] font-['Inter'] text-slate-400">
+<!-- Footer -->
+<footer class="relative z-10 flex justify-center w-full py-12">
+<div class="text-[0.7rem] font-bold uppercase tracking-[0.2em] text-text-secondary/40">
             No account needed.
         </div>
 </footer>
