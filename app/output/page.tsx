@@ -3,6 +3,8 @@
 import { useEffect, useState, useCallback, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import OutputCard from "@/components/OutputCard";
+import SimulationCard from "@/components/SimulationCard";
+import type { SimulationResult } from "@/app/api/simulate/route";
 
 interface OutputData {
   component_names: string[];
@@ -15,6 +17,11 @@ interface ApiResponse {
   error: string | null;
 }
 
+interface SimApiResponse {
+  data: SimulationResult | null;
+  error: string | null;
+}
+
 function OutputContent() {
   const params = useSearchParams();
   const router = useRouter();
@@ -22,6 +29,8 @@ function OutputContent() {
   const [data, setData] = useState<OutputData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [sim, setSim] = useState<SimulationResult | null>(null);
+  const [simLoading, setSimLoading] = useState(false);
 
   const rawComponents = params.get("components") ?? "";
   const useCase = params.get("useCase") ?? "";
@@ -45,11 +54,31 @@ function OutputContent() {
         setError(json.error ?? "Something went wrong — try again");
       } else {
         setData(json.data);
+        fetchSimulation();
       }
     } catch {
       setError("Something went wrong — try again");
     } finally {
       setLoading(false);
+    }
+  }, [rawComponents]);
+
+  const fetchSimulation = useCallback(async () => {
+    setSimLoading(true);
+    try {
+      const res = await fetch("/api/simulate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ useCase, components }),
+      });
+      const json: SimApiResponse = await res.json();
+      if (res.ok && json.data) {
+        setSim(json.data);
+      }
+    } catch {
+      // simulation is an enhancement — silently hide on failure
+    } finally {
+      setSimLoading(false);
     }
   }, [rawComponents]);
 
@@ -114,6 +143,14 @@ function OutputContent() {
           guideSteps={data.guide_steps}
           llmPrompt={data.llm_prompt}
         />
+        {simLoading && (
+          <div className="mt-12 space-y-4 animate-pulse">
+            <div className="h-4 bg-slate-200 rounded w-32" />
+            <div className="h-3 bg-slate-100 rounded w-full" />
+            <div className="h-3 bg-slate-100 rounded w-5/6" />
+          </div>
+        )}
+        {!simLoading && sim && <SimulationCard {...sim} />}
       </main>
 
       <footer className="w-full py-12">
