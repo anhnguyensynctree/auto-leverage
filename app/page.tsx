@@ -10,12 +10,11 @@ export default function Home() {
       <main className="flex-grow w-full max-w-[640px] px-8 pt-12 md:pt-24 flex flex-col gap-12">
         <section className="flex flex-col gap-5 text-center">
           <h1 className="text-[26px] font-semibold text-on-surface leading-snug tracking-tight max-w-[420px] mx-auto">
-            &ldquo;I changed literally nothing and now everything is
-            broken.&rdquo;
+            &ldquo;I know what I want my model to do. I have no idea how to tell
+            it that.&rdquo;
           </h1>
           <p className="text-[15px] text-outline leading-relaxed max-w-[400px] mx-auto">
-            A classic. Tell us what you&apos;re working on — we&apos;ll find the
-            right thing to fix.
+            Describe your goal — we&apos;ll turn it into a plan.
           </p>
         </section>
 
