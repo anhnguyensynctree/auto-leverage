@@ -14,7 +14,8 @@ export default function Home() {
             it that.&rdquo;
           </h1>
           <p className="text-[15px] text-outline leading-relaxed max-w-[400px] mx-auto">
-            Describe your goal — we&apos;ll turn it into a plan.
+            Describe your goal — we&apos;ll turn it into a plan you can run in
+            ChatGPT, Gemini, or Claude.
           </p>
         </section>
 
