@@ -86,6 +86,11 @@ function QuestionnaireContent() {
         );
 
         if (result.done) {
+          try {
+            sessionStorage.setItem("al_turns", JSON.stringify(currentTurns));
+          } catch {
+            // sessionStorage unavailable — confirm page will gracefully skip the section
+          }
           const navParams = new URLSearchParams({
             components: result.components.join(","),
             useCase: result.useCase,

@@ -1,29 +1,50 @@
 "use client";
 
-import { Suspense } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 
-interface ComponentInfo {
+interface Turn {
+  q: string;
+  a: string;
+}
+
+interface ComponentCard {
+  key: string;
   title: string;
   description: string;
 }
 
-const COMPONENT_INFO: Record<string, ComponentInfo> = {
-  prepare: {
-    title: "Data Preparation",
-    description:
-      "You're changing how data is downloaded and prepared before training starts. Most of these settings are fixed by default — changes here may require re-running prepare.py.",
-  },
-  train: {
-    title: "Model Trainer",
-    description:
-      "You're changing how the model is built or how it learns. These settings live in train.py and are the only ones the AI agent edits during experiments.",
-  },
-  program: {
-    title: "Experiment Instructions",
-    description:
-      "You're changing how the AI agent decides what to try. This is your control panel for research strategy — edit program.md to shape the agent's behavior without touching any Python.",
-  },
+const COMPONENT_TITLES: Record<string, string> = {
+  prepare: "Data Preparation",
+  train: "Model Trainer",
+  program: "Experiment Instructions",
+};
+
+const COMPONENT_BASE_DESCRIPTIONS: Record<string, string> = {
+  prepare:
+    "You're changing how data is downloaded and prepared before training starts. Most of these settings are fixed by default — changes here may require re-running prepare.py.",
+  train:
+    "You're changing how the model is built or how it learns. These settings live in train.py and are the only ones the AI agent edits during experiments.",
+  program:
+    "You're changing how the AI agent decides what to try. This is your control panel for research strategy — edit program.md to shape the agent's behavior without touching any Python.",
+};
+
+const COMPONENT_USECASE_DESCRIPTIONS: Record<
+  string,
+  (useCase: string) => string
+> = {
+  prepare: (useCase) =>
+    useCase
+      ? `For "${useCase}", this covers how your training data is sourced and shaped before the model ever sees it.`
+      : COMPONENT_BASE_DESCRIPTIONS.prepare,
+  train: (useCase) =>
+    useCase
+      ? `For "${useCase}", this is where the model architecture and learning behaviour are configured.`
+      : COMPONENT_BASE_DESCRIPTIONS.train,
+  program: (useCase) =>
+    useCase
+      ? `For "${useCase}", this tells the AI agent what experiments to run and what direction to explore.`
+      : COMPONENT_BASE_DESCRIPTIONS.program,
 };
 
 const MULTI_DESCRIPTIONS: Record<string, string> = {
@@ -37,6 +58,24 @@ const MULTI_DESCRIPTIONS: Record<string, string> = {
     "We'll walk you through all three parts in order: first get your data ready, then review the model defaults, then set up the experiment instructions so the agent knows what to do.",
 };
 
+function readTurnsFromStorage(): Turn[] {
+  try {
+    const raw = sessionStorage.getItem("al_turns");
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter(
+      (t): t is Turn =>
+        typeof t === "object" &&
+        t !== null &&
+        typeof t.q === "string" &&
+        typeof t.a === "string",
+    );
+  } catch {
+    return [];
+  }
+}
+
 function ConfirmContent() {
   const params = useSearchParams();
   const router = useRouter();
@@ -45,6 +84,12 @@ function ConfirmContent() {
   const confidence = params.get("confidence") ?? "";
   const useCase = params.get("useCase") ?? "";
   const components = rawComponents.split(",").filter(Boolean);
+
+  const [turns, setTurns] = useState<Turn[]>([]);
+
+  useEffect(() => {
+    setTurns(readTurnsFromStorage());
+  }, []);
 
   if (components.length === 0) {
     router.replace("/");
@@ -55,13 +100,20 @@ function ConfirmContent() {
   const multiDescription = MULTI_DESCRIPTIONS[sortedKey];
   const isSingle = components.length === 1;
 
-  const displayComponents = components
-    .map((c) => COMPONENT_INFO[c])
-    .filter(Boolean);
+  const componentCards: ComponentCard[] = components
+    .filter((c) => COMPONENT_TITLES[c])
+    .map((c) => ({
+      key: c,
+      title: COMPONENT_TITLES[c],
+      description: useCase
+        ? (COMPONENT_USECASE_DESCRIPTIONS[c]?.(useCase) ??
+          COMPONENT_BASE_DESCRIPTIONS[c])
+        : COMPONENT_BASE_DESCRIPTIONS[c],
+    }));
 
   const title = isSingle
-    ? (displayComponents[0]?.title ?? "Your Setup")
-    : displayComponents.map((c) => c.title).join(" + ");
+    ? (componentCards[0]?.title ?? "Your Setup")
+    : componentCards.map((c) => c.title).join(" + ");
 
   function handleConfirm() {
     const navParams = new URLSearchParams({
@@ -107,24 +159,80 @@ function ConfirmContent() {
           </div>
         )}
 
-        <div className="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-xl p-7 mb-8 hover:border-primary/30 transition-colors duration-300">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-7 h-7 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center">
-              <span className="material-symbols-outlined text-[16px] text-primary">
-                settings
-              </span>
-            </div>
-            <h2 className="text-[16px] font-bold text-on-surface">{title}</h2>
+        {/* What we asked — conversation turns */}
+        {turns.length > 0 && (
+          <div className="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-xl px-5 py-4 mb-5">
+            <p className="text-[11px] text-secondary uppercase tracking-widest font-semibold mb-3">
+              What we asked
+            </p>
+            <ol className="space-y-3">
+              {turns.map((turn, i) => (
+                <li key={i} className="flex flex-col gap-0.5">
+                  <span className="text-[12px] text-on-surface-variant leading-snug">
+                    {turn.q}
+                  </span>
+                  <span className="text-[13px] text-on-surface font-medium leading-snug">
+                    {turn.a}
+                  </span>
+                </li>
+              ))}
+            </ol>
           </div>
-          <p className="text-[13px] leading-relaxed text-on-surface-variant">
-            {isSingle && displayComponents[0]
-              ? displayComponents[0].description
-              : (multiDescription ??
-                displayComponents.map((c) => c.description).join(" "))}
+        )}
+
+        {/* What we identified — component cards */}
+        <div className="w-full mb-5">
+          <p className="text-[11px] text-secondary uppercase tracking-widest font-semibold mb-3">
+            What we identified
           </p>
+          {isSingle && componentCards[0] ? (
+            <div className="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-xl p-5 hover:border-primary/30 transition-colors duration-300">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-7 h-7 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center">
+                  <span className="material-symbols-outlined text-[16px] text-primary">
+                    settings
+                  </span>
+                </div>
+                <h2 className="text-[15px] font-bold text-on-surface">
+                  {componentCards[0].title}
+                </h2>
+              </div>
+              <p className="text-[13px] leading-relaxed text-on-surface-variant">
+                {componentCards[0].description}
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {componentCards.length > 1 && multiDescription && (
+                <p className="text-[13px] text-on-surface-variant leading-relaxed mb-1">
+                  {multiDescription}
+                </p>
+              )}
+              {componentCards.map((card) => (
+                <div
+                  key={card.key}
+                  className="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-xl p-5 hover:border-primary/30 transition-colors duration-300"
+                >
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="w-7 h-7 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center">
+                      <span className="material-symbols-outlined text-[16px] text-primary">
+                        settings
+                      </span>
+                    </div>
+                    <h2 className="text-[15px] font-bold text-on-surface">
+                      {card.title}
+                    </h2>
+                  </div>
+                  <p className="text-[13px] leading-relaxed text-on-surface-variant">
+                    {card.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
-        <div className="w-full flex flex-col gap-3">
+        <div className="w-full flex flex-col gap-3 mt-3">
           <button
             onClick={handleConfirm}
             className="w-full h-12 rounded-xl bg-primary hover:bg-on-primary-fixed-variant text-white font-semibold text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2 shadow-glow"
