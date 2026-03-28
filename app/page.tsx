@@ -8,13 +8,14 @@ export default function Home() {
       </header>
 
       <main className="flex-grow w-full max-w-[640px] px-8 pt-12 md:pt-24 flex flex-col gap-12">
-        <section className="flex flex-col gap-6 text-center">
-          <h1 className="text-[28px] font-semibold text-on-surface leading-tight tracking-tight">
-            What do you want to change about your AI research run?
+        <section className="flex flex-col gap-5 text-center">
+          <h1 className="text-[26px] font-semibold text-on-surface leading-snug tracking-tight max-w-[420px] mx-auto">
+            &ldquo;I changed literally nothing and now everything is
+            broken.&rdquo;
           </h1>
-          <p className="text-[15px] text-outline leading-relaxed max-w-[440px] mx-auto">
-            Tell us your goal. We&apos;ll show you exactly what to change and
-            give you the prompt to do it.
+          <p className="text-[15px] text-outline leading-relaxed max-w-[400px] mx-auto">
+            A classic. Tell us what you&apos;re working on — we&apos;ll find the
+            right thing to fix.
           </p>
         </section>
 
