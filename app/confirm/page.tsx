@@ -20,6 +20,12 @@ const COMPONENT_TITLES: Record<string, string> = {
   program: "Experiment Instructions",
 };
 
+const COMPONENT_ICONS: Record<string, string> = {
+  prepare: "database",
+  train: "model_training",
+  program: "lab_profile",
+};
+
 const COMPONENT_BASE_DESCRIPTIONS: Record<string, string> = {
   prepare:
     "You're changing how data is downloaded and prepared before training starts. Most of these settings are fixed by default — changes here may require re-running prepare.py.",
@@ -111,10 +117,6 @@ function ConfirmContent() {
         : COMPONENT_BASE_DESCRIPTIONS[c],
     }));
 
-  const title = isSingle
-    ? (componentCards[0]?.title ?? "Your Setup")
-    : componentCards.map((c) => c.title).join(" + ");
-
   function handleConfirm() {
     const navParams = new URLSearchParams({
       components: rawComponents,
@@ -190,7 +192,7 @@ function ConfirmContent() {
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-7 h-7 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center">
                   <span className="material-symbols-outlined text-[16px] text-primary">
-                    settings
+                    {COMPONENT_ICONS[componentCards[0].key] ?? "settings"}
                   </span>
                 </div>
                 <h2 className="text-[15px] font-bold text-on-surface">
@@ -216,7 +218,7 @@ function ConfirmContent() {
                   <div className="flex items-center gap-3 mb-2">
                     <div className="w-7 h-7 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center">
                       <span className="material-symbols-outlined text-[16px] text-primary">
-                        settings
+                        {COMPONENT_ICONS[card.key] ?? "settings"}
                       </span>
                     </div>
                     <h2 className="text-[15px] font-bold text-on-surface">
