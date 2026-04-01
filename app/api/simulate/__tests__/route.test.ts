@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { POST } from "@/app/api/simulate/route";
+import { POST, simulateCache } from "@/app/api/simulate/route";
 import type { SimulationResult } from "@/app/api/simulate/route";
 
 const FIXTURE: SimulationResult = {
@@ -24,21 +24,24 @@ function makeRequest(body: unknown): Request {
   });
 }
 
+function makeGlmResponse(fixture: SimulationResult): Response {
+  return new Response(
+    JSON.stringify({
+      choices: [{ message: { content: JSON.stringify(fixture) } }],
+    }),
+    { status: 200 },
+  );
+}
+
 beforeEach(() => {
   vi.stubEnv("GLM_API_KEY", "test-key-123");
+  simulateCache.clear();
+  vi.useRealTimers();
 });
 
 describe("POST /api/simulate — success path", () => {
   it("returns SimulationResult when GLM responds with valid JSON", async () => {
-    const glmPayload = {
-      choices: [{ message: { content: JSON.stringify(FIXTURE) } }],
-    };
-
-    global.fetch = vi
-      .fn()
-      .mockResolvedValueOnce(
-        new Response(JSON.stringify(glmPayload), { status: 200 }),
-      );
+    global.fetch = vi.fn().mockResolvedValueOnce(makeGlmResponse(FIXTURE));
 
     const res = await POST(
       makeRequest({
@@ -55,15 +58,7 @@ describe("POST /api/simulate — success path", () => {
   });
 
   it("passes useCase and components to GLM in request body", async () => {
-    const glmPayload = {
-      choices: [{ message: { content: JSON.stringify(FIXTURE) } }],
-    };
-
-    const mockFetch = vi
-      .fn()
-      .mockResolvedValueOnce(
-        new Response(JSON.stringify(glmPayload), { status: 200 }),
-      );
+    const mockFetch = vi.fn().mockResolvedValueOnce(makeGlmResponse(FIXTURE));
     global.fetch = mockFetch;
 
     await POST(
@@ -97,14 +92,15 @@ describe("POST /api/simulate — GLM error paths", () => {
   });
 
   it("returns { data: null, error } when GLM returns invalid JSON in content", async () => {
-    const glmPayload = {
-      choices: [{ message: { content: "not valid json {{" } }],
-    };
-
     global.fetch = vi
       .fn()
       .mockResolvedValueOnce(
-        new Response(JSON.stringify(glmPayload), { status: 200 }),
+        new Response(
+          JSON.stringify({
+            choices: [{ message: { content: "not valid json {{" } }],
+          }),
+          { status: 200 },
+        ),
       );
 
     const res = await POST(
@@ -162,5 +158,84 @@ describe("POST /api/simulate — validation", () => {
 
     expect(res.status).toBe(400);
     expect(json.data).toBeNull();
+  });
+});
+
+describe("POST /api/simulate — TTL cache", () => {
+  it("cache hit: second identical request returns cached result without calling GLM", async () => {
+    const mockFetch = vi.fn().mockResolvedValue(makeGlmResponse(FIXTURE));
+    global.fetch = mockFetch;
+
+    await POST(makeRequest({ useCase: "rag pipeline", components: ["train", "prepare"] }));
+    await POST(makeRequest({ useCase: "rag pipeline", components: ["train", "prepare"] }));
+
+    expect(mockFetch).toHaveBeenCalledTimes(1);
+  });
+
+  it("cache hit: component order does not affect cache key", async () => {
+    const mockFetch = vi.fn().mockResolvedValue(makeGlmResponse(FIXTURE));
+    global.fetch = mockFetch;
+
+    await POST(makeRequest({ useCase: "rag pipeline", components: ["prepare", "train"] }));
+    await POST(makeRequest({ useCase: "rag pipeline", components: ["train", "prepare"] }));
+
+    expect(mockFetch).toHaveBeenCalledTimes(1);
+  });
+
+  it("cache miss: different useCase produces a new GLM call", async () => {
+    const mockFetch = vi.fn().mockResolvedValue(makeGlmResponse(FIXTURE));
+    global.fetch = mockFetch;
+
+    await POST(makeRequest({ useCase: "rag pipeline", components: ["train"] }));
+    await POST(makeRequest({ useCase: "image classification", components: ["train"] }));
+
+    expect(mockFetch).toHaveBeenCalledTimes(2);
+  });
+
+  it("cache miss: different components produce a new GLM call", async () => {
+    const mockFetch = vi.fn().mockResolvedValue(makeGlmResponse(FIXTURE));
+    global.fetch = mockFetch;
+
+    await POST(makeRequest({ useCase: "rag pipeline", components: ["train"] }));
+    await POST(makeRequest({ useCase: "rag pipeline", components: ["train", "prepare"] }));
+
+    expect(mockFetch).toHaveBeenCalledTimes(2);
+  });
+
+  it("cache expiry: expired entry triggers a fresh GLM call", async () => {
+    vi.useFakeTimers();
+    const mockFetch = vi.fn().mockResolvedValue(makeGlmResponse(FIXTURE));
+    global.fetch = mockFetch;
+
+    await POST(makeRequest({ useCase: "rag pipeline", components: ["train"] }));
+
+    // Advance past TTL (60 min + 1 ms)
+    vi.advanceTimersByTime(60 * 60 * 1000 + 1);
+
+    await POST(makeRequest({ useCase: "rag pipeline", components: ["train"] }));
+
+    expect(mockFetch).toHaveBeenCalledTimes(2);
+  });
+
+  it("null useCase: no cache entry written, GLM called each time", async () => {
+    const mockFetch = vi.fn().mockResolvedValue(makeGlmResponse(FIXTURE));
+    global.fetch = mockFetch;
+
+    await POST(makeRequest({ useCase: null, components: ["train"] }));
+    await POST(makeRequest({ useCase: null, components: ["train"] }));
+
+    expect(mockFetch).toHaveBeenCalledTimes(2);
+    expect(simulateCache.size).toBe(0);
+  });
+
+  it("null useCase: no cache entry written when useCase is undefined", async () => {
+    const mockFetch = vi.fn().mockResolvedValue(makeGlmResponse(FIXTURE));
+    global.fetch = mockFetch;
+
+    await POST(makeRequest({ components: ["train"] }));
+    await POST(makeRequest({ components: ["train"] }));
+
+    expect(mockFetch).toHaveBeenCalledTimes(2);
+    expect(simulateCache.size).toBe(0);
   });
 });
