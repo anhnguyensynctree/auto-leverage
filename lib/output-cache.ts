@@ -1,28 +1,29 @@
-const CACHE_TTL_MS = 60 * 60 * 1000; // 60 minutes
+import { redisClient } from "./redis-client";
 
-interface CacheEntry {
-  result: object;
-  expiresAt: number;
-}
-
-export const outputCache = new Map<string, CacheEntry>();
+const CACHE_TTL_SECONDS = 3600; // 60 minutes
 
 export function getCacheKey(
   components: string[],
   useCase: string | null | undefined,
 ): string {
   const useCasePart = useCase?.trim() || "__no_usecase__";
-  return `${[...components].sort().join(",")}:${useCasePart}`;
+  return `output:${[...components].sort().join(",")}:${useCasePart}`;
 }
 
-export function getCached(key: string): object | null {
-  const cached = outputCache.get(key);
-  if (cached && Date.now() < cached.expiresAt) {
-    return cached.result;
+export async function getCached(key: string): Promise<object | null> {
+  if (!redisClient) return null;
+  try {
+    return await redisClient.get<object>(key);
+  } catch {
+    return null;
   }
-  return null;
 }
 
-export function setCached(key: string, result: object): void {
-  outputCache.set(key, { result, expiresAt: Date.now() + CACHE_TTL_MS });
+export async function setCached(key: string, result: object): Promise<void> {
+  if (!redisClient) return;
+  try {
+    await redisClient.set(key, result, { ex: CACHE_TTL_SECONDS });
+  } catch {
+    // no-op — cache failure is non-fatal
+  }
 }
