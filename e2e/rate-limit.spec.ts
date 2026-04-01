@@ -110,9 +110,9 @@ test.describe("2 — error states (429 → redirect to output)", () => {
 
     await page.goto(RATE_LIMITED_URL);
 
-    // All-components template content should appear
+    // All-components template content should appear in the heading
     await expect(
-      page.getByText(/Data Preparation/i),
+      page.getByRole("heading", { name: /Data Preparation/i }),
     ).toBeVisible();
 
     expect(apiOutputCalled).toBe(false);

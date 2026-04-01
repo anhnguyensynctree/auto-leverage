@@ -69,8 +69,9 @@ test.describe("2 — error states", () => {
     await page.getByRole("button", { name: /yes, this fits/i }).click();
 
     await expect(page).toHaveURL(/\/output/);
+    // Output page renders the error string from the API response
     await expect(
-      page.getByText(/something went wrong/i),
+      page.getByText(/something went wrong|internal server error/i),
     ).toBeVisible({ timeout: 10000 });
   });
 });
@@ -107,6 +108,6 @@ test.describe("5 — input edge", () => {
     );
 
     await expect(page.getByText("Model Trainer")).toBeVisible();
-    await expect(page.getByText(/improve loss/i)).toBeVisible();
+    await expect(page.getByText(/improve loss/i).first()).toBeVisible();
   });
 });
