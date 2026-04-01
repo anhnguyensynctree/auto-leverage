@@ -111,3 +111,60 @@ test.describe("5 — input edge", () => {
     await expect(page.getByText(/improve loss/i).first()).toBeVisible();
   });
 });
+
+test.describe("visual QA — confirm and output", () => {
+  test("confirm page loaded — component cards visible", async ({ page }) => {
+    await page.goto(CONFIRM_URL);
+    await expect(page.getByText("Data Preparation")).toBeVisible();
+    await expect(page.getByText("Model Trainer")).toBeVisible();
+
+    await page.screenshot({ path: "qa/screenshots/confirm-loaded.png" });
+    await expect(page).toHaveScreenshot("confirm-loaded.png");
+  });
+
+  test("/output reached — guide steps visible", async ({ page }) => {
+    await page.route("**/api/output", (route) =>
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify(MOCK_OUTPUT),
+      }),
+    );
+
+    await page.goto(CONFIRM_URL);
+    await page.getByRole("button", { name: /yes, this fits/i }).click();
+    await expect(page).toHaveURL(/\/output/);
+    await expect(page.getByText(/step 1:/i)).toBeVisible();
+
+    await page.screenshot({ path: "qa/screenshots/confirm-output.png" });
+    await expect(page).toHaveScreenshot("confirm-output.png");
+  });
+
+  test("error state — /api/output 500, error message visible", async ({ page }) => {
+    await page.route("**/api/output", (route) =>
+      route.fulfill({
+        status: 500,
+        contentType: "application/json",
+        body: JSON.stringify({ data: null, error: "Internal Server Error" }),
+      }),
+    );
+
+    await page.goto(CONFIRM_URL);
+    await page.getByRole("button", { name: /yes, this fits/i }).click();
+    await expect(page).toHaveURL(/\/output/);
+    await expect(
+      page.getByText(/something went wrong|internal server error/i),
+    ).toBeVisible({ timeout: 10000 });
+
+    await page.screenshot({ path: "qa/screenshots/confirm-error.png" });
+    await expect(page).toHaveScreenshot("confirm-error.png");
+  });
+
+  test("empty state — no components param, redirect", async ({ page }) => {
+    await page.goto("/confirm");
+    await expect(page).toHaveURL("/", { timeout: 5000 });
+
+    await page.screenshot({ path: "qa/screenshots/confirm-empty.png" });
+    await expect(page).toHaveScreenshot("confirm-empty.png");
+  });
+});

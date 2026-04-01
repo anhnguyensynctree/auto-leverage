@@ -91,3 +91,35 @@ test.describe("home entry form", () => {
     });
   });
 });
+
+test.describe("visual QA — home entry", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.route("**/api/classify", (route) =>
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify(MOCK_CLASSIFY),
+      }),
+    );
+    await page.goto("/");
+  });
+
+  test("initial render — empty textarea, Analyze Goal button", async ({ page }) => {
+    await expect(page.getByRole("textbox", { name: "Describe your goal" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Analyze Goal" })).toBeVisible();
+
+    await page.screenshot({ path: "qa/screenshots/home-entry-initial.png" });
+    await expect(page).toHaveScreenshot("home-entry-initial.png");
+  });
+
+  test("inline error state — at least 3 words message visible", async ({ page }) => {
+    await page.getByRole("textbox", { name: "Describe your goal" }).fill("hi");
+    await page.getByRole("button", { name: "Analyze Goal" }).click();
+
+    await expect(page.locator("#entry-error")).toBeVisible();
+    await expect(page.locator("#entry-error")).toContainText("at least 3 words");
+
+    await page.screenshot({ path: "qa/screenshots/home-entry-error.png" });
+    await expect(page).toHaveScreenshot("home-entry-error.png");
+  });
+});

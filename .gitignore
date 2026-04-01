@@ -23,3 +23,6 @@ coverage/
 .DS_Store
 *.swp
 .claude/worktrees/
+
+# Visual QA — generated screenshots (not source)
+qa/screenshots/

@@ -188,3 +188,79 @@ test.describe("5 — input edge", () => {
     expect(callCount).toBe(callCountBeforeBack);
   });
 });
+
+test.describe("visual QA — questionnaire", () => {
+  test("question loaded — question text and options visible", async ({ page }) => {
+    await page.route("**/api/converse", (route) =>
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify(MOCK_TURN_0),
+      }),
+    );
+
+    await page.goto(BASE_URL);
+
+    await expect(
+      page.getByRole("heading", { name: "What are you optimising?" }),
+    ).toBeVisible();
+    await expect(page.locator('input[type="radio"]')).toHaveCount(3);
+
+    await page.screenshot({ path: "qa/screenshots/questionnaire-loaded.png" });
+    await expect(page).toHaveScreenshot("questionnaire-loaded.png");
+  });
+
+  test("after done:true — /confirm URL reached", async ({ page }) => {
+    await page.route("**/api/converse", async (route) => {
+      const postData = route.request().postDataJSON() as {
+        turns?: unknown[];
+      } | null;
+      const hasTurns =
+        Array.isArray(postData?.turns) && postData.turns.length > 0;
+      const body = hasTurns ? MOCK_DONE : MOCK_TURN_0;
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify(body),
+      });
+    });
+
+    await page.goto(BASE_URL);
+    await expect(
+      page.getByRole("heading", { name: "What are you optimising?" }),
+    ).toBeVisible();
+
+    await page.locator("label", { hasText: "Learning rate" }).click({ force: true });
+    await page.getByRole("button", { name: /next/i }).click();
+    await page.waitForURL(/\/confirm/);
+
+    await page.screenshot({ path: "qa/screenshots/questionnaire-done.png" });
+    await expect(page).toHaveScreenshot("questionnaire-done.png");
+  });
+
+  test("error state — 500 mock, error message visible", async ({ page }) => {
+    await page.route("**/api/converse", (route) =>
+      route.fulfill({
+        status: 500,
+        contentType: "application/json",
+        body: JSON.stringify({ data: null, error: "Internal Server Error" }),
+      }),
+    );
+
+    await page.goto(BASE_URL);
+    await expect(page.getByText(/something went wrong/i)).toBeVisible({ timeout: 10000 });
+
+    await page.screenshot({ path: "qa/screenshots/questionnaire-error.png" });
+    await expect(page).toHaveScreenshot("questionnaire-error.png");
+  });
+
+  test("empty state — no intent param, redirect or message", async ({ page }) => {
+    await page.goto("/questionnaire");
+    await expect(
+      page.getByText(/please describe your goal first/i),
+    ).toBeVisible({ timeout: 5000 });
+
+    await page.screenshot({ path: "qa/screenshots/questionnaire-empty.png" });
+    await expect(page).toHaveScreenshot("questionnaire-empty.png");
+  });
+});
