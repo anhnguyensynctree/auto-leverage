@@ -1,4 +1,13 @@
 
+## 2026-04-01T20:05Z | oms-work
+• All 9 tasks shipped — Quality & Resilience v1 complete
+• 205 unit tests + 30/30 E2E passing — milestone gate clean
+• No decision required — next milestone: run /oms-exec to plan
+Built: E2E 5-category coverage (4 flows) — test confidence no longer overstated
+Built: Rate limit UX (429 → static fallback + back-in-N-minutes) — broken product state resolved
+Built: Upstash Redis cache (serverless-safe, graceful degrade) — cold-start cache loss eliminated
+Built: Qwen 3.6 evaluation + GLM exponential backoff — outage resilience improved
+
 ## 2026-04-01T01:00Z | oms-schema-fix
 • TASK-041–049 schema compliance applied — all 9 tasks now have Feature, Context, Activated, File-count, Produces
 • Model-hints corrected: qwen (≤3 files), sonnet (4 files or infra-critical), qwen36 (research)
