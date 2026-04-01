@@ -46,6 +46,9 @@ test.describe("1 — happy path", () => {
     });
     // Confirm no rate-limit message text is present
     await expect(page.getByText(/should be back/i)).not.toBeVisible().catch(() => {});
+
+    await page.screenshot({ path: "qa/screenshots/rate-limit-absent.png" });
+    await expect(page).toHaveScreenshot("rate-limit-absent.png");
   });
 
   test("start over button visible and navigates to /", async ({ page }) => {
@@ -116,6 +119,9 @@ test.describe("2 — error states (429 → redirect to output)", () => {
     ).toBeVisible();
 
     expect(apiOutputCalled).toBe(false);
+
+    await page.screenshot({ path: "qa/screenshots/rate-limit-output.png" });
+    await expect(page).toHaveScreenshot("rate-limit-output.png");
   });
 });
 

@@ -74,6 +74,9 @@ test.describe("full happy path", () => {
 
     // ── Step 1: Home ───────────────────────────────────────────────────────
     await page.goto("/");
+    await page.screenshot({ path: "qa/screenshots/happy-path-home.png" });
+    await expect(page).toHaveScreenshot("happy-path-home.png");
+
     await page
       .getByRole("textbox", { name: "Describe your goal" })
       .fill("I want to tune my optimizer settings");
@@ -88,6 +91,9 @@ test.describe("full happy path", () => {
       page.getByRole("heading", { name: "What are you optimising?" }),
     ).toBeVisible({ timeout: 15000 });
 
+    await page.screenshot({ path: "qa/screenshots/happy-path-questionnaire.png" });
+    await expect(page).toHaveScreenshot("happy-path-questionnaire.png");
+
     await page
       .locator("label", { hasText: "Learning rate" })
       .click({ force: true });
@@ -100,10 +106,16 @@ test.describe("full happy path", () => {
 
     await expect(page.getByText("tune my optimizer", { exact: true })).toBeVisible();
 
+    await page.screenshot({ path: "qa/screenshots/happy-path-confirm.png" });
+    await expect(page).toHaveScreenshot("happy-path-confirm.png");
+
     await page.getByRole("button", { name: /yes, this fits/i }).click();
 
     // ── Step 4: Output ─────────────────────────────────────────────────────
     await expect(page).toHaveURL(/\/output/);
     await expect(page.getByText(/step 1:/i)).toBeVisible();
+
+    await page.screenshot({ path: "qa/screenshots/happy-path-output.png" });
+    await expect(page).toHaveScreenshot("happy-path-output.png");
   });
 });
