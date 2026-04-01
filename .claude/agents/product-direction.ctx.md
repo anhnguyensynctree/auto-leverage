@@ -12,25 +12,20 @@ Post-MVP — full product live at https://auto-leverage.vercel.app. Entering dis
 - GitHub Actions CI + Vercel deploy pipeline
 - 130+ unit tests, 5 E2E specs
 
-## Active Milestone
-**Distribution Ready** | 0/4 features complete
+**Distribution Ready** | ✅ Complete 2026-03-31 | 8/8 tasks (TASK-033–040)
+- TTL cache (60 min) on /api/simulate + /api/output — repeat requests skip GLM
+- GLM retry logic — 502/503 retried once; 429 respects Retry-After
+- Structured error logging — actionable Vercel function logs for all GLM error paths
+- Simulation panel collapsed by default — lazy-fetched on first toggle
+- "Ready to run this?" CTA above prompt copy block
+- Share button — copies output URL to clipboard
+- Vercel Analytics — 4 funnel events, no PII
 
-Features (dependency order):
-1. FEATURE-008: Observability & GLM resilience *(ship first — unblocked)*
-2. FEATURE-009: Output page UX compression *(ship first — unblocked, parallel with 008)*
-3. FEATURE-010: Shareable output URLs *(after 008+009 validate in prod)*
-4. FEATURE-011: Funnel analytics *(after 008+009; can parallel with 010)*
+## Active Milestone
+None — run /oms-exec to plan next milestone
 
 ## Current Priorities
-1. Confirm production health after simulation panel launch (FEATURE-008)
-2. Reduce cognitive load on output page before growth work (FEATURE-009)
-3. Enable word-of-mouth sharing (FEATURE-010)
-
-## Next Milestone (planned)
-Growth v1 — after Distribution Ready validates:
-- SEO / landing page optimization
-- Example outputs visible on homepage before entering the flow
-- Social proof (use case examples)
+None set — pending next milestone planning session
 
 ## User Flow (confirmed)
 ```
