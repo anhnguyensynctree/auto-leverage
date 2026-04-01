@@ -385,5 +385,23 @@
     "passed": true,
     "fail_at": null,
     "cost_usd": null
+  },
+  {
+    "task_id": "TASK-050",
+    "slug": "auto-leverage",
+    "title": "Add page.screenshot() + toHaveScreenshot() to browser E2E specs (batch 1)",
+    "date": "2026-04-01T22:56:33.590477Z",
+    "passed": true,
+    "fail_at": null,
+    "cost_usd": null
+  },
+  {
+    "task_id": "TASK-051",
+    "slug": "auto-leverage",
+    "title": "Add page.screenshot() + toHaveScreenshot() to browser E2E specs (batch 2)",
+    "date": "2026-04-01T23:05:39.036160Z",
+    "passed": true,
+    "fail_at": null,
+    "cost_usd": null
   }
 ]

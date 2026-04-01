@@ -1478,7 +1478,9 @@ Verify: pnpm test && pnpm exec tsc --noEmit
 ---
 
 ## TASK-050: Add page.screenshot() + toHaveScreenshot() to browser E2E specs (batch 1)
-Status: queued
+Status: done
+Branch: oms-work/task-050
+Notes: 10 baselines committed, 27 tests pass
 Feature: none
 Milestone: Visual QA Baseline
 Department: Engineering
@@ -1536,7 +1538,9 @@ Verify: pnpm exec playwright test e2e/home-entry.spec.ts e2e/questionnaire-flow.
 ---
 
 ## TASK-051: Add page.screenshot() + toHaveScreenshot() to browser E2E specs (batch 2)
-Status: queued
+Status: done
+Branch: oms-work/task-051
+Notes: 10 baselines committed, 13 tests pass
 Feature: none
 Milestone: Visual QA Baseline
 Department: Engineering
