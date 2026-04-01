@@ -31,6 +31,8 @@ function OutputContent() {
   const [error, setError] = useState<string | null>(null);
   const [sim, setSim] = useState<SimulationResult | null>(null);
   const [simLoading, setSimLoading] = useState(false);
+  const [simExpanded, setSimExpanded] = useState(false);
+  const [simFetched, setSimFetched] = useState(false);
 
   const rawComponents = params.get("components") ?? "";
   const useCase = params.get("useCase") ?? "";
@@ -54,7 +56,6 @@ function OutputContent() {
         setError(json.error ?? "Something went wrong — try again");
       } else {
         setData(json.data);
-        fetchSimulation();
       }
     } catch {
       setError("Something went wrong — try again");
@@ -79,8 +80,17 @@ function OutputContent() {
       // simulation is an enhancement — silently hide on failure
     } finally {
       setSimLoading(false);
+      setSimFetched(true);
     }
   }, [rawComponents]);
+
+  const handleToggleSim = useCallback(() => {
+    const next = !simExpanded;
+    setSimExpanded(next);
+    if (next && !simFetched) {
+      fetchSimulation();
+    }
+  }, [simExpanded, simFetched, fetchSimulation]);
 
   useEffect(() => {
     if (components.length === 0) {
@@ -143,14 +153,30 @@ function OutputContent() {
           guideSteps={data.guide_steps}
           llmPrompt={data.llm_prompt}
         />
-        {simLoading && (
-          <div className="mt-12 space-y-4 animate-pulse">
-            <div className="h-4 bg-slate-200 rounded w-32" />
-            <div className="h-3 bg-slate-100 rounded w-full" />
-            <div className="h-3 bg-slate-100 rounded w-5/6" />
+        <div className="mt-8">
+          <button
+            onClick={handleToggleSim}
+            className="text-sm font-medium text-secondary hover:text-primary transition-colors"
+            aria-expanded={simExpanded}
+            data-testid="sim-toggle"
+          >
+            {simExpanded
+              ? "Hide example \u25be"
+              : "See a worked example \u25b8"}
+          </button>
+        </div>
+        {simExpanded && (
+          <div data-testid="sim-panel">
+            {simLoading && (
+              <div className="mt-12 space-y-4 animate-pulse">
+                <div className="h-4 bg-slate-200 rounded w-32" />
+                <div className="h-3 bg-slate-100 rounded w-full" />
+                <div className="h-3 bg-slate-100 rounded w-5/6" />
+              </div>
+            )}
+            {!simLoading && sim && <SimulationCard {...sim} />}
           </div>
         )}
-        {!simLoading && sim && <SimulationCard {...sim} />}
       </main>
 
       <footer className="w-full py-12">

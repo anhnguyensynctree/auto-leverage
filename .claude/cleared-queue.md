@@ -97,7 +97,7 @@ Verify: ux-researcher self-review — routing signal table must have ≥5 signal
 Depends: none
 
 ---
-
+- **Model-hint:** sonnet
 ## TASK-002: Per-Use-Case Testing Plan
 Status: done
 Notes: docs/testing-plan.md exists with 5 use cases
@@ -115,7 +115,7 @@ Verify: cpo review — all 5 fields present per use case, ≥3 use cases coverin
 Depends: TASK-001
 
 ---
-
+- **Model-hint:** sonnet
 ## TASK-003: LLM Prompt Templates (3 Components)
 Status: done
 Notes: docs/prompt-templates.md exists with all 3 templates
@@ -134,7 +134,7 @@ Verify: backend-developer self-review — each template passes the "non-tech use
 Depends: TASK-001
 
 ---
-
+- **Model-hint:** sonnet
 ## TASK-004: Question Stubs for Static Decision Tree
 Status: done
 Notes: docs/question-stubs.md exists with all paths
@@ -152,7 +152,7 @@ Verify: ux-researcher self-review — Grade 8 check on all copy; every taxonomy 
 Depends: TASK-001, TASK-002
 
 ---
-
+- **Model-hint:** sonnet
 ## TASK-005: Questionnaire JSON Config (Source of Truth)
 Status: done
 Notes: lib/questionnaire.json + lib/questionnaire-schema.ts implemented
@@ -172,7 +172,7 @@ Verify: cto review — Zod schema covers all node types; no classification logic
 Depends: TASK-004
 
 ---
-
+- **Model-hint:** sonnet
 ## TASK-006: POST /api/classify Route
 Status: done
 Notes: app/api/classify/route.ts implemented with confidence threshold
@@ -191,7 +191,7 @@ Verify: cto review — no hardcoded classification logic; config loaded dynamica
 Depends: TASK-005
 
 ---
-
+- **Model-hint:** sonnet
 ## TASK-007: Output Templates + POST /api/output Route
 Status: done
 Notes: lib/output-templates.ts + app/api/output/route.ts implemented
@@ -212,7 +212,7 @@ Verify: cto + cpo review — all 7 combinations present; guide_steps Grade 8 che
 Depends: TASK-003, TASK-006
 
 ---
-
+- **Model-hint:** sonnet
 ## TASK-008: Unit Tests — All 7 Output Combinations
 Status: done
 Notes: 71 tests passing across 3 test files
@@ -233,7 +233,7 @@ Verify: cto review — all 7 combinations tested; coverage report attached; zero
 Depends: TASK-007
 
 ---
-
+- **Model-hint:** sonnet
 ## TASK-009: Next.js App Scaffold
 Status: done
 Notes: Next.js 14 App Router with Tailwind, next.config.mjs, full app structure
@@ -257,7 +257,7 @@ Verify: cto review — next.config.ts (not .mjs); all 7 artifacts present; tsc c
 Depends: none
 
 ---
-
+- **Model-hint:** sonnet
 ## TASK-010: Home Page + Free-Text Entry Screen
 Status: done
 Notes: app/page.tsx + components/EntryForm.tsx implemented
@@ -277,7 +277,7 @@ Verify: cpo + frontend-developer review — Grade 8 copy check; mobile responsiv
 Depends: TASK-009, TASK-016
 
 ---
-
+- **Model-hint:** sonnet
 ## TASK-011: Questionnaire Flow UI
 Status: done
 Notes: app/questionnaire/page.tsx + QuestionCard.tsx + ProgressBar.tsx implemented
@@ -299,7 +299,7 @@ Verify: cto + ux-researcher review — no localStorage; back navigation works; "
 Depends: TASK-006, TASK-016
 
 ---
-
+- **Model-hint:** sonnet
 ## TASK-012: Confirmation + Output Screen
 Status: done
 Notes: app/confirm/page.tsx + app/output/page.tsx + OutputCard.tsx + ExportActions.tsx implemented
@@ -322,7 +322,7 @@ Verify: cpo + ux-researcher review — full flow tested on mobile + desktop; exp
 Depends: TASK-007, TASK-011, TASK-016
 
 ---
-
+- **Model-hint:** sonnet
 ## TASK-013: LLM Fallback Classifier
 Status: done
 Notes: lib/llm-classifier.ts + extended app/api/classify/route.ts
@@ -343,7 +343,7 @@ Verify: cto review — API key never in client bundle; graceful degrade confirme
 Depends: TASK-006
 
 ---
-
+- **Model-hint:** sonnet
 ## TASK-014: GitHub Actions CI Pipeline
 Status: done
 Notes: .github/workflows/ci.yml exists
@@ -362,7 +362,7 @@ Verify: cto self-review — all 4 steps present; no secrets required for CI run;
 Depends: TASK-008
 
 ---
-
+- **Model-hint:** sonnet
 ## TASK-015: Vercel Config + Domain Setup
 Status: done
 Feature: FEATURE-005
@@ -381,7 +381,7 @@ Verify: cto self-review — vercel.json valid; cto.ctx.md covers all manual step
 Depends: TASK-009
 
 ---
-
+- **Model-hint:** sonnet
 ## TASK-016: UI Design — All 4 Screens (Stitch)
 Status: done
 Notes: design/stitch/ has home.html, question-card.html, confirmation.html, output.html
@@ -404,7 +404,7 @@ Verify: cpo review — all 4 screens present; WCAG AA passed; mobile layout revi
 Depends: TASK-004
 
 ---
-
+- **Model-hint:** sonnet
 ## TASK-017: CLI-Based Deploy Pipeline (Production + PR Previews)
 Status: done
 Feature: FEATURE-005
@@ -424,7 +424,7 @@ Verify: cto self-review — production deploy confirmed; preview URL posted on t
 Depends: TASK-014
 
 ---
-
+- **Model-hint:** sonnet
 ## TASK-018: Write Tests for Rate Limiter, Strategy Route, and LLM Client
 Status: done
 Notes: branch worktree-agent-a6064ca7 — 192 tests passing, fixed JSON.parse bug in llm-strategy.ts
@@ -461,7 +461,7 @@ Validation: product → cpo + cto
 Tasks: TASK-019, TASK-021, TASK-022, TASK-023
 
 ---
-
+- **Model-hint:** sonnet
 ## TASK-019: Fix Questionnaire Traversal — "I still don't know" fallback crash
 Status: done
 Notes: q-fallback-2 label fixed to "I'm not sure", terminal-all last-resort added to traverseTree — 95 tests passing
@@ -481,7 +481,7 @@ Verify: qa — regression test passes; live site tested with "i have a trading s
 Depends: none
 
 ---
-
+- **Model-hint:** sonnet
 ## TASK-020: Smart Free-Text Routing
 Status: superseded
 Notes: Superseded by TASK-021 — full conversational engine replaces static tree and smart routing
@@ -490,7 +490,7 @@ Agent: backend-developer
 Depends: TASK-019
 
 ---
-
+- **Model-hint:** sonnet
 ## TASK-021: POST /api/converse — Adaptive Question Generation
 Status: done
 Notes: app/api/converse/route.ts + lib/converse-prompt.ts — 95 tests passing, all acceptance criteria met
@@ -511,7 +511,7 @@ Verify: cto + backend-developer — done detection, graceful degrade, rate limit
 Depends: TASK-019
 
 ---
-
+- **Model-hint:** sonnet
 ## TASK-022: Replace Questionnaire UI with Adaptive Conversation
 Status: done
 Notes: app/questionnaire/page.tsx + QuestionCard.tsx + ProgressBar.tsx — 179 tests, all acceptance criteria met
@@ -532,7 +532,7 @@ Verify: cpo + frontend-developer — full flow, back nav, free-text, done routin
 Depends: TASK-021
 
 ---
-
+- **Model-hint:** sonnet
 ## TASK-023: Personalise Confirmation + Output with useCase
 Status: done
 Notes: confirm useCase block + api/output goal prefix — 115 tests passing, all acceptance criteria met
@@ -560,6 +560,7 @@ Rationale: Adaptive conversation milestone shipped without E2E coverage. URL par
 Tasks: TASK-024, TASK-025, TASK-026, TASK-027, TASK-028
 
 ---
+- **Model-hint:** sonnet
 ## TASK-024: Playwright Setup + CI Integration
 Status: done
 Notes: committed 437e1ba — playwright.config.ts, e2e/.gitkeep, CI e2e job, @playwright/test installed
@@ -581,6 +582,7 @@ Verify: cto + qa-engineer — config valid, CI e2e job has needs:ci, reuseExisti
 Depends: none
 
 ---
+- **Model-hint:** sonnet
 ## TASK-025: E2E — home-entry.spec.ts
 Status: done
 Notes: 4/4 chromium passing — intent URL param contract covered
@@ -598,6 +600,7 @@ Verify: qa-engineer — all 4 scenarios pass, intent param present in URL after 
 Depends: TASK-024
 
 ---
+- **Model-hint:** sonnet
 ## TASK-026: E2E — questionnaire-flow.spec.ts
 Status: done
 Notes: 4/4 chromium passing — adaptive flow + back nav covered
@@ -616,6 +619,7 @@ Verify: qa-engineer — all 6 scenarios pass including back nav and free-text re
 Depends: TASK-024
 
 ---
+- **Model-hint:** sonnet
 ## TASK-027: E2E — confirm-to-output.spec.ts
 Status: done
 Notes: 4/4 chromium passing — useCase display + start over + output render covered
@@ -633,6 +637,7 @@ Verify: qa-engineer — all 6 scenarios pass, useCase displayed, Start over clea
 Depends: TASK-024
 
 ---
+- **Model-hint:** sonnet
 ## TASK-028: E2E — full-happy-path.spec.ts (smoke test)
 Status: done
 Notes: 1/1 chromium passing — full journey covered, mock uses turns.length>0 not call-count (React 18 Strict Mode safe)
@@ -648,9 +653,10 @@ Verify: qa-engineer + cto — single passing run covers the full user journey, n
 Depends: TASK-025, TASK-026, TASK-027
 
 ---
-
+- **Model-hint:** sonnet
 ## TASK-029: Fix "The Lucid Researcher" branding in QuestionCard header
-Status: queued
+Status: done
+Notes: Fixed incidentally during dark theme rewrite — QuestionCard now shows "auto-leverage"
 Milestone: MVP — Questionnaire to Output
 Type: fix
 Depends: —
@@ -663,9 +669,10 @@ Acceptance:
 Context: components/QuestionCard.tsx, app/questionnaire/page.tsx
 
 ---
-
+- **Model-hint:** sonnet
 ## TASK-030: Confirm page — richer analysis summary using conversation turns
-Status: queued
+Status: done
+Notes: branch oms-work/task-030 — sessionStorage turns, Q&A list + useCase-tailored component cards
 Milestone: MVP — Questionnaire to Output
 Type: feature
 Depends: —
@@ -698,9 +705,10 @@ Acceptance:
 Context: app/confirm/page.tsx, app/questionnaire/page.tsx, components/QuestionCard.tsx
 
 ---
-
+- **Model-hint:** sonnet
 ## TASK-031: Rewrite output guide steps in plain language for non-tech users
-Status: queued
+Status: done
+Notes: branch oms-work/task-031 — all 7 templates rewritten, zero jargon, 115 unit tests pass
 Milestone: MVP — Questionnaire to Output
 Type: fix
 Depends: —
@@ -728,9 +736,10 @@ Acceptance:
 Context: app/output/page.tsx, app/api/converse/route.ts (or wherever guide generation lives)
 
 ---
-
+- **Model-hint:** sonnet
 ## TASK-032: Output page — worked example simulation panel
-Status: queued
+Status: done
+Notes: /api/simulate route + SimulationCard + non-blocking load, 130 tests pass
 Milestone: MVP — Questionnaire to Output
 Type: feature
 Depends: TASK-031
@@ -770,3 +779,186 @@ Acceptance:
 - Loads after the guide (non-blocking — show skeleton, then populate)
 - E2E spec covers the section appearing and containing expected structure
 Context: app/output/page.tsx, app/api/ (new simulate endpoint)
+
+---
+- **Model-hint:** sonnet
+## TASK-033: In-memory TTL cache for /api/simulate
+Status: queued
+Milestone: Distribution Ready
+Type: improvement
+Depends: —
+Validation: dev → qa → em
+Spec: |
+  /api/simulate calls GLM on every output page load with no caching. In a serverless
+  environment a per-instance in-memory Map with TTL is sufficient at current traffic.
+  Cache key: MD5-style hash of "{useCase}:{components.sort().join(',')}".
+  TTL: 60 minutes. On cache hit: return cached SimulationResult directly. On miss: call
+  GLM, store result, return it. Cache lives in module scope (survives warm invocations).
+Acceptance:
+- Second identical request within 60 min returns cached result without calling GLM
+- Different useCase or components produce a cache miss and call GLM
+- Cache expiry after TTL triggers a fresh GLM call
+- Unit tests cover: hit, miss, expiry, null useCase (no cache — useCase is required for simulation)
+Context: app/api/simulate/route.ts, app/api/simulate/__tests__/route.test.ts
+
+---
+- **Model-hint:** sonnet
+## TASK-034: Structured error logging + GLM rate limit surfacing
+Status: queued
+Milestone: Distribution Ready
+Type: improvement
+Depends: —
+Validation: dev → qa → em
+Spec: |
+  GLM errors in /api/converse and /api/simulate currently swallow all context. Vercel
+  function logs capture console.error output and display it in the dashboard. Before every
+  error return, log structured JSON: { endpoint, errorType, message, timestamp }. Also
+  check GLM HTTP response headers for X-RateLimit-Remaining and X-RateLimit-Reset — log
+  them when present so we can observe rate limit proximity without hitting the limit.
+  Changes required in lib/llm-client.ts (surface headers), /api/converse/route.ts,
+  /api/simulate/route.ts, /api/output/route.ts (all three error paths).
+Acceptance:
+- Each error return in GLM routes logs: { endpoint, errorType, message, timestamp } via console.error
+- When GLM response includes X-RateLimit-Remaining ≤ 10, a warning log fires
+- No sensitive data (API key, user content) appears in any log output
+- Unit tests: mock GLM to return 429 with rate limit headers, assert warning logged
+Context: lib/llm-client.ts, app/api/converse/route.ts, app/api/simulate/route.ts, app/api/output/route.ts
+
+---
+- **Model-hint:** sonnet
+## TASK-035: GLM retry logic for transient failures
+Status: queued
+Milestone: Distribution Ready
+Type: improvement
+Depends: —
+Validation: dev → qa → em
+Spec: |
+  GLM calls currently fail immediately on any HTTP error. Transient failures (503, 502)
+  warrant a single retry with a short delay. Rate limit (429) warrants one retry after
+  the reset delay (read from Retry-After header, cap at 2s). Other errors (400, 401, 404)
+  must NOT retry — they indicate a permanent problem.
+  Implement in lib/llm-client.ts glmChat(): max 2 attempts total, 500ms delay on 503/502,
+  Retry-After (max 2000ms) on 429. Return last error after all attempts exhausted.
+Acceptance:
+- 503 response triggers one retry after 500ms; success on retry returns result
+- 429 response triggers one retry after min(Retry-After, 2000)ms
+- 400 response does not retry — throws immediately
+- All 3 scenarios covered by unit tests with mocked fetch
+Context: lib/llm-client.ts, lib/__tests__/llm-client.test.ts
+
+---
+- **Model-hint:** sonnet
+## TASK-036: Collapse simulation panel behind toggle by default
+Status: done
+Notes: app/output/page.tsx — simExpanded state, lazy fetchSimulation on first toggle, data-testid="sim-panel"; e2e/simulation-panel.spec.ts covers hidden-on-load + no-refetch
+Milestone: Distribution Ready
+Type: improvement
+Depends: —
+Validation: dev → qa → em
+Spec: |
+  The simulation panel currently renders open on the output page, competing with the
+  guide for first attention. Collapse it by default. Add a toggle button below the guide:
+  "See a worked example ▸" (collapsed) / "Hide example ▾" (expanded). The SimulationCard
+  only mounts/fetches when the user expands it for the first time (lazy — do not trigger
+  /api/simulate until user clicks the toggle). This also reduces GLM calls for users who
+  don't need the simulation.
+Acceptance:
+- Output page loads with simulation panel hidden; only guide + prompt visible
+- Toggle button "See a worked example ▸" appears below the guide section
+- Clicking toggle expands panel and triggers /api/simulate fetch (first time only)
+- Subsequent toggles show/hide without re-fetching
+- E2E: simulation section hidden on load; visible after toggle click
+Context: app/output/page.tsx, components/SimulationCard.tsx, e2e/simulation-panel.spec.ts
+
+---
+- **Model-hint:** sonnet
+## TASK-037: "Ready to run this?" CTA above prompt copy block
+Status: queued
+Milestone: Distribution Ready
+Type: improvement
+Depends: —
+Validation: dev → qa → em
+Spec: |
+  The output page ends with "Start over" — giving users no forward action orientation
+  after reading the guide. Insert a plain-language CTA heading directly above the LLM
+  prompt copy block: "Ready to run this? Paste the prompt below into Claude, ChatGPT,
+  or Gemini." Style: small caps label or muted text, same visual weight as the "YOUR GUIDE"
+  label. Does not replace the existing copy button — adds context above it.
+Acceptance:
+- "Ready to run this?" heading appears between the guide steps and the prompt copy block
+- Heading is visually subordinate (not bolder than guide headings)
+- Mobile layout: heading remains above prompt on small screens
+- No existing functionality removed or broken
+Context: components/OutputCard.tsx
+
+---
+- **Model-hint:** sonnet
+## TASK-038: Share button on output page
+Status: queued
+Milestone: Distribution Ready
+Type: feature
+Depends: TASK-036, TASK-037
+Validation: dev → qa → em
+Spec: |
+  Users have no way to share a completed guide with a colleague. The output page URL
+  already contains all state needed to reproduce the result (components + useCase as
+  query params). The share feature is: copy the current page URL to clipboard.
+  Add a "Share this guide" button to OutputCard alongside the existing export buttons.
+  Same copy-feedback pattern as ExportActions (button text changes to "Copied!" for 2s).
+  The URL copied is window.location.href — no additional encoding required.
+Acceptance:
+- "Share this guide" button appears in the export actions area
+- Clicking copies window.location.href to clipboard
+- Button shows "Copied!" feedback for 2 seconds then resets
+- Pasting the copied URL in a new tab loads the same output page
+- Unit test: button click triggers clipboard.writeText with the current href
+Context: components/ExportActions.tsx, components/__tests__/ExportActions.test.tsx
+
+---
+- **Model-hint:** sonnet
+## TASK-039: In-memory TTL cache for /api/output
+Status: queued
+Milestone: Distribution Ready
+Type: improvement
+Depends: TASK-036, TASK-037
+Validation: dev → qa → em
+Spec: |
+  /api/output now calls GLM for guide personalization on every request. Shared URLs
+  (from TASK-038) will trigger this call for every recipient. Cache per
+  "{components.sort().join(',')}:{useCase}" hash, TTL 60 minutes. Same pattern as
+  TASK-033. Null useCase: cache the non-personalized template response separately
+  (key: "{components.sort().join(',')}:__no_usecase__").
+Acceptance:
+- Second identical {components, useCase} request within 60 min skips GLM and returns cached result
+- Null useCase requests cache the template response
+- Different useCase triggers cache miss
+- Unit tests: hit, miss, null useCase, TTL expiry
+Context: app/api/output/route.ts, app/api/output/__tests__/route.test.ts (create if not exists)
+
+---
+- **Model-hint:** sonnet
+## TASK-040: Vercel Analytics + 4 funnel events
+Status: queued
+Milestone: Distribution Ready
+Type: feature
+Depends: TASK-033, TASK-034
+Validation: dev → qa → em
+Spec: |
+  No funnel visibility exists. Install @vercel/analytics and track 4 events:
+  1. questionnaire_start — fires when user submits the home form (intent entered, navigates to /questionnaire)
+  2. questionnaire_complete — fires when /api/converse returns done:true
+  3. confirm_proceed — fires when user clicks "Yes, this fits" on the confirm page
+  4. output_copy_prompt — fires when user clicks "Copy to clipboard" in ExportActions
+
+  Add <Analytics /> to app/layout.tsx. Use the track() function from @vercel/analytics
+  at each event point. No PII: do not include useCase text, turns content, or any
+  user-identifiable data in event payloads. Components array (e.g. ["train","program"])
+  is acceptable as a non-identifying property.
+Acceptance:
+- pnpm add @vercel/analytics installs cleanly
+- <Analytics /> present in app/layout.tsx
+- Each of the 4 events fires at the correct user action
+- No PII in any track() call payload
+- Unit tests mock track() and assert it is called with correct event name at each trigger point
+Context: app/layout.tsx, app/page.tsx, app/questionnaire/page.tsx, app/confirm/page.tsx, components/ExportActions.tsx
+- **Model-hint:** sonnet
