@@ -54,6 +54,9 @@ export default function OutputCard({
         <h2 className="text-[11px] font-bold text-secondary uppercase tracking-widest mb-4">
           Prompt for your AI assistant
         </h2>
+        <p className="text-[11px] font-bold text-on-surface-variant uppercase tracking-widest mb-4">
+          Ready to run this? Paste the prompt below into Claude, ChatGPT, or Gemini.
+        </p>
         <div className="bg-surface-container-lowest rounded-xl p-6 border border-outline-variant/40 border-l-[3px] border-l-primary mb-6">
           <pre className="font-mono text-[13px] text-on-surface-variant leading-relaxed whitespace-pre-wrap break-words">
             <code>{llmPrompt}</code>
