@@ -1477,6 +1477,117 @@ Verify: pnpm test && pnpm exec tsc --noEmit
 
 ---
 
+## TASK-050: Add page.screenshot() + toHaveScreenshot() to browser E2E specs (batch 1)
+Status: queued
+Feature: none
+Milestone: Visual QA Baseline
+Department: Engineering
+Type: test
+Depends: none
+Validation: qa-engineer → cto
+Model-hint: sonnet
+File-count: 4
+Infra-critical: false
+Context: e2e/home-entry.spec.ts, e2e/questionnaire-flow.spec.ts, e2e/confirm-to-output.spec.ts, .gitignore
+Activated: qa-engineer, frontend-developer
+Spec: |
+  Three browser E2E specs SHALL be retrofitted with page.screenshot() + toHaveScreenshot()
+  per rules/testing.md visual QA requirements. API-level specs are exempt.
+  .gitignore SHALL have qa/screenshots/ added if absent (generated artifacts, not source).
+  Baselines live in e2e/snapshots/ (committed). Run playwright test --update-snapshots only
+  when intentionally changing UI.
+
+  e2e/home-entry.spec.ts — screenshot at:
+    (a) initial render — empty textarea, Analyze Goal button: qa/screenshots/home-entry-initial.png
+    (b) inline error state — "at least 3 words" visible: qa/screenshots/home-entry-error.png
+  toHaveScreenshot() for both states.
+
+  e2e/questionnaire-flow.spec.ts — screenshot at:
+    (a) question loaded — question text + options visible: qa/screenshots/questionnaire-loaded.png
+    (b) after done:true — /confirm URL reached: qa/screenshots/questionnaire-done.png
+    (c) error state — 500 mock, error message visible: qa/screenshots/questionnaire-error.png
+    (d) empty state — no intent param, redirect or message: qa/screenshots/questionnaire-empty.png
+  toHaveScreenshot() for each state.
+
+  e2e/confirm-to-output.spec.ts — screenshot at:
+    (a) confirm page loaded — component cards visible: qa/screenshots/confirm-loaded.png
+    (b) /output reached — guide steps visible: qa/screenshots/confirm-output.png
+    (c) error state — /api/output 500, error message: qa/screenshots/confirm-error.png
+    (d) empty state — no components param, redirect: qa/screenshots/confirm-empty.png
+  toHaveScreenshot() for each state.
+
+  Screenshot naming: qa/screenshots/<flow>-<state>.png — one per meaningful state.
+  All existing tests must continue to pass. No test logic removed.
+Scenarios:
+  - GIVEN home-entry.spec.ts | THEN grep "toHaveScreenshot" shows ≥2 matches
+  - GIVEN questionnaire-flow.spec.ts | THEN grep "toHaveScreenshot" shows ≥4 matches
+  - GIVEN confirm-to-output.spec.ts | THEN grep "toHaveScreenshot" shows ≥4 matches
+  - GIVEN .gitignore | THEN contains "qa/screenshots/"
+  - GIVEN pnpm exec playwright test e2e/home-entry.spec.ts e2e/questionnaire-flow.spec.ts e2e/confirm-to-output.spec.ts | THEN 0 failures
+  - GIVEN e2e/snapshots/ | THEN baseline PNG files committed for all toHaveScreenshot() calls
+Artifacts:
+  - e2e/home-entry.spec.ts (modified — screenshots added)
+  - e2e/questionnaire-flow.spec.ts (modified — screenshots added)
+  - e2e/confirm-to-output.spec.ts (modified — screenshots added)
+  - .gitignore (modified — qa/screenshots/ added)
+Produces: none
+Verify: pnpm exec playwright test e2e/home-entry.spec.ts e2e/questionnaire-flow.spec.ts e2e/confirm-to-output.spec.ts && grep -r "toHaveScreenshot" e2e/home-entry.spec.ts e2e/questionnaire-flow.spec.ts e2e/confirm-to-output.spec.ts | wc -l
+
+---
+
+## TASK-051: Add page.screenshot() + toHaveScreenshot() to browser E2E specs (batch 2)
+Status: queued
+Feature: none
+Milestone: Visual QA Baseline
+Department: Engineering
+Type: test
+Depends: TASK-050
+Validation: qa-engineer → cto
+Model-hint: qwen
+File-count: 3
+Infra-critical: false
+Context: e2e/simulation-panel.spec.ts, e2e/rate-limit.spec.ts, e2e/full-happy-path.spec.ts
+Activated: qa-engineer, frontend-developer
+Spec: |
+  Three remaining browser E2E specs SHALL be retrofitted with page.screenshot() +
+  toHaveScreenshot() per rules/testing.md visual QA requirements.
+
+  e2e/simulation-panel.spec.ts — screenshot at:
+    (a) panel hidden — toggle button visible, panel not visible: qa/screenshots/sim-panel-hidden.png
+    (b) panel visible — simulation content shown after toggle: qa/screenshots/sim-panel-open.png
+    (c) error state — /api/simulate 500, panel stays hidden: qa/screenshots/sim-panel-error.png
+    (d) input edge — 200-char useCase, toggle visible: qa/screenshots/sim-panel-long-input.png
+  toHaveScreenshot() for each state.
+
+  e2e/rate-limit.spec.ts — screenshot at:
+    (a) rate-limited output page — static guide + "should be back in ~N minutes" visible:
+        qa/screenshots/rate-limit-output.png
+    (b) no rate_limited param — normal output, no on-call message: qa/screenshots/rate-limit-absent.png
+  toHaveScreenshot() for each state.
+
+  e2e/full-happy-path.spec.ts — screenshot at:
+    (a) home page loaded: qa/screenshots/happy-path-home.png
+    (b) questionnaire loaded: qa/screenshots/happy-path-questionnaire.png
+    (c) confirm page loaded: qa/screenshots/happy-path-confirm.png
+    (d) output page loaded — guide visible: qa/screenshots/happy-path-output.png
+  toHaveScreenshot() for each state.
+
+  All existing tests must continue to pass. No test logic removed.
+Scenarios:
+  - GIVEN simulation-panel.spec.ts | THEN grep "toHaveScreenshot" shows ≥4 matches
+  - GIVEN rate-limit.spec.ts | THEN grep "toHaveScreenshot" shows ≥2 matches
+  - GIVEN full-happy-path.spec.ts | THEN grep "toHaveScreenshot" shows ≥4 matches
+  - GIVEN pnpm exec playwright test e2e/simulation-panel.spec.ts e2e/rate-limit.spec.ts e2e/full-happy-path.spec.ts | THEN 0 failures
+  - GIVEN e2e/snapshots/ | THEN baseline PNG files committed for all toHaveScreenshot() calls
+Artifacts:
+  - e2e/simulation-panel.spec.ts (modified — screenshots added)
+  - e2e/rate-limit.spec.ts (modified — screenshots added)
+  - e2e/full-happy-path.spec.ts (modified — screenshots added)
+Produces: none
+Verify: pnpm exec playwright test e2e/simulation-panel.spec.ts e2e/rate-limit.spec.ts e2e/full-happy-path.spec.ts && grep -r "toHaveScreenshot" e2e/simulation-panel.spec.ts e2e/rate-limit.spec.ts e2e/full-happy-path.spec.ts | wc -l
+
+---
+
 ## TASK-reelaborate — Re-elaborate incomplete task specs
 - **Status:** done
 - **Notes:** Scenarios, Verify, Artifacts added to TASK-033–035, TASK-037–040. File-count corrected. TASK-020 was superseded — skipped.
