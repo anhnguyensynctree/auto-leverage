@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent, type ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
+import { track } from "@vercel/analytics/react";
 
 const MAX_CHARS = 500;
 const MIN_WORDS = 3;
@@ -58,6 +59,7 @@ export default function EntryForm() {
         confidence: String(json.data.confidence),
       });
 
+      track("questionnaire_start");
       router.push(`/questionnaire?${params.toString()}`);
     } catch {
       setError(
