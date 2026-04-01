@@ -86,6 +86,7 @@ Apply each to both **Production** and **Preview** environments:
 |---|---|---|
 | GLM-5 (Zhipu AI) | `~/.config/glm5/key` | chmod 600 |
 | Vercel API token | `~/.config/vercel/key` | chmod 600 |
+| OpenRouter | `~/.config/openrouter/key` | chmod 600 |
 
 These paths are the canonical locations for Claude sessions to reference. Never hardcode values.
 
