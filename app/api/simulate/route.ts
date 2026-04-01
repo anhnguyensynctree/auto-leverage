@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import {
   SimulationResult,
-  simulateCache,
   getCacheKey,
   getCached,
   setCached,
@@ -80,7 +79,7 @@ export async function POST(
   // Cache lookup — skip if useCase is null/undefined/empty
   const cacheKey = useCase ? getCacheKey(useCase, components) : null;
   if (cacheKey) {
-    const cached = getCached(cacheKey);
+    const cached = await getCached(cacheKey);
     if (cached) {
       return NextResponse.json({ data: cached, error: null });
     }

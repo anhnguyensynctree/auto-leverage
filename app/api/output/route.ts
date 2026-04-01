@@ -97,7 +97,7 @@ export async function POST(request: Request) {
 
   // Cache lookup — always cache, including null/undefined useCase
   const cacheKey = getCacheKey(components, useCase);
-  const cached = getCached(cacheKey);
+  const cached = await getCached(cacheKey);
   if (cached) {
     return NextResponse.json({ data: cached, error: null });
   }
