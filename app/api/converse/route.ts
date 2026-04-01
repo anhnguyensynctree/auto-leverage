@@ -79,6 +79,14 @@ export async function POST(request: NextRequest) {
   try {
     bodyRaw = await request.json();
   } catch {
+    console.error(
+      JSON.stringify({
+        endpoint: "/api/converse",
+        errorType: "InvalidJSON",
+        message: "Invalid JSON body",
+        timestamp: new Date().toISOString(),
+      }),
+    );
     return NextResponse.json(
       { data: null, error: "Invalid JSON body" },
       { status: 400 },
@@ -87,6 +95,14 @@ export async function POST(request: NextRequest) {
 
   const body = parseBody(bodyRaw);
   if (!body) {
+    console.error(
+      JSON.stringify({
+        endpoint: "/api/converse",
+        errorType: "MissingFields",
+        message: "Missing required fields: intent, turns, turnCount",
+        timestamp: new Date().toISOString(),
+      }),
+    );
     return NextResponse.json(
       {
         data: null,
@@ -116,6 +132,14 @@ export async function POST(request: NextRequest) {
     request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
   const rateCheck = checkRateLimit(ip, "navigate");
   if (!rateCheck.allowed) {
+    console.error(
+      JSON.stringify({
+        endpoint: "/api/converse",
+        errorType: "RateLimitExceeded",
+        message: "Too many requests",
+        timestamp: new Date().toISOString(),
+      }),
+    );
     return NextResponse.json(
       {
         data: null,

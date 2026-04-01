@@ -54,6 +54,14 @@ export async function POST(request: Request) {
   try {
     body = await request.json();
   } catch {
+    console.error(
+      JSON.stringify({
+        endpoint: "/api/output",
+        errorType: "InvalidJSON",
+        message: "Invalid JSON body",
+        timestamp: new Date().toISOString(),
+      }),
+    );
     return NextResponse.json(
       { data: null, error: "Invalid JSON body" },
       { status: 400 },
@@ -67,6 +75,14 @@ export async function POST(request: Request) {
     !Array.isArray((body as Record<string, unknown>).components) ||
     (body as { components: unknown[] }).components.length === 0
   ) {
+    console.error(
+      JSON.stringify({
+        endpoint: "/api/output",
+        errorType: "InvalidRequest",
+        message: "components must be a non-empty array",
+        timestamp: new Date().toISOString(),
+      }),
+    );
     return NextResponse.json(
       { data: null, error: "components must be a non-empty array" },
       { status: 400 },
@@ -81,6 +97,14 @@ export async function POST(request: Request) {
   const template = getTemplate(components);
 
   if (!template) {
+    console.error(
+      JSON.stringify({
+        endpoint: "/api/output",
+        errorType: "NotFound",
+        message: "Unknown component combination",
+        timestamp: new Date().toISOString(),
+      }),
+    );
     return NextResponse.json(
       { data: null, error: "Unknown component combination" },
       { status: 400 },
