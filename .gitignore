@@ -22,3 +22,4 @@ coverage/
 # Editor
 .DS_Store
 *.swp
+.claude/worktrees/
