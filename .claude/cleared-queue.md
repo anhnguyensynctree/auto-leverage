@@ -1353,16 +1353,22 @@ Status: queued
 Milestone: Quality & Resilience v1
 Type: feature
 Depends: TASK-047
-Validation: backend-developer → cto
+Validation: backend-developer → clo → cto
 Model-hint: sonnet
 Spec: |
   Read docs/llm-evaluation.md before implementing. Implementation path depends on verdict.
   IF Qwen 3.6 qualifies (per TASK-047 recommendation):
+    CLO SHALL review OpenRouter's data handling policy (https://openrouter.ai/privacy)
+    and confirm: (1) API request data is not used for model training, (2) data is not
+    retained beyond the request lifecycle, (3) no explicit DPA is required for the
+    data profile of this product (non-PII goal strings, no user accounts). CLO verdict
+    SHALL be recorded as a comment in lib/llm-client.ts above the OpenRouter config block.
+    If CLO raises a concern → CTO-STOP, surface to CEO before proceeding.
     lib/llm-client.ts SHALL be refactored to support a two-provider config: GLM-5 as
     primary, Qwen 3.6 via OpenRouter as fallback. When GLM-5 returns 429 or 503,
     lib/llm-client.ts SHALL retry once using Qwen 3.6 before propagating the error.
     Caller interface (function signatures, return types, thrown errors) SHALL be unchanged.
-    OPENROUTER_API_KEY SHALL be added to .env.example.
+    OPENROUTER_API_KEY SHALL be added to .env.example. Key location: ~/.config/openrouter/key.
     OpenRouter endpoint: https://openrouter.ai/api/v1/chat/completions.
     Unit tests SHALL cover: GLM succeeds (Qwen never called); GLM 429 → Qwen called →
     success; GLM 429 → Qwen 429 → original 429 error propagated; GLM 503 → Qwen fallback.
