@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import OutputCard from "@/components/OutputCard";
 import SimulationCard from "@/components/SimulationCard";
 import type { SimulationResult } from "@/lib/simulate-cache";
+import { OUTPUT_TEMPLATES } from "@/lib/output-templates";
 
 interface OutputData {
   component_names: string[];
@@ -36,6 +37,11 @@ function OutputContent() {
 
   const rawComponents = params.get("components") ?? "";
   const useCase = params.get("useCase") ?? "";
+  const rateLimited = params.get("rate_limited") === "1";
+  const rawResetMs = params.get("resetMs");
+  const resetMs = rawResetMs !== null ? parseInt(rawResetMs, 10) : null;
+  const waitMinutes =
+    resetMs !== null ? Math.max(1, Math.ceil(resetMs / 60000)) : null;
   const components = rawComponents.split(",").filter(Boolean);
 
   const fetchOutput = useCallback(async () => {
@@ -95,6 +101,11 @@ function OutputContent() {
   useEffect(() => {
     if (components.length === 0) {
       router.replace("/");
+      return;
+    }
+    if (rateLimited) {
+      setData(OUTPUT_TEMPLATES["all"]);
+      setLoading(false);
       return;
     }
     fetchOutput();
@@ -176,6 +187,15 @@ function OutputContent() {
             )}
             {!simLoading && sim && <SimulationCard {...sim} />}
           </div>
+        )}
+        {rateLimited && waitMinutes !== null && (
+          <p
+            className="mt-6 text-sm text-slate-500 text-center"
+            data-testid="rate-limit-message"
+          >
+            Our AI advisor is busy and should be back in approximately{" "}
+            {waitMinutes} {waitMinutes === 1 ? "minute" : "minutes"}.
+          </p>
         )}
       </main>
 

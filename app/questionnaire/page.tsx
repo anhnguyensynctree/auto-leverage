@@ -27,6 +27,11 @@ interface ConverseDone {
 
 type ConverseResult = ConverseNotDone | ConverseDone;
 
+interface RateLimitError {
+  status: 429;
+  resetMs: number;
+}
+
 async function fetchConverse(
   intent: string,
   turns: Turn[],
@@ -37,6 +42,20 @@ async function fetchConverse(
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ intent, turns, turnCount }),
   });
+
+  if (res.status === 429) {
+    let resetMs = 60000;
+    try {
+      const json = await res.json();
+      if (typeof json?.meta?.resetMs === "number") {
+        resetMs = json.meta.resetMs;
+      }
+    } catch {
+      // use default
+    }
+    const err: RateLimitError = { status: 429, resetMs };
+    throw err;
+  }
 
   if (!res.ok) {
     throw new Error(`HTTP ${res.status}`);
@@ -106,7 +125,18 @@ function QuestionnaireContent() {
         setCurrentOptions(result.options);
         setSelectedOption(null);
         setFreeText("");
-      } catch {
+      } catch (err) {
+        const maybeRateLimit = err as RateLimitError;
+        if (maybeRateLimit?.status === 429) {
+          const navParams = new URLSearchParams({
+            components: "prepare,train,program",
+            useCase: intent,
+            rate_limited: "1",
+            resetMs: String(maybeRateLimit.resetMs),
+          });
+          router.push(`/output?${navParams.toString()}`);
+          return;
+        }
         setError(true);
       } finally {
         setLoading(false);
