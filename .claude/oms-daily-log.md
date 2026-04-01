@@ -1,4 +1,9 @@
 
+## 2026-04-01T00:00Z | oms-all
+• 4 FEATURE drafts elaborated into 8 OpenSpec tasks (TASK-041–048) — all queued for /oms-work
+• Quality & Resilience v1 fully planned: E2E coverage, rate limit UX, Redis cache, LLM evaluation + abstraction
+• Confirm OPENROUTER_API_KEY available before running TASK-047; otherwise TASK-048 defaults to retry hardening
+
 ## 2026-03-31T22:00Z | oms-exec
 • Quality & Resilience v1 selected as next milestone — reliability-first before growth, unanimous exec alignment
 • 4 FEATURE drafts written: E2E coverage, rate limit UX, Upstash Redis cache, LLM provider evaluation

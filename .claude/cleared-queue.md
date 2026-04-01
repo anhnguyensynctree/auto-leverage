@@ -1079,59 +1079,313 @@ Verify: pnpm test -- --testPathPattern="questionnaire|ExportActions|confirm" 2>&
 
 ---
 
-## FEATURE-008: E2E Coverage Completion
-Status: draft
+## TASK-041: Restructure home-entry.spec.ts into 5-category E2E spec
+Status: queued
 Milestone: Quality & Resilience v1
-Type: engineering
-Departments: qa-engineer, frontend-developer
-Research-gate: false
-Why: All 4 flow specs are missing error state and empty state test.describe blocks — test confidence is overstated and any regression in error paths is invisible to CI.
-Exec-decision: Add test.describe blocks for error states (API 500/network failure) and empty states (missing params, no data) to home-entry.spec.ts, questionnaire-flow.spec.ts, confirm-to-output.spec.ts, and simulation-panel.spec.ts. Auth edge is N/A for this product — each spec must include a // N/A (auth edge): no authentication in this product comment. All 5 categories must be present or explicitly commented per rules/testing.md.
-Acceptance: All 4 specs have ≥4 test.describe blocks (5 or 4+1 N/A comment). Error state tests mock API failures and assert user-visible error UI. Empty state tests cover missing URL params and no-data conditions. CI passes.
-Validation: engineering → qa-engineer + cto
-Tasks: none
+Type: test
+Depends: none
+Validation: qa-engineer → cto
+Model-hint: sonnet
+Spec: |
+  home-entry.spec.ts SHALL be restructured into exactly 5 test.describe blocks using the
+  rules/testing.md skeleton. Categories 2, 3, and 4 SHALL each have a // N/A comment with
+  specific reasons.
+  Category 1 (happy path) SHALL contain: submit valid input → navigate to /questionnaire
+  with correct ?intent= param; URL param equals submitted text exactly.
+  Category 2 SHALL have // N/A (error states): home entry form does not call any API — the
+  submit button navigates client-side only; no server error path exists.
+  Category 3 SHALL have // N/A (empty state): page always renders with an empty textarea;
+  there is no missing-data render state.
+  Category 4 SHALL have // N/A (auth edge): no authentication in this product.
+  Category 5 (input edge) SHALL contain: fewer than 3 words → inline error visible, no
+  navigation; 500-char input → textarea capped at 500 chars.
+  All existing test logic SHALL be preserved — no test cases removed.
+  File SHALL pass pnpm exec playwright test e2e/home-entry.spec.ts with 0 failures.
+Scenarios:
+  - GIVEN home-entry.spec.ts | WHEN grep "test.describe\|// N/A" | THEN ≥5 matches
+  - GIVEN category 2 | THEN // N/A comment contains "no API call"
+  - GIVEN category 3 | THEN // N/A comment contains "empty textarea"
+  - GIVEN category 4 | THEN // N/A comment contains "no authentication"
+  - GIVEN valid 3+ word input | WHEN submit | THEN navigates to /questionnaire with correct intent param
+  - GIVEN 1-word input | WHEN submit | THEN #entry-error visible, pathname stays /
+  - GIVEN 500-char input + type one more | THEN textarea.value.length === 500
+Artifacts:
+  - e2e/home-entry.spec.ts
+Verify: pnpm exec playwright test e2e/home-entry.spec.ts
 
 ---
 
-## FEATURE-009: Rate Limit User Messaging
-Status: draft
+## TASK-042: Restructure questionnaire-flow.spec.ts into 5-category E2E spec
+Status: queued
 Milestone: Quality & Resilience v1
-Type: engineering
-Departments: frontend-developer, backend-developer
-Research-gate: false
-Why: When GLM rate limits fire, users see a broken or silent experience. The product must communicate clearly and still deliver value — trust depends on it.
-Exec-decision: When /api/converse or /api/simulate returns 429, the UI must: (1) immediately render the graceful degrade output (static fallback guide for all 3 components) BEFORE showing any message — degrade first, inform second; (2) display "Our AI advisor is on call and will be back in approximately X minutes" using the resetMs value from the 429 response. The message is an estimate, not a guarantee — copy must not imply SLA. "Start over" must remain available. Static fallback output must be identical in format to normal output.
-Acceptance: 429 from /api/converse renders static all-3-components output within 1 render cycle, then shows "on call" message with minute estimate below the output. 429 from /api/simulate hides the simulation panel silently (existing behavior — no change). Unit test covers the 429 branch. E2E spec covers the rate-limited questionnaire path.
-Validation: engineering → cpo + cto
-Tasks: none
+Type: test
+Depends: none
+Validation: qa-engineer → cto
+Model-hint: sonnet
+Spec: |
+  questionnaire-flow.spec.ts SHALL be restructured into 5 test.describe blocks.
+  Category 1 (happy path): initial load renders question + radio options; select option →
+  next → done:true → /confirm with correct components + useCase params.
+  Category 2 (error states): mock /api/converse to return status 500 → page SHALL display
+  a user-visible error message (not a blank or frozen screen). If the questionnaire page
+  (app/questionnaire/page.tsx) does not currently render an error on fetch failure, a
+  minimal error state SHALL be added — e.g. "Something went wrong. Please try again."
+  with a retry or start-over affordance.
+  Category 3 (empty state): navigate to /questionnaire with no intent param (or empty
+  string intent) → page SHALL redirect to / or show "Please describe your goal first"
+  with a link to /. If this guard is absent, add it to app/questionnaire/page.tsx.
+  Category 4 SHALL have // N/A (auth edge): no authentication in this product.
+  Category 5 (input edge): "Something else — I'll describe it" selected → free text area
+  visible; back button on turn 0 → navigates away without additional API call.
+  All tests SHALL pass pnpm exec playwright test e2e/questionnaire-flow.spec.ts.
+Scenarios:
+  - GIVEN 5 test.describe blocks (auth edge N/A) | THEN each block is present or commented
+  - GIVEN /api/converse mocked to 500 | WHEN page loads | THEN error message visible
+  - GIVEN /questionnaire with no intent param | THEN redirect to / OR "describe your goal" shown
+  - GIVEN "Something else" option | WHEN clicked | THEN free text textarea visible
+  - GIVEN back button on turn 0 | WHEN clicked | THEN navigates away, callCount unchanged
+  - GIVEN done:true response | THEN /confirm?components=train&useCase=tune+my+optimizer
+Artifacts:
+  - e2e/questionnaire-flow.spec.ts
+  - app/questionnaire/page.tsx (modified if error state or empty intent guard missing)
+Verify: pnpm exec playwright test e2e/questionnaire-flow.spec.ts && pnpm exec tsc --noEmit
 
 ---
 
-## FEATURE-010: Upstash Redis Cache
-Status: draft
+## TASK-043: Restructure confirm-to-output.spec.ts into 5-category E2E spec
+Status: queued
 Milestone: Quality & Resilience v1
-Type: engineering
-Departments: backend-developer, cto
-Research-gate: false
-Why: Module-scope Map caches reset on every cold start. On traffic spikes, 10–20 parallel cold containers each make uncached GLM calls for the same input — cost and latency multiply with traffic.
-Exec-decision: Replace the module-scope Maps in lib/simulate-cache.ts and lib/output-cache.ts with Upstash Redis (@upstash/redis). Cache key structure unchanged: MD5-style hash of inputs. TTL unchanged: 60 minutes. UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN added to .env.example and Vercel env vars (production + preview). Upstash free tier (10k commands/day) is sufficient at current traffic. If Redis is unavailable (cold start before connection established), fall through to GLM — never throw, never block. Unit tests mock the Redis client.
-Acceptance: Second identical {useCase, components} request across two separate serverless instances hits cache and skips GLM. Redis unavailability degrades gracefully to GLM call. Unit tests cover hit, miss, TTL expiry, and Redis unavailable (graceful degrade). UPSTASH_REDIS_REST_URL in .env.example.
-Validation: engineering → cto
-Tasks: none
+Type: test
+Depends: none
+Validation: qa-engineer → cto
+Model-hint: sonnet
+Spec: |
+  confirm-to-output.spec.ts SHALL be restructured into 5 test.describe blocks.
+  Category 1 (happy path): component cards visible (Data Preparation, Model Trainer);
+  useCase text visible; confirm → /output shows guide steps and LLM prompt.
+  Category 2 (error states): mock /api/output to return status 500 → user SHALL see an
+  error message on the output page (not blank). If app/output/page.tsx does not currently
+  render an error on 500, add a minimal error state.
+  Category 3 (empty state): navigate to /confirm with no URL params (missing components)
+  → page SHALL redirect to / or show "Start over" with link to /. If the guard is absent,
+  add it to app/confirm/page.tsx.
+  Category 4 SHALL have // N/A (auth edge): no authentication in this product.
+  Category 5 (input edge): start over button → navigates to / with no query params;
+  useCase with special characters (e.g. ampersands, quotes) renders correctly on page.
+  All tests SHALL pass pnpm exec playwright test e2e/confirm-to-output.spec.ts.
+Scenarios:
+  - GIVEN component cards | THEN "Data Preparation" and "Model Trainer" visible
+  - GIVEN /api/output mocked to 500 | THEN error message visible (not blank page)
+  - GIVEN /confirm with no components param | THEN redirect to / OR start-over message
+  - GIVEN start over button | WHEN clicked | THEN URL === "/"
+  - GIVEN useCase with & char in URL | THEN page renders without error
+Artifacts:
+  - e2e/confirm-to-output.spec.ts
+  - app/confirm/page.tsx (modified if missing params guard absent)
+  - app/output/page.tsx (modified if 500 error state absent)
+Verify: pnpm exec playwright test e2e/confirm-to-output.spec.ts && pnpm exec tsc --noEmit
 
 ---
 
-## FEATURE-011: LLM Provider Evaluation + Abstraction
-Status: draft
+## TASK-044: Restructure simulation-panel.spec.ts into 5-category E2E spec
+Status: queued
 Milestone: Quality & Resilience v1
-Type: engineering
-Departments: backend-developer, cto
-Research-gate: false
-Why: GLM-5 is the only provider — no fallback if it's rate-limited or unavailable. Qwen 3.6 via OpenRouter is a candidate fallback but quality and cost are unvalidated for this product's specific tasks.
-Exec-decision: Two sequenced tasks. Task 1 (evaluation): run the same prompt inputs through GLM-5 and Qwen 3.6 (via OpenRouter) for all 3 API task types (/api/converse question generation, /api/simulate table generation, /api/output guide personalisation). Evaluate: output quality (plain language, domain accuracy, structure adherence) and cost per 1k tokens at 10x current traffic. Output is a findings doc (docs/llm-evaluation.md). Task 2 (abstraction): if Qwen 3.6 meets quality bar, abstract lib/llm-client.ts to support a provider config (GLM primary → Qwen 3.6 via OpenRouter fallback on 429/503). OPENROUTER_API_KEY added to .env.example. Pre-condition: verify OpenRouter's data handling policy before production adoption — useCase strings transit OpenRouter. Drop Qwen-turbo from any consideration — not needed. If Qwen 3.6 does not meet quality bar, Task 2 is scoped to GLM-only retry hardening only.
-Acceptance: docs/llm-evaluation.md exists with side-by-side quality scores and cost-per-1k for all 3 task types at 1x and 10x traffic. If Qwen 3.6 adopted: lib/llm-client.ts supports provider config, OPENROUTER_API_KEY in .env.example, fallback fires on GLM 429/503, unit tests cover both provider paths. If not adopted: findings doc documents the decision.
-Validation: engineering → cto + cpo
-Tasks: none
+Type: test
+Depends: none
+Validation: qa-engineer → cto
+Model-hint: sonnet
+Spec: |
+  simulation-panel.spec.ts SHALL be restructured into 5 test.describe blocks.
+  Category 1 (happy path): panel hidden on load; toggle click shows panel + calls
+  /api/simulate once; subsequent toggles show/hide without re-fetching (callCount stays 1).
+  Category 2 (error states): mock /api/simulate to return 500 or reject with network error
+  → toggle button SHALL remain visible, panel SHALL stay hidden, no error text shown to
+  user. This validates the existing silent-fail architectural decision.
+  Category 3 SHALL have // N/A (empty state): API always returns either a result or fails
+  silently — there is no empty render path for this panel.
+  Category 4 SHALL have // N/A (auth edge): no authentication in this product.
+  Category 5 (input edge): useCase URL param with 200+ characters → page renders, toggle
+  button visible; useCase with special characters → page renders without error.
+  All tests SHALL pass pnpm exec playwright test e2e/simulation-panel.spec.ts.
+Scenarios:
+  - GIVEN /api/simulate mocked to 500 | WHEN toggle clicked | THEN panel NOT visible, no error text
+  - GIVEN toggle clicked | WHEN /api/simulate 500 | THEN toggle button still present
+  - GIVEN useCase param = 200-char string | THEN page renders, sim-toggle visible
+  - GIVEN happy path | THEN existing two tests restructured into describe block, all pass
+Artifacts:
+  - e2e/simulation-panel.spec.ts
+Verify: pnpm exec playwright test e2e/simulation-panel.spec.ts
+
+---
+
+## TASK-045: Rate limit UX — questionnaire 429 static fallback + "on call" message
+Status: queued
+Milestone: Quality & Resilience v1
+Type: feature
+Depends: none
+Validation: frontend-developer → cto
+Model-hint: sonnet
+Spec: |
+  The questionnaire page (app/questionnaire/page.tsx) SHALL handle HTTP 429 from
+  /api/converse with a two-phase UX — degrade first, inform second.
+  Phase 1 (immediate): on 429 response, navigate to
+  /output?components=prepare,train,program&useCase=<intent>&rate_limited=1&resetMs=<N>
+  where N comes from the 429 response body meta.resetMs (already returned by the route).
+  No additional GLM calls SHALL be made after the 429.
+  Phase 2 (output page): app/output/page.tsx SHALL detect rate_limited=1 in URL params.
+  When present, render OUTPUT_TEMPLATES["all"] directly (no /api/output fetch) AND display
+  a message below the LLM prompt block: "Our AI advisor is busy and should be back in
+  approximately X minutes." where X = Math.ceil(Number(resetMs) / 60000), minimum 1.
+  The message SHALL NOT use "will be back" (implies guarantee) — use "should be back".
+  The message SHALL NOT appear when rate_limited param is absent.
+  "Start over" button SHALL remain visible and functional on the rate-limited output page.
+  Unit tests SHALL cover: (a) 429 response triggers router.push with correct params;
+  (b) rate_limited=1 + resetMs=180000 → message shows "approximately 3 minutes";
+  (c) no rate_limited param → message absent.
+  E2E spec SHALL be created at e2e/rate-limit.spec.ts with 5 test.describe blocks per
+  rules/testing.md skeleton (auth edge N/A; empty state N/A with comment).
+  /api/simulate 429 behaviour is unchanged — silent fail, panel hidden (no new code).
+Scenarios:
+  - GIVEN /api/converse returns 429 with meta.resetMs=300000 | THEN URL becomes
+    /output?...rate_limited=1&resetMs=300000 within 1 render cycle
+  - GIVEN output page with rate_limited=1&resetMs=180000 | THEN message "approximately 3 minutes"
+  - GIVEN output page with no rate_limited param | THEN no "on call" message visible
+  - GIVEN rate-limited output page | WHEN start over clicked | THEN URL === "/"
+  - GIVEN rate-limited output page | THEN all 3 component guide steps rendered (from "all" template)
+  - GIVEN e2e/rate-limit.spec.ts | THEN 5 test.describe blocks (or N/A comments)
+Artifacts:
+  - app/questionnaire/page.tsx (modified — 429 detection + navigation)
+  - app/output/page.tsx (modified — rate_limited param detection + static template render + message)
+  - e2e/rate-limit.spec.ts (new)
+  - src/__tests__/rate-limit-ux.test.tsx (new unit tests)
+Verify: pnpm test && pnpm exec playwright test e2e/rate-limit.spec.ts && pnpm exec tsc --noEmit
+
+---
+
+## TASK-046: Upstash Redis cache — replace module-scope Maps
+Status: queued
+Milestone: Quality & Resilience v1
+Type: feature
+Depends: none
+Validation: backend-developer → cto
+Model-hint: sonnet
+Spec: |
+  lib/simulate-cache.ts and lib/output-cache.ts SHALL replace their module-scope Maps
+  with Upstash Redis via @upstash/redis.
+  A shared lib/redis-client.ts singleton SHALL create the Redis client using
+  UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN env vars.
+  If either env var is absent (local dev, CI without Redis), the singleton SHALL return
+  null and all cache operations SHALL be no-ops — getCached returns null, setCached is
+  a no-op. No throw, no blocked GLM call.
+  Redis SET calls SHALL use EX option for 3600-second TTL (matching current 60 min).
+  Cache key structure (MD5-style hash) SHALL remain unchanged.
+  @upstash/redis SHALL be installed via pnpm add @upstash/redis.
+  UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN SHALL be added to .env.example
+  with placeholder comment: "# Get from Upstash console → Redis → REST API".
+  Unit tests SHALL use vi.mock("@upstash/redis") and cover: hit (GET returns cached),
+  miss (GET returns null), Redis client throws on GET (getCached returns null, no throw),
+  Redis client throws on SET (setCached is no-op, no throw).
+Scenarios:
+  - GIVEN Redis GET returns cached value | THEN getCached returns result without GLM call
+  - GIVEN Redis GET returns null | THEN getCached returns null, GLM call proceeds
+  - GIVEN Redis client constructor throws | THEN all cache functions are no-ops, no crash
+  - GIVEN Redis SET throws | THEN setCached is silent no-op, response already returned
+  - GIVEN .env.example | THEN UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN present
+  - GIVEN pnpm test | THEN all existing + new cache tests pass
+Artifacts:
+  - lib/redis-client.ts (new)
+  - lib/simulate-cache.ts (modified — Map replaced with Redis)
+  - lib/output-cache.ts (modified — Map replaced with Redis)
+  - lib/__tests__/simulate-cache.test.ts (new)
+  - lib/__tests__/output-cache.test.ts (new)
+  - .env.example (modified — Redis env vars added)
+  - package.json (modified — @upstash/redis dependency)
+  - pnpm-lock.yaml (modified)
+Verify: pnpm test && pnpm exec tsc --noEmit
+
+---
+
+## TASK-047: LLM evaluation — GLM-5 vs Qwen 3.6 side-by-side
+Status: queued
+Milestone: Quality & Resilience v1
+Type: research
+Depends: none
+Validation: backend-developer → cto
+Model-hint: sonnet
+Spec: |
+  A side-by-side evaluation of GLM-5 (current provider) vs Qwen 3.6 via OpenRouter SHALL
+  be run across all 3 API task types:
+  (1) /api/converse — question generation: send 3 representative intent strings, capture
+  the question+options response.
+  (2) /api/simulate — table generation: send 3 representative {useCase, components} pairs,
+  capture the drafted_input/experiment_rows/outcome response.
+  (3) /api/output — guide personalisation: send 3 representative {useCase, components}
+  pairs, capture the guide_steps/llm_prompt response.
+  Each response SHALL be scored 1–5 on: (a) plain language (Grade 8 readable, no ML
+  jargon unexplained), (b) domain accuracy (autoresearch terms used correctly), (c)
+  structure adherence (correct JSON shape: question+options, or guide_steps+llm_prompt).
+  Cost SHALL be computed: input + output token count × published price per 1k tokens for
+  each provider at 1x (~50 req/day) and 10x (~500 req/day).
+  Qwen-turbo SHALL NOT be evaluated.
+  If OPENROUTER_API_KEY is unavailable: document the gap in docs/llm-evaluation.md and
+  use GLM-only results, noting evaluation is incomplete.
+  docs/llm-evaluation.md SHALL contain: methodology, quality scores table
+  (provider × task type, 1–5), cost table (1x + 10x), recommendation
+  ("Qwen 3.6 qualifies as fallback" or "Qwen 3.6 does not qualify"), and reasoning.
+  Quality bar for "qualifies": all 3 task types score ≥4 on plain language AND ≥3 on
+  domain accuracy AND ≥4 on structure adherence for Qwen 3.6.
+Scenarios:
+  - GIVEN docs/llm-evaluation.md | THEN sections: methodology, quality scores, cost, recommendation, reasoning
+  - GIVEN quality scores table | THEN 3 task type rows × 2 provider columns, each scored 1–5
+  - GIVEN cost table | THEN 1x and 10x rows for each provider
+  - GIVEN recommendation section | THEN contains "Qwen 3.6 qualifies" or "Qwen 3.6 does not qualify"
+  - GIVEN evaluation | THEN no Qwen-turbo results
+  - GIVEN test -f docs/llm-evaluation.md | THEN exits 0
+Artifacts:
+  - docs/llm-evaluation.md (new)
+Produces: Qwen 3.6 pass/fail verdict consumed by TASK-048
+Verify: test -f docs/llm-evaluation.md && grep -qE "qualifies|does not qualify" docs/llm-evaluation.md
+
+---
+
+## TASK-048: LLM provider abstraction (gates on TASK-047)
+Status: queued
+Milestone: Quality & Resilience v1
+Type: feature
+Depends: TASK-047
+Validation: backend-developer → cto
+Model-hint: sonnet
+Spec: |
+  Read docs/llm-evaluation.md before implementing. Implementation path depends on verdict.
+  IF Qwen 3.6 qualifies (per TASK-047 recommendation):
+    lib/llm-client.ts SHALL be refactored to support a two-provider config: GLM-5 as
+    primary, Qwen 3.6 via OpenRouter as fallback. When GLM-5 returns 429 or 503,
+    lib/llm-client.ts SHALL retry once using Qwen 3.6 before propagating the error.
+    Caller interface (function signatures, return types, thrown errors) SHALL be unchanged.
+    OPENROUTER_API_KEY SHALL be added to .env.example.
+    OpenRouter endpoint: https://openrouter.ai/api/v1/chat/completions.
+    Unit tests SHALL cover: GLM succeeds (Qwen never called); GLM 429 → Qwen called →
+    success; GLM 429 → Qwen 429 → original 429 error propagated; GLM 503 → Qwen fallback.
+  IF Qwen 3.6 does not qualify (per TASK-047 recommendation):
+    lib/llm-client.ts SHALL be hardened for GLM-only: add exponential backoff (100ms,
+    200ms, 400ms cap) for 502/503 retries before the existing MAX_ATTEMPTS logic.
+    No new providers. No new env vars. Add inline comment referencing docs/llm-evaluation.md
+    and stating evaluation outcome.
+    Unit tests SHALL cover the new backoff timing.
+  In both cases: pnpm test passes; pnpm exec tsc --noEmit passes; all 3 API routes
+  (/api/converse, /api/output, /api/simulate) function identically from callers' perspective.
+Scenarios:
+  - (IF qualifies) GIVEN GLM 429 | THEN Qwen called, response returned without throw
+  - (IF qualifies) GIVEN GLM 429 → Qwen 429 | THEN 429 error propagated to caller
+  - (IF qualifies) GIVEN OPENROUTER_API_KEY | THEN present in .env.example
+  - (IF not qualifies) GIVEN GLM 502 | THEN 3 retry attempts with exponential backoff
+  - GIVEN all API routes | THEN caller interface unchanged (same params, same return shape)
+  - GIVEN pnpm test | THEN all existing + new tests pass
+Artifacts:
+  - lib/llm-client.ts (modified — provider config OR backoff hardening)
+  - lib/__tests__/llm-client.test.ts (modified — new test cases)
+  - .env.example (modified if Qwen qualifies)
+Verify: pnpm test && pnpm exec tsc --noEmit
 
 ---
 
