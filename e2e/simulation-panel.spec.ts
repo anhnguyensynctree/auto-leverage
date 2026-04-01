@@ -62,6 +62,9 @@ test.describe("1 — happy path", () => {
     await expect(page.getByTestId("sim-panel")).not.toBeVisible();
     expect(simulateCalled).toBe(false);
 
+    await page.screenshot({ path: "qa/screenshots/sim-panel-hidden.png" });
+    await expect(page).toHaveScreenshot("sim-panel-hidden.png");
+
     await toggle.click();
     await expect(toggle).toHaveText(/hide example/i);
     await expect(page.getByTestId("sim-panel")).toBeVisible();
@@ -74,6 +77,9 @@ test.describe("1 — happy path", () => {
 
     await expect(page.getByText(/by experiment 3/i)).toBeVisible();
     expect(simulateCalled).toBe(true);
+
+    await page.screenshot({ path: "qa/screenshots/sim-panel-open.png" });
+    await expect(page).toHaveScreenshot("sim-panel-open.png");
   });
 
   test("subsequent toggles show/hide without re-fetching", async ({ page }) => {
@@ -159,6 +165,9 @@ test.describe("2 — error states", () => {
     await expect(toggle).toBeVisible();
     await expect(page.getByTestId("sim-panel")).not.toBeVisible();
     await expect(page.getByText(/error/i)).not.toBeVisible();
+
+    await page.screenshot({ path: "qa/screenshots/sim-panel-error.png" });
+    await expect(page).toHaveScreenshot("sim-panel-error.png");
   });
 });
 
@@ -190,6 +199,9 @@ test.describe("5 — input edge", () => {
 
     const toggle = page.getByTestId("sim-toggle");
     await expect(toggle).toBeVisible({ timeout: 10000 });
+
+    await page.screenshot({ path: "qa/screenshots/sim-panel-long-input.png" });
+    await expect(page).toHaveScreenshot("sim-panel-long-input.png");
   });
 
   test("useCase with special characters — page renders without error", async ({
