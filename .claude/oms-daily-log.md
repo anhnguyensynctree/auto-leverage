@@ -1,4 +1,12 @@
 
+## 2026-04-01T01:00Z | oms-schema-fix
+• TASK-041–049 schema compliance applied — all 9 tasks now have Feature, Context, Activated, File-count, Produces
+• Model-hints corrected: qwen (≤3 files), sonnet (4 files or infra-critical), qwen36 (research)
+• TASK-046 split into TASK-046 (4 authored files) + TASK-049 (3 test files) — original 8 files violated ≤4 rule
+• CLO + Legal dept added to company-hierarchy.md — active on third-party API tasks
+• No decision required — queue ready for /oms-work
+Built: Schema-compliant task queue (9 tasks) — Router can now correctly derive model, file scope, and agent routing for every task
+
 ## 2026-04-01T00:00Z | oms-all
 • 4 FEATURE drafts elaborated into 8 OpenSpec tasks (TASK-041–048) — all queued for /oms-work
 • Quality & Resilience v1 fully planned: E2E coverage, rate limit UX, Redis cache, LLM evaluation + abstraction

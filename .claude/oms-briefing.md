@@ -10,19 +10,19 @@ FEATURE-008 (E2E Coverage) → 4 tasks (TASK-041–044), one per spec file. Each
 
 FEATURE-009 (Rate Limit UX) → 1 task (TASK-045). Questionnaire page handles 429 by navigating to /output with all-3 static template (no extra GLM call), then shows "should be back in approximately X minutes" using resetMs. Backend 429 response already correct — pure frontend task.
 
-FEATURE-010 (Upstash Redis) → 1 task (TASK-046). Replaces module-scope Maps in simulate-cache.ts + output-cache.ts with @upstash/redis singleton. Graceful degrade if env vars absent.
+FEATURE-010 (Upstash Redis) → 2 tasks (TASK-046, TASK-049). TASK-046 authors redis-client.ts + updated cache modules + .env.example (4 files, sonnet). TASK-049 writes unit tests for all cache paths (3 files, qwen, depends TASK-046). Split required: original single task had 8 files, violating the ≤4 file sizing rule.
 
 FEATURE-011 (LLM Evaluation + Abstraction) → 2 tasks (TASK-047, TASK-048). Sequenced: TASK-047 evaluates GLM vs Qwen 3.6 across all 3 API types → docs/llm-evaluation.md with quality scores + cost table + pass/fail verdict. TASK-048 gates on verdict: provider abstraction if Qwen qualifies, GLM-only backoff hardening if not.
 
 ## Queue State
 - Done: 40 tasks
-- Queued: 8 (TASK-041 through TASK-048)
-- Blocked: 1 (TASK-048 depends on TASK-047)
+- Queued: 9 (TASK-041 through TASK-049)
+- Blocked: 2 (TASK-048 depends on TASK-047; TASK-049 depends on TASK-046)
 - CTO-Stop: 0
 
 ## Milestone
 - Name: Quality & Resilience v1
-- Progress: 0/8 tasks done
+- Progress: 0/9 tasks done
 - Stage: ready for /oms-work
 
 ## Product Direction

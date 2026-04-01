@@ -1081,11 +1081,16 @@ Verify: pnpm test -- --testPathPattern="questionnaire|ExportActions|confirm" 2>&
 
 ## TASK-041: Restructure home-entry.spec.ts into 5-category E2E spec
 Status: queued
+Feature: FEATURE-008
 Milestone: Quality & Resilience v1
+Department: Engineering
 Type: test
 Depends: none
 Validation: qa-engineer → cto
-Model-hint: sonnet
+Model-hint: qwen
+File-count: 1
+Context: e2e/home-entry.spec.ts
+Activated: qa-engineer, frontend-developer
 Spec: |
   home-entry.spec.ts SHALL be restructured into exactly 5 test.describe blocks using the
   rules/testing.md skeleton. Categories 2, 3, and 4 SHALL each have a // N/A comment with
@@ -1111,17 +1116,23 @@ Scenarios:
   - GIVEN 500-char input + type one more | THEN textarea.value.length === 500
 Artifacts:
   - e2e/home-entry.spec.ts
+Produces: none
 Verify: pnpm exec playwright test e2e/home-entry.spec.ts
 
 ---
 
 ## TASK-042: Restructure questionnaire-flow.spec.ts into 5-category E2E spec
 Status: queued
+Feature: FEATURE-008
 Milestone: Quality & Resilience v1
+Department: Engineering
 Type: test
 Depends: none
 Validation: qa-engineer → cto
-Model-hint: sonnet
+Model-hint: qwen
+File-count: 2
+Context: e2e/questionnaire-flow.spec.ts, app/questionnaire/page.tsx
+Activated: qa-engineer, frontend-developer
 Spec: |
   questionnaire-flow.spec.ts SHALL be restructured into 5 test.describe blocks.
   Category 1 (happy path): initial load renders question + radio options; select option →
@@ -1148,17 +1159,23 @@ Scenarios:
 Artifacts:
   - e2e/questionnaire-flow.spec.ts
   - app/questionnaire/page.tsx (modified if error state or empty intent guard missing)
+Produces: none
 Verify: pnpm exec playwright test e2e/questionnaire-flow.spec.ts && pnpm exec tsc --noEmit
 
 ---
 
 ## TASK-043: Restructure confirm-to-output.spec.ts into 5-category E2E spec
 Status: queued
+Feature: FEATURE-008
 Milestone: Quality & Resilience v1
+Department: Engineering
 Type: test
 Depends: none
 Validation: qa-engineer → cto
-Model-hint: sonnet
+Model-hint: qwen
+File-count: 3
+Context: e2e/confirm-to-output.spec.ts, app/confirm/page.tsx, app/output/page.tsx
+Activated: qa-engineer, frontend-developer
 Spec: |
   confirm-to-output.spec.ts SHALL be restructured into 5 test.describe blocks.
   Category 1 (happy path): component cards visible (Data Preparation, Model Trainer);
@@ -1183,17 +1200,23 @@ Artifacts:
   - e2e/confirm-to-output.spec.ts
   - app/confirm/page.tsx (modified if missing params guard absent)
   - app/output/page.tsx (modified if 500 error state absent)
+Produces: none
 Verify: pnpm exec playwright test e2e/confirm-to-output.spec.ts && pnpm exec tsc --noEmit
 
 ---
 
 ## TASK-044: Restructure simulation-panel.spec.ts into 5-category E2E spec
 Status: queued
+Feature: FEATURE-008
 Milestone: Quality & Resilience v1
+Department: Engineering
 Type: test
 Depends: none
 Validation: qa-engineer → cto
-Model-hint: sonnet
+Model-hint: qwen
+File-count: 1
+Context: e2e/simulation-panel.spec.ts
+Activated: qa-engineer, frontend-developer
 Spec: |
   simulation-panel.spec.ts SHALL be restructured into 5 test.describe blocks.
   Category 1 (happy path): panel hidden on load; toggle click shows panel + calls
@@ -1214,17 +1237,23 @@ Scenarios:
   - GIVEN happy path | THEN existing two tests restructured into describe block, all pass
 Artifacts:
   - e2e/simulation-panel.spec.ts
+Produces: none
 Verify: pnpm exec playwright test e2e/simulation-panel.spec.ts
 
 ---
 
 ## TASK-045: Rate limit UX — questionnaire 429 static fallback + "on call" message
 Status: queued
+Feature: FEATURE-009
 Milestone: Quality & Resilience v1
+Department: Engineering
 Type: feature
 Depends: none
 Validation: frontend-developer → cto
 Model-hint: sonnet
+File-count: 4
+Context: app/questionnaire/page.tsx, app/output/page.tsx, app/api/converse/route.ts, lib/output-templates.ts
+Activated: frontend-developer, qa-engineer
 Spec: |
   The questionnaire page (app/questionnaire/page.tsx) SHALL handle HTTP 429 from
   /api/converse with a two-phase UX — degrade first, inform second.
@@ -1258,17 +1287,23 @@ Artifacts:
   - app/output/page.tsx (modified — rate_limited param detection + static template render + message)
   - e2e/rate-limit.spec.ts (new)
   - src/__tests__/rate-limit-ux.test.tsx (new unit tests)
+Produces: none
 Verify: pnpm test && pnpm exec playwright test e2e/rate-limit.spec.ts && pnpm exec tsc --noEmit
 
 ---
 
 ## TASK-046: Upstash Redis cache — replace module-scope Maps
 Status: queued
+Feature: FEATURE-010
 Milestone: Quality & Resilience v1
+Department: Engineering
 Type: feature
 Depends: none
 Validation: backend-developer → cto
 Model-hint: sonnet
+File-count: 4
+Context: lib/simulate-cache.ts, lib/output-cache.ts
+Activated: backend-developer
 Spec: |
   lib/simulate-cache.ts and lib/output-cache.ts SHALL replace their module-scope Maps
   with Upstash Redis via @upstash/redis.
@@ -1279,39 +1314,79 @@ Spec: |
   a no-op. No throw, no blocked GLM call.
   Redis SET calls SHALL use EX option for 3600-second TTL (matching current 60 min).
   Cache key structure (MD5-style hash) SHALL remain unchanged.
-  @upstash/redis SHALL be installed via pnpm add @upstash/redis.
+  @upstash/redis SHALL be installed via pnpm add @upstash/redis (package.json + pnpm-lock.yaml
+  updated automatically; not counted toward file-count).
   UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN SHALL be added to .env.example
   with placeholder comment: "# Get from Upstash console → Redis → REST API".
-  Unit tests SHALL use vi.mock("@upstash/redis") and cover: hit (GET returns cached),
-  miss (GET returns null), Redis client throws on GET (getCached returns null, no throw),
-  Redis client throws on SET (setCached is no-op, no throw).
+  Unit tests are in TASK-049 (depends on this task).
 Scenarios:
-  - GIVEN Redis GET returns cached value | THEN getCached returns result without GLM call
-  - GIVEN Redis GET returns null | THEN getCached returns null, GLM call proceeds
-  - GIVEN Redis client constructor throws | THEN all cache functions are no-ops, no crash
-  - GIVEN Redis SET throws | THEN setCached is silent no-op, response already returned
+  - GIVEN UPSTASH_REDIS_REST_URL set | THEN getCached calls Redis GET, not Map lookup
+  - GIVEN env vars absent | THEN getCached returns null, setCached is no-op, no crash
+  - GIVEN Redis client constructor throws | THEN graceful degrade — no-op, no crash
   - GIVEN .env.example | THEN UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN present
-  - GIVEN pnpm test | THEN all existing + new cache tests pass
+  - GIVEN pnpm exec tsc --noEmit | THEN zero type errors
 Artifacts:
   - lib/redis-client.ts (new)
   - lib/simulate-cache.ts (modified — Map replaced with Redis)
   - lib/output-cache.ts (modified — Map replaced with Redis)
+  - .env.example (modified — Redis env vars added)
+Produces: lib/redis-client.ts singleton + updated cache interfaces consumed by TASK-049
+Verify: pnpm exec tsc --noEmit
+
+---
+
+## TASK-049: Upstash Redis cache — unit tests
+Status: queued
+Feature: FEATURE-010
+Milestone: Quality & Resilience v1
+Department: Engineering
+Type: test
+Depends: TASK-046
+Validation: backend-developer → cto
+Model-hint: qwen
+File-count: 3
+Context: lib/redis-client.ts, lib/simulate-cache.ts, lib/output-cache.ts
+Activated: backend-developer, qa-engineer
+Spec: |
+  Unit tests for the Redis-backed cache modules (written after TASK-046 lands).
+  lib/__tests__/simulate-cache.test.ts and lib/__tests__/output-cache.test.ts SHALL use
+  vi.mock("@upstash/redis") and cover:
+  (1) hit — Redis GET returns cached value → getCached returns result, GLM call not made
+  (2) miss — Redis GET returns null → getCached returns null, GLM call proceeds
+  (3) Redis client throws on GET → getCached returns null, no throw propagated
+  (4) Redis client throws on SET → setCached is silent no-op, response already returned
+  (5) env vars absent → singleton is null → all functions are no-ops, no crash
+  lib/__tests__/redis-client.test.ts SHALL cover: env vars present → client instantiated;
+  env vars absent → returns null.
+  All existing tests must still pass (no regressions).
+Scenarios:
+  - GIVEN vi.mock("@upstash/redis") returns cached value | THEN getCached returns value
+  - GIVEN vi.mock("@upstash/redis") returns null | THEN getCached returns null
+  - GIVEN Redis GET throws | THEN getCached returns null, does not throw
+  - GIVEN Redis SET throws | THEN setCached is no-op, does not throw
+  - GIVEN UPSTASH_REDIS_REST_URL absent | THEN redis-client returns null, cache no-ops
+  - GIVEN pnpm test | THEN all existing + new tests pass
+Artifacts:
   - lib/__tests__/simulate-cache.test.ts (new)
   - lib/__tests__/output-cache.test.ts (new)
-  - .env.example (modified — Redis env vars added)
-  - package.json (modified — @upstash/redis dependency)
-  - pnpm-lock.yaml (modified)
-Verify: pnpm test && pnpm exec tsc --noEmit
+  - lib/__tests__/redis-client.test.ts (new)
+Produces: none
+Verify: pnpm test
 
 ---
 
 ## TASK-047: LLM evaluation — GLM-5 vs Qwen 3.6 side-by-side
 Status: queued
+Feature: FEATURE-011
 Milestone: Quality & Resilience v1
+Department: Engineering
 Type: research
 Depends: none
 Validation: backend-developer → cto
-Model-hint: sonnet
+Model-hint: qwen36
+File-count: 1
+Context: app/api/converse/route.ts, app/api/simulate/route.ts, app/api/output/route.ts
+Activated: backend-developer
 Spec: |
   A side-by-side evaluation of GLM-5 (current provider) vs Qwen 3.6 via OpenRouter SHALL
   be run across all 3 API task types:
@@ -1327,6 +1402,7 @@ Spec: |
   Cost SHALL be computed: input + output token count × published price per 1k tokens for
   each provider at 1x (~50 req/day) and 10x (~500 req/day).
   Qwen-turbo SHALL NOT be evaluated.
+  OpenRouter API key is at ~/.config/openrouter/key.
   If OPENROUTER_API_KEY is unavailable: document the gap in docs/llm-evaluation.md and
   use GLM-only results, noting evaluation is incomplete.
   docs/llm-evaluation.md SHALL contain: methodology, quality scores table
@@ -1350,11 +1426,16 @@ Verify: test -f docs/llm-evaluation.md && grep -qE "qualifies|does not qualify" 
 
 ## TASK-048: LLM provider abstraction (gates on TASK-047)
 Status: queued
+Feature: FEATURE-011
 Milestone: Quality & Resilience v1
+Department: Engineering
 Type: feature
 Depends: TASK-047
 Validation: backend-developer → clo → cto
 Model-hint: sonnet
+File-count: 3
+Context: lib/llm-client.ts, docs/llm-evaluation.md
+Activated: backend-developer, clo, cto
 Spec: |
   Read docs/llm-evaluation.md before implementing. Implementation path depends on verdict.
   IF Qwen 3.6 qualifies (per TASK-047 recommendation):
@@ -1391,6 +1472,7 @@ Artifacts:
   - lib/llm-client.ts (modified — provider config OR backoff hardening)
   - lib/__tests__/llm-client.test.ts (modified — new test cases)
   - .env.example (modified if Qwen qualifies)
+Produces: none
 Verify: pnpm test && pnpm exec tsc --noEmit
 
 ---
