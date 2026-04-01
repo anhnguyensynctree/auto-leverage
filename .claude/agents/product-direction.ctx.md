@@ -22,19 +22,17 @@ Post-MVP — full product live at https://auto-leverage.vercel.app. Entering dis
 - Vercel Analytics — 4 funnel events, no PII
 
 ## Active Milestone
-**Quality & Resilience v1** | 0/4 features complete
+**Quality & Resilience v1** | ✅ Complete 2026-04-01 | 9/9 tasks (TASK-041–049)
+- 5-category E2E specs for all 4 flows (home, questionnaire, confirm, output)
+- Rate limit UX: 429 from questionnaire → static fallback + "back in ~N minutes"
+- Upstash Redis: replaced module-scope Maps; serverless-safe cache with 1h TTL
+- GLM backoff hardening: exponential 100ms/400ms cap for 502/503 (Qwen eval: not qualified)
+- 30/30 E2E, 205 unit tests passing
 
-Features (dependency order):
-1. FEATURE-008: E2E Coverage Completion *(unblocked — ship first)*
-2. FEATURE-009: Rate Limit User Messaging *(unblocked — parallel with 008)*
-3. FEATURE-010: Upstash Redis Cache *(unblocked — parallel with 008+009)*
-4. FEATURE-011: LLM Provider Evaluation + Abstraction *(evaluation unblocked; abstraction gates on evaluation findings + OpenRouter DPA review)*
+## Active Milestone
+None — run /oms-exec to plan next milestone
 
 ## Current Priorities
-1. Close E2E coverage gap before any growth work — test confidence is currently overstated (FEATURE-008)
-2. Fix rate limit user experience — users hitting 429 see a broken product (FEATURE-009)
-3. Replace cold-start-vulnerable cache with Upstash Redis (FEATURE-010)
-4. Validate GLM vs Qwen 3.6 quality + cost before committing to provider abstraction (FEATURE-011)
 
 ## User Flow (confirmed)
 ```
