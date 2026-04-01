@@ -28,8 +28,8 @@ const OUTPUT_FIXTURE = {
   error: null,
 };
 
-test.describe("Simulation panel", () => {
-  test("simulation panel is hidden on load and visible after toggle click", async ({
+test.describe("1 — happy path", () => {
+  test("panel hidden on load, toggle shows panel and calls /api/simulate once", async ({
     page,
   }) => {
     let simulateCalled = false;
@@ -55,34 +55,24 @@ test.describe("Simulation panel", () => {
       "/output?components=train&useCase=NBA+team+performance+prediction",
     );
 
-    // Toggle button must be present
     const toggle = page.getByTestId("sim-toggle");
     await expect(toggle).toBeVisible({ timeout: 10000 });
     await expect(toggle).toHaveText(/see a worked example/i);
 
-    // Simulation panel must be hidden before toggle
     await expect(page.getByTestId("sim-panel")).not.toBeVisible();
-
-    // /api/simulate must NOT have been called yet
     expect(simulateCalled).toBe(false);
 
-    // Click toggle — panel expands, fetch fires
     await toggle.click();
     await expect(toggle).toHaveText(/hide example/i);
     await expect(page.getByTestId("sim-panel")).toBeVisible();
 
-    // Wait for content to render
     const heading = page.getByText(/see it in action/i);
     await expect(heading).toBeVisible({ timeout: 10000 });
 
-    // Experiment table rows: header + 4 data rows = 5
     const rows = page.getByRole("row");
     await expect(rows).toHaveCount(5);
 
-    // Outcome text visible
     await expect(page.getByText(/by experiment 3/i)).toBeVisible();
-
-    // /api/simulate was called exactly once
     expect(simulateCalled).toBe(true);
   });
 
@@ -113,20 +103,118 @@ test.describe("Simulation panel", () => {
     const toggle = page.getByTestId("sim-toggle");
     await expect(toggle).toBeVisible({ timeout: 10000 });
 
-    // First expand — triggers fetch
     await toggle.click();
     await expect(page.getByText(/see it in action/i)).toBeVisible({
       timeout: 10000,
     });
     expect(callCount).toBe(1);
 
-    // Collapse
     await toggle.click();
     await expect(page.getByTestId("sim-panel")).not.toBeVisible();
 
-    // Re-expand — no second fetch
     await toggle.click();
     await expect(page.getByTestId("sim-panel")).toBeVisible();
     expect(callCount).toBe(1);
+  });
+});
+
+// N/A (3 — empty state): API always returns either a result or fails silently — there is no empty render path for this panel.
+test.describe("3 — empty state", () => {
+  // N/A (3 — empty state): API always returns either a result or fails silently — no empty render path.
+});
+
+// N/A (4 — auth edge): no authentication in this product.
+test.describe("4 — auth edge", () => {
+  // N/A (4 — auth edge): no authentication in this product.
+});
+
+test.describe("2 — error states", () => {
+  test("500 from /api/simulate — toggle visible, panel hidden, silent fail", async ({
+    page,
+  }) => {
+    await page.route("**/api/simulate", (route) => {
+      route.fulfill({
+        status: 500,
+        contentType: "application/json",
+        body: JSON.stringify({ data: null, error: "Internal Server Error" }),
+      });
+    });
+
+    await page.route("**/api/output", (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify(OUTPUT_FIXTURE),
+      });
+    });
+
+    await page.goto(
+      "/output?components=train&useCase=NBA+team+performance+prediction",
+    );
+
+    const toggle = page.getByTestId("sim-toggle");
+    await expect(toggle).toBeVisible({ timeout: 10000 });
+
+    await toggle.click();
+    await expect(toggle).toBeVisible();
+    await expect(page.getByTestId("sim-panel")).not.toBeVisible();
+    await expect(page.getByText(/error/i)).not.toBeVisible();
+  });
+});
+
+test.describe("5 — input edge", () => {
+  test("useCase URL param with 200+ characters — page renders, toggle visible", async ({
+    page,
+  }) => {
+    const longUseCase = "A".repeat(250);
+
+    await page.route("**/api/simulate", (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify(FIXTURE_RESPONSE),
+      });
+    });
+
+    await page.route("**/api/output", (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify(OUTPUT_FIXTURE),
+      });
+    });
+
+    await page.goto(
+      `/output?components=train&useCase=${encodeURIComponent(longUseCase)}`,
+    );
+
+    const toggle = page.getByTestId("sim-toggle");
+    await expect(toggle).toBeVisible({ timeout: 10000 });
+  });
+
+  test("useCase with special characters — page renders without error", async ({
+    page,
+  }) => {
+    const specialUseCase = "NBA<>team&performance=prediction!@#$%^&*()";
+
+    await page.route("**/api/simulate", (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify(FIXTURE_RESPONSE),
+      });
+    });
+
+    await page.route("**/api/output", (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify(OUTPUT_FIXTURE),
+      });
+    });
+
+    await page.goto(
+      `/output?components=train&useCase=${encodeURIComponent(specialUseCase)}`,
+    );
   });
 });

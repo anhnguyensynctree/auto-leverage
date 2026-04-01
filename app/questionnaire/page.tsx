@@ -182,6 +182,24 @@ function QuestionnaireContent() {
     !selectedOption ||
     (selectedOption === ELSE_OPTION && freeText.trim() === "");
 
+  if (!intent) {
+    return (
+      <div className="min-h-screen flex items-center justify-center px-6">
+        <div className="max-w-[400px] w-full text-center space-y-4">
+          <p className="text-on-surface-variant text-sm">
+            Please describe your goal first.
+          </p>
+          <a
+            href="/"
+            className="inline-block h-10 px-6 bg-primary text-white text-sm font-semibold rounded-xl hover:bg-on-primary-fixed-variant transition-colors leading-10"
+          >
+            Start here
+          </a>
+        </div>
+      </div>
+    );
+  }
+
   if (error) {
     return (
       <div className="min-h-screen flex items-center justify-center px-6">
