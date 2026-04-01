@@ -8,7 +8,7 @@ export default defineConfig({
     environment: "node",
     globals: true,
     setupFiles: ["./vitest.setup.ts"],
-    exclude: [".claude/worktrees/**", "node_modules/**"],
+    exclude: [".claude/worktrees/**", "node_modules/**", "e2e/**"],
     coverage: {
       provider: "v8",
       include: ["app/api/**/*.ts", "lib/**/*.ts"],
