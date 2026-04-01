@@ -98,6 +98,7 @@ Depends: none
 
 ---
 - **Model-hint:** sonnet
+- **File-count:** 1
 ## TASK-002: Per-Use-Case Testing Plan
 Status: done
 Notes: docs/testing-plan.md exists with 5 use cases
@@ -116,6 +117,7 @@ Depends: TASK-001
 
 ---
 - **Model-hint:** sonnet
+- **File-count:** 1
 ## TASK-003: LLM Prompt Templates (3 Components)
 Status: done
 Notes: docs/prompt-templates.md exists with all 3 templates
@@ -135,6 +137,7 @@ Depends: TASK-001
 
 ---
 - **Model-hint:** sonnet
+- **File-count:** 1
 ## TASK-004: Question Stubs for Static Decision Tree
 Status: done
 Notes: docs/question-stubs.md exists with all paths
@@ -153,6 +156,7 @@ Depends: TASK-001, TASK-002
 
 ---
 - **Model-hint:** sonnet
+- **File-count:** 1
 ## TASK-005: Questionnaire JSON Config (Source of Truth)
 Status: done
 Notes: lib/questionnaire.json + lib/questionnaire-schema.ts implemented
@@ -173,6 +177,7 @@ Depends: TASK-004
 
 ---
 - **Model-hint:** sonnet
+- **File-count:** 2
 ## TASK-006: POST /api/classify Route
 Status: done
 Notes: app/api/classify/route.ts implemented with confidence threshold
@@ -192,6 +197,7 @@ Depends: TASK-005
 
 ---
 - **Model-hint:** sonnet
+- **File-count:** 1
 ## TASK-007: Output Templates + POST /api/output Route
 Status: done
 Notes: lib/output-templates.ts + app/api/output/route.ts implemented
@@ -213,6 +219,7 @@ Depends: TASK-003, TASK-006
 
 ---
 - **Model-hint:** sonnet
+- **File-count:** 2
 ## TASK-008: Unit Tests — All 7 Output Combinations
 Status: done
 Notes: 71 tests passing across 3 test files
@@ -234,6 +241,7 @@ Depends: TASK-007
 
 ---
 - **Model-hint:** sonnet
+- **File-count:** 3
 ## TASK-009: Next.js App Scaffold
 Status: done
 Notes: Next.js 14 App Router with Tailwind, next.config.mjs, full app structure
@@ -258,6 +266,7 @@ Depends: none
 
 ---
 - **Model-hint:** sonnet
+- **File-count:** 7
 ## TASK-010: Home Page + Free-Text Entry Screen
 Status: done
 Notes: app/page.tsx + components/EntryForm.tsx implemented
@@ -278,6 +287,7 @@ Depends: TASK-009, TASK-016
 
 ---
 - **Model-hint:** sonnet
+- **File-count:** 2
 ## TASK-011: Questionnaire Flow UI
 Status: done
 Notes: app/questionnaire/page.tsx + QuestionCard.tsx + ProgressBar.tsx implemented
@@ -300,6 +310,7 @@ Depends: TASK-006, TASK-016
 
 ---
 - **Model-hint:** sonnet
+- **File-count:** 3
 ## TASK-012: Confirmation + Output Screen
 Status: done
 Notes: app/confirm/page.tsx + app/output/page.tsx + OutputCard.tsx + ExportActions.tsx implemented
@@ -323,6 +334,7 @@ Depends: TASK-007, TASK-011, TASK-016
 
 ---
 - **Model-hint:** sonnet
+- **File-count:** 4
 ## TASK-013: LLM Fallback Classifier
 Status: done
 Notes: lib/llm-classifier.ts + extended app/api/classify/route.ts
@@ -344,6 +356,7 @@ Depends: TASK-006
 
 ---
 - **Model-hint:** sonnet
+- **File-count:** 2
 ## TASK-014: GitHub Actions CI Pipeline
 Status: done
 Notes: .github/workflows/ci.yml exists
@@ -363,6 +376,7 @@ Depends: TASK-008
 
 ---
 - **Model-hint:** sonnet
+- **File-count:** 1
 ## TASK-015: Vercel Config + Domain Setup
 Status: done
 Feature: FEATURE-005
@@ -382,6 +396,7 @@ Depends: TASK-009
 
 ---
 - **Model-hint:** sonnet
+- **File-count:** 2
 ## TASK-016: UI Design — All 4 Screens (Stitch)
 Status: done
 Notes: design/stitch/ has home.html, question-card.html, confirmation.html, output.html
@@ -405,6 +420,7 @@ Depends: TASK-004
 
 ---
 - **Model-hint:** sonnet
+- **File-count:** 5
 ## TASK-017: CLI-Based Deploy Pipeline (Production + PR Previews)
 Status: done
 Feature: FEATURE-005
@@ -425,6 +441,7 @@ Depends: TASK-014
 
 ---
 - **Model-hint:** sonnet
+- **File-count:** 2
 ## TASK-018: Write Tests for Rate Limiter, Strategy Route, and LLM Client
 Status: done
 Notes: branch worktree-agent-a6064ca7 — 192 tests passing, fixed JSON.parse bug in llm-strategy.ts
@@ -462,6 +479,7 @@ Tasks: TASK-019, TASK-021, TASK-022, TASK-023
 
 ---
 - **Model-hint:** sonnet
+- **File-count:** 4
 ## TASK-019: Fix Questionnaire Traversal — "I still don't know" fallback crash
 Status: done
 Notes: q-fallback-2 label fixed to "I'm not sure", terminal-all last-resort added to traverseTree — 95 tests passing
@@ -482,6 +500,7 @@ Depends: none
 
 ---
 - **Model-hint:** sonnet
+- **File-count:** 3
 ## TASK-020: Smart Free-Text Routing
 Status: superseded
 Notes: Superseded by TASK-021 — full conversational engine replaces static tree and smart routing
@@ -491,6 +510,7 @@ Depends: TASK-019
 
 ---
 - **Model-hint:** sonnet
+- **File-count:** 0
 ## TASK-021: POST /api/converse — Adaptive Question Generation
 Status: done
 Notes: app/api/converse/route.ts + lib/converse-prompt.ts — 95 tests passing, all acceptance criteria met
@@ -512,6 +532,7 @@ Depends: TASK-019
 
 ---
 - **Model-hint:** sonnet
+- **File-count:** 3
 ## TASK-022: Replace Questionnaire UI with Adaptive Conversation
 Status: done
 Notes: app/questionnaire/page.tsx + QuestionCard.tsx + ProgressBar.tsx — 179 tests, all acceptance criteria met
@@ -533,6 +554,7 @@ Depends: TASK-021
 
 ---
 - **Model-hint:** sonnet
+- **File-count:** 3
 ## TASK-023: Personalise Confirmation + Output with useCase
 Status: done
 Notes: confirm useCase block + api/output goal prefix — 115 tests passing, all acceptance criteria met
@@ -561,6 +583,7 @@ Tasks: TASK-024, TASK-025, TASK-026, TASK-027, TASK-028
 
 ---
 - **Model-hint:** sonnet
+- **File-count:** 3
 ## TASK-024: Playwright Setup + CI Integration
 Status: done
 Notes: committed 437e1ba — playwright.config.ts, e2e/.gitkeep, CI e2e job, @playwright/test installed
@@ -583,6 +606,7 @@ Depends: none
 
 ---
 - **Model-hint:** sonnet
+- **File-count:** 5
 ## TASK-025: E2E — home-entry.spec.ts
 Status: done
 Notes: 4/4 chromium passing — intent URL param contract covered
@@ -601,6 +625,7 @@ Depends: TASK-024
 
 ---
 - **Model-hint:** sonnet
+- **File-count:** 1
 ## TASK-026: E2E — questionnaire-flow.spec.ts
 Status: done
 Notes: 4/4 chromium passing — adaptive flow + back nav covered
@@ -620,6 +645,7 @@ Depends: TASK-024
 
 ---
 - **Model-hint:** sonnet
+- **File-count:** 1
 ## TASK-027: E2E — confirm-to-output.spec.ts
 Status: done
 Notes: 4/4 chromium passing — useCase display + start over + output render covered
@@ -638,6 +664,7 @@ Depends: TASK-024
 
 ---
 - **Model-hint:** sonnet
+- **File-count:** 1
 ## TASK-028: E2E — full-happy-path.spec.ts (smoke test)
 Status: done
 Notes: 1/1 chromium passing — full journey covered, mock uses turns.length>0 not call-count (React 18 Strict Mode safe)
@@ -654,6 +681,7 @@ Depends: TASK-025, TASK-026, TASK-027
 
 ---
 - **Model-hint:** sonnet
+- **File-count:** 1
 ## TASK-029: Fix "The Lucid Researcher" branding in QuestionCard header
 Status: done
 Notes: Fixed incidentally during dark theme rewrite — QuestionCard now shows "auto-leverage"
@@ -670,6 +698,7 @@ Context: components/QuestionCard.tsx, app/questionnaire/page.tsx
 
 ---
 - **Model-hint:** sonnet
+- **File-count:** 0
 ## TASK-030: Confirm page — richer analysis summary using conversation turns
 Status: done
 Notes: branch oms-work/task-030 — sessionStorage turns, Q&A list + useCase-tailored component cards
@@ -706,6 +735,7 @@ Context: app/confirm/page.tsx, app/questionnaire/page.tsx, components/QuestionCa
 
 ---
 - **Model-hint:** sonnet
+- **File-count:** 0
 ## TASK-031: Rewrite output guide steps in plain language for non-tech users
 Status: done
 Notes: branch oms-work/task-031 — all 7 templates rewritten, zero jargon, 115 unit tests pass
@@ -737,6 +767,7 @@ Context: app/output/page.tsx, app/api/converse/route.ts (or wherever guide gener
 
 ---
 - **Model-hint:** sonnet
+- **File-count:** 0
 ## TASK-032: Output page — worked example simulation panel
 Status: done
 Notes: /api/simulate route + SimulationCard + non-blocking load, 130 tests pass
@@ -782,8 +813,10 @@ Context: app/output/page.tsx, app/api/ (new simulate endpoint)
 
 ---
 - **Model-hint:** sonnet
+- **File-count:** 2
 ## TASK-033: In-memory TTL cache for /api/simulate
-Status: queued
+Status: done
+Notes: module-scope Map TTL cache (60 min), 15 unit tests pass
 Milestone: Distribution Ready
 Type: improvement
 Depends: —
@@ -800,11 +833,22 @@ Acceptance:
 - Cache expiry after TTL triggers a fresh GLM call
 - Unit tests cover: hit, miss, expiry, null useCase (no cache — useCase is required for simulation)
 Context: app/api/simulate/route.ts, app/api/simulate/__tests__/route.test.ts
+Scenarios:
+- GIVEN identical {useCase, components} sent twice within 60 min | WHEN second POST /api/simulate | THEN GLM is not called and cached result is returned
+- GIVEN different useCase on second request | WHEN POST /api/simulate | THEN GLM is called again (cache miss)
+- GIVEN cache entry older than 60 min | WHEN POST /api/simulate | THEN GLM is called and cache is refreshed
+- GIVEN null useCase | WHEN POST /api/simulate | THEN no cache entry is written and GLM is called each time
+Artifacts:
+- app/api/simulate/route.ts
+- app/api/simulate/__tests__/route.test.ts
+Verify: pnpm test -- --testPathPattern="simulate" 2>&1 | tail -5
 
 ---
 - **Model-hint:** sonnet
+- **File-count:** 4
 ## TASK-034: Structured error logging + GLM rate limit surfacing
-Status: queued
+Status: done
+Notes: structured console.error in all routes, rate limit headers surfaced in llm-client.ts
 Milestone: Distribution Ready
 Type: improvement
 Depends: —
@@ -823,11 +867,24 @@ Acceptance:
 - No sensitive data (API key, user content) appears in any log output
 - Unit tests: mock GLM to return 429 with rate limit headers, assert warning logged
 Context: lib/llm-client.ts, app/api/converse/route.ts, app/api/simulate/route.ts, app/api/output/route.ts
+Scenarios:
+- GIVEN GLM returns a 500 error | WHEN /api/converse processes the response | THEN console.error logs { endpoint, errorType, message, timestamp } with no API key or user content
+- GIVEN GLM response includes X-RateLimit-Remaining: 5 | WHEN response is processed | THEN a warning log fires with the rate limit value
+- GIVEN GLM returns 429 | WHEN rate limit headers are parsed | THEN X-RateLimit-Remaining and X-RateLimit-Reset are logged
+- GIVEN an error occurs | THEN no user content (useCase, turns) appears in any log line
+Artifacts:
+- lib/llm-client.ts
+- app/api/converse/route.ts
+- app/api/simulate/route.ts
+- app/api/output/route.ts
+Verify: pnpm test -- --testPathPattern="llm-client" 2>&1 | tail -5
 
 ---
 - **Model-hint:** sonnet
+- **File-count:** 2
 ## TASK-035: GLM retry logic for transient failures
-Status: queued
+Status: done
+Notes: max 2 attempts, 500ms on 502/503, Retry-After-aware on 429, no retry on 4xx, 25 tests pass
 Milestone: Distribution Ready
 Type: improvement
 Depends: —
@@ -845,9 +902,19 @@ Acceptance:
 - 400 response does not retry — throws immediately
 - All 3 scenarios covered by unit tests with mocked fetch
 Context: lib/llm-client.ts, lib/__tests__/llm-client.test.ts
+Scenarios:
+- GIVEN GLM returns 503 | WHEN glmChat() is called | THEN one retry fires after 500ms and succeeds on second attempt
+- GIVEN GLM returns 429 with Retry-After: 1 | WHEN glmChat() is called | THEN one retry fires after 1000ms (capped at 2000ms)
+- GIVEN GLM returns 400 | WHEN glmChat() is called | THEN no retry — error thrown immediately
+- GIVEN both attempts fail with 503 | WHEN all retries exhausted | THEN last error is thrown
+Artifacts:
+- lib/llm-client.ts
+- lib/__tests__/llm-client.test.ts
+Verify: pnpm test -- --testPathPattern="llm-client" 2>&1 | tail -5
 
 ---
 - **Model-hint:** sonnet
+- **File-count:** 0
 ## TASK-036: Collapse simulation panel behind toggle by default
 Status: done
 Notes: app/output/page.tsx — simExpanded state, lazy fetchSimulation on first toggle, data-testid="sim-panel"; e2e/simulation-panel.spec.ts covers hidden-on-load + no-refetch
@@ -872,8 +939,10 @@ Context: app/output/page.tsx, components/SimulationCard.tsx, e2e/simulation-pane
 
 ---
 - **Model-hint:** sonnet
+- **File-count:** 0
 ## TASK-037: "Ready to run this?" CTA above prompt copy block
-Status: queued
+Status: done
+Notes: added muted CTA heading in OutputCard.tsx, 14 unit tests pass
 Milestone: Distribution Ready
 Type: improvement
 Depends: —
@@ -890,11 +959,21 @@ Acceptance:
 - Mobile layout: heading remains above prompt on small screens
 - No existing functionality removed or broken
 Context: components/OutputCard.tsx
+Scenarios:
+- GIVEN the output page renders | WHEN the DOM is inspected | THEN "Ready to run this?" text appears directly before the prompt copy block
+- GIVEN mobile viewport (375px) | WHEN output page renders | THEN CTA heading is above the prompt and not obscured
+- GIVEN the existing copy button | WHEN CTA is added | THEN copy button still present and functional with no regression
+Artifacts:
+- components/OutputCard.tsx
+- components/__tests__/OutputCard.test.tsx
+Verify: pnpm test -- --testPathPattern="OutputCard" 2>&1 | tail -5
 
 ---
 - **Model-hint:** sonnet
+- **File-count:** 0
 ## TASK-038: Share button on output page
-Status: queued
+Status: done
+Notes: ExportActions.tsx + 6 unit tests, clipboard.writeText + 2s feedback
 Milestone: Distribution Ready
 Type: feature
 Depends: TASK-036, TASK-037
@@ -913,11 +992,22 @@ Acceptance:
 - Pasting the copied URL in a new tab loads the same output page
 - Unit test: button click triggers clipboard.writeText with the current href
 Context: components/ExportActions.tsx, components/__tests__/ExportActions.test.tsx
+Scenarios:
+- GIVEN user is on output page | WHEN "Share this guide" is clicked | THEN window.location.href is written to clipboard
+- GIVEN button is clicked | WHEN feedback state activates | THEN button text changes to "Copied!" for 2s then reverts
+- GIVEN clipboard write succeeds | WHEN copied URL is pasted in new tab | THEN same output page renders with identical components + useCase
+- GIVEN button click | WHEN unit test fires | THEN clipboard.writeText is called with current href exactly once
+Artifacts:
+- components/ExportActions.tsx
+- components/__tests__/ExportActions.test.tsx
+Verify: pnpm test -- --testPathPattern="ExportActions" 2>&1 | tail -5
 
 ---
 - **Model-hint:** sonnet
+- **File-count:** 0
 ## TASK-039: In-memory TTL cache for /api/output
-Status: queued
+Status: done
+Notes: module-scope Map TTL cache, sentinel key for null useCase, 76 tests pass
 Milestone: Distribution Ready
 Type: improvement
 Depends: TASK-036, TASK-037
@@ -934,11 +1024,22 @@ Acceptance:
 - Different useCase triggers cache miss
 - Unit tests: hit, miss, null useCase, TTL expiry
 Context: app/api/output/route.ts, app/api/output/__tests__/route.test.ts (create if not exists)
+Scenarios:
+- GIVEN identical {components, useCase} sent twice within 60 min | WHEN second POST /api/output | THEN GLM is not called and cached result returned
+- GIVEN null useCase on two requests with same components | WHEN second request | THEN cached template response returned without GLM call
+- GIVEN different useCase on second request | WHEN POST /api/output | THEN GLM called again (cache miss)
+- GIVEN cache entry older than 60 min | WHEN POST /api/output | THEN GLM called and cache refreshed
+Artifacts:
+- app/api/output/route.ts
+- app/api/output/__tests__/route.test.ts
+Verify: pnpm test -- --testPathPattern="api/output" 2>&1 | tail -5
 
 ---
 - **Model-hint:** sonnet
+- **File-count:** 0
 ## TASK-040: Vercel Analytics + 4 funnel events
-Status: queued
+Status: done
+Notes: @vercel/analytics installed, 4 events wired, 30 new tests
 Milestone: Distribution Ready
 Type: feature
 Depends: TASK-033, TASK-034
@@ -961,4 +1062,30 @@ Acceptance:
 - No PII in any track() call payload
 - Unit tests mock track() and assert it is called with correct event name at each trigger point
 Context: app/layout.tsx, app/page.tsx, app/questionnaire/page.tsx, app/confirm/page.tsx, components/ExportActions.tsx
+Scenarios:
+- GIVEN user submits home form | WHEN navigation to /questionnaire occurs | THEN track("questionnaire_start") fires with no PII payload
+- GIVEN /api/converse returns done:true | WHEN response processed | THEN track("questionnaire_complete") fires with components array (no useCase text)
+- GIVEN user clicks "Yes, this fits" on confirm page | WHEN click handler fires | THEN track("confirm_proceed") fires
+- GIVEN user clicks "Copy to clipboard" | WHEN ExportActions click fires | THEN track("output_copy_prompt") fires with no user content
+Artifacts:
+- app/layout.tsx
+- app/page.tsx
+- app/questionnaire/page.tsx
+- app/confirm/page.tsx
+- components/ExportActions.tsx
+Verify: pnpm test -- --testPathPattern="questionnaire|ExportActions|confirm" 2>&1 | tail -5
 - **Model-hint:** sonnet
+- **File-count:** 5
+
+## TASK-reelaborate — Re-elaborate incomplete task specs
+- **Status:** done
+- **Notes:** Scenarios, Verify, Artifacts added to TASK-033–035, TASK-037–040. File-count corrected. TASK-020 was superseded — skipped.
+- **Milestone:** current
+- **Type:** impl
+- **Spec:** The system SHALL re-elaborate all incomplete tasks (TASK-020, TASK-033, TASK-034, TASK-035, TASK-037, TASK-038, TASK-039, TASK-040) to add missing Scenarios, Verify commands, and Artifacts fields following the OpenSpec format in task-schema.md.
+- **Artifacts:** .claude/cleared-queue.md
+- **Verify:** python3 -c "import re; t=open('.claude/cleared-queue.md').read(); blocks=re.split(r'(?=^## TASK-)',t,flags=re.MULTILINE); missing=[b.split('\n')[0] for b in blocks if b.startswith('## TASK-') and any(f not in b for f in ['Scenarios','Verify','Artifacts'])]; print('PASS' if not missing else f'FAIL: {missing}')"
+- **Validation:** dev → em
+- **Model-hint:** sonnet
+- **File-count:** 1
+- **Depends:** none

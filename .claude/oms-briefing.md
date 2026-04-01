@@ -1,27 +1,38 @@
-# OMS Briefing — auto-leverage
-Date: 2026-03-26 | Workflow: oms-work | Milestone: Quality Hardening
+# OMS Briefing
+Workflow: work
+Date: 2026-03-31
+Project: auto-leverage
 
-## Tasks Completed
-- TASK-024: Playwright Setup + CI Integration — dev ✓ cto ✓ qa ✓
-- TASK-025: E2E — home-entry.spec.ts — 4/4 passing
-- TASK-026: E2E — questionnaire-flow.spec.ts — 4/4 passing
-- TASK-027: E2E — confirm-to-output.spec.ts — 4/4 passing
-- TASK-028: E2E — full-happy-path.spec.ts — 1/1 passing
+## What Happened
+Executed 8 queued tasks (TASK-033 through TASK-040) across the Distribution Ready milestone. All tasks completed with all validators passing. Fixed a Next.js build error (invalid route exports) and updated E2E specs to reflect current UI (button text, radio click patterns, strict text selectors). Milestone gate: 185 unit tests pass, 15 E2E pass, Next.js build clean.
 
-## Tasks Stopped
-None.
+## Queue State
+- Done: 40 tasks (TASK-001 through TASK-040, minus TASK-020 superseded)
+- Queued: 0
+- Blocked: 0
+- CTO-Stop: 0
 
-### 📊 Executive TL;DR
-- Quality Hardening milestone complete — 5/5 tasks done, zero CTO-stops
-- 4 E2E spec files covering every user-facing flow boundary; full happy-path smoke test as regression guard
-- Key pattern discovered: React 18 Strict Mode double-fires useEffect — all converse mocks route on turns.length > 0, not call count
+## Milestone
+- Name: Distribution Ready
+- Progress: 8/8 tasks done
+- Stage: complete
 
-### 🚀 What Was Done
-- Playwright infrastructure wired up with CI gate (needs:ci, chromium only, reuseExistingServer for local dev)
-- home-entry.spec.ts — covers form validation, char limit, intent URL param contract (the bug class that caused the production incident)
-- questionnaire-flow.spec.ts — covers question render, option selection, Something Else free-text, Back nav, done:true routing
-- confirm-to-output.spec.ts — covers component cards, useCase display, Start over, Confirm → output render
-- full-happy-path.spec.ts — end-to-end smoke test; catches cross-page URL param regressions on every push
+## Product Direction
+auto-leverage is an adaptive AI strategy tool that guides non-technical users through a 3-5 turn LLM-driven conversation to identify which autoresearch component (prepare/train/program) fits their goal. The MVP and Quality Hardening milestones are complete. Distribution Ready focused on reliability and engagement: TTL caching, error visibility, retry resilience, UX improvements, and analytics instrumentation.
 
-## Product State
-Production at https://auto-leverage.vercel.app — intent bug patched, E2E suite now prevents recurrence. Next milestone TBD.
+## Decisions Made
+- Cache helpers extracted to lib modules (lib/simulate-cache.ts, lib/output-cache.ts) rather than exporting from Next.js route files — Next.js only allows specific route exports; this keeps routes clean and makes cache testable independently.
+- TASK-035 (retry logic) was committed alongside TASK-034 (error logging) since both modified lib/llm-client.ts in the same working session — no functional impact, both changes are present and tested.
+- E2E playwright config moved to PORT=3002 to avoid collision with daily-cosmos dev server on 3000.
+
+## Risks & Unresolved
+- Module-scope Map cache resets on cold starts (serverless) — acceptable at current traffic but will need Redis if traffic scales significantly.
+- GLM rate limits not yet surfaced to end users — only logged. Consider a user-visible fallback message if rate limit is hit repeatedly.
+
+## Task Quality
+- Passed: 8/8 validators passed across all tasks (dev → qa → em for each)
+- Failed: none
+- CTO-Stop: none
+
+## Session Cost
+ (skill path — no usage data exposed)

@@ -259,5 +259,50 @@
     "passed": true,
     "fail_at": null,
     "cost_usd": null
+  },
+  {
+    "task_id": "TASK-030",
+    "slug": "auto-leverage",
+    "title": "Confirm page \u2014 richer analysis summary",
+    "date": "2026-03-28T21:43:50.442689Z",
+    "passed": true,
+    "fail_at": null,
+    "cost_usd": null
+  },
+  {
+    "task_id": "TASK-031",
+    "slug": "auto-leverage",
+    "title": "Rewrite output guide in plain language",
+    "date": "2026-03-28T21:44:19.302971Z",
+    "passed": true,
+    "fail_at": null,
+    "cost_usd": null
+  },
+  {
+    "task_id": "TASK-032",
+    "slug": "auto-leverage",
+    "title": "Output page \u2014 worked example simulation panel",
+    "date": "2026-03-28T22:06:05.694746Z",
+    "passed": true,
+    "fail_at": null,
+    "cost_usd": null
+  },
+  {
+    "task_id": "TASK-035",
+    "slug": "auto-leverage",
+    "title": "GLM retry logic for transient failures",
+    "date": "2026-03-29T03:13:12.894752Z",
+    "passed": true,
+    "fail_at": null,
+    "cost_usd": null
+  },
+  {
+    "task_id": "TASK-037",
+    "slug": "auto-leverage",
+    "title": "Ready to run this CTA above prompt copy block",
+    "date": "2026-03-29T03:13:29.536507Z",
+    "passed": true,
+    "fail_at": null,
+    "cost_usd": null
   }
 ]
