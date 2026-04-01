@@ -1,4 +1,9 @@
 
+## 2026-03-31T22:00Z | oms-exec
+• Quality & Resilience v1 selected as next milestone — reliability-first before growth, unanimous exec alignment
+• 4 FEATURE drafts written: E2E coverage, rate limit UX, Upstash Redis cache, LLM provider evaluation
+• No decision required — run /oms all to elaborate, then /oms-work
+
 ## 2026-03-31T21:00Z | oms-work
 • Distribution Ready milestone complete — 8 tasks shipped, all validators green
 • TTL caching on /api/simulate + /api/output, GLM retry logic, structured error logging

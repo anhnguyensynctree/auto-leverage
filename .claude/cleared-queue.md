@@ -1077,6 +1077,64 @@ Verify: pnpm test -- --testPathPattern="questionnaire|ExportActions|confirm" 2>&
 - **Model-hint:** sonnet
 - **File-count:** 5
 
+---
+
+## FEATURE-008: E2E Coverage Completion
+Status: draft
+Milestone: Quality & Resilience v1
+Type: engineering
+Departments: qa-engineer, frontend-developer
+Research-gate: false
+Why: All 4 flow specs are missing error state and empty state test.describe blocks — test confidence is overstated and any regression in error paths is invisible to CI.
+Exec-decision: Add test.describe blocks for error states (API 500/network failure) and empty states (missing params, no data) to home-entry.spec.ts, questionnaire-flow.spec.ts, confirm-to-output.spec.ts, and simulation-panel.spec.ts. Auth edge is N/A for this product — each spec must include a // N/A (auth edge): no authentication in this product comment. All 5 categories must be present or explicitly commented per rules/testing.md.
+Acceptance: All 4 specs have ≥4 test.describe blocks (5 or 4+1 N/A comment). Error state tests mock API failures and assert user-visible error UI. Empty state tests cover missing URL params and no-data conditions. CI passes.
+Validation: engineering → qa-engineer + cto
+Tasks: none
+
+---
+
+## FEATURE-009: Rate Limit User Messaging
+Status: draft
+Milestone: Quality & Resilience v1
+Type: engineering
+Departments: frontend-developer, backend-developer
+Research-gate: false
+Why: When GLM rate limits fire, users see a broken or silent experience. The product must communicate clearly and still deliver value — trust depends on it.
+Exec-decision: When /api/converse or /api/simulate returns 429, the UI must: (1) immediately render the graceful degrade output (static fallback guide for all 3 components) BEFORE showing any message — degrade first, inform second; (2) display "Our AI advisor is on call and will be back in approximately X minutes" using the resetMs value from the 429 response. The message is an estimate, not a guarantee — copy must not imply SLA. "Start over" must remain available. Static fallback output must be identical in format to normal output.
+Acceptance: 429 from /api/converse renders static all-3-components output within 1 render cycle, then shows "on call" message with minute estimate below the output. 429 from /api/simulate hides the simulation panel silently (existing behavior — no change). Unit test covers the 429 branch. E2E spec covers the rate-limited questionnaire path.
+Validation: engineering → cpo + cto
+Tasks: none
+
+---
+
+## FEATURE-010: Upstash Redis Cache
+Status: draft
+Milestone: Quality & Resilience v1
+Type: engineering
+Departments: backend-developer, cto
+Research-gate: false
+Why: Module-scope Map caches reset on every cold start. On traffic spikes, 10–20 parallel cold containers each make uncached GLM calls for the same input — cost and latency multiply with traffic.
+Exec-decision: Replace the module-scope Maps in lib/simulate-cache.ts and lib/output-cache.ts with Upstash Redis (@upstash/redis). Cache key structure unchanged: MD5-style hash of inputs. TTL unchanged: 60 minutes. UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN added to .env.example and Vercel env vars (production + preview). Upstash free tier (10k commands/day) is sufficient at current traffic. If Redis is unavailable (cold start before connection established), fall through to GLM — never throw, never block. Unit tests mock the Redis client.
+Acceptance: Second identical {useCase, components} request across two separate serverless instances hits cache and skips GLM. Redis unavailability degrades gracefully to GLM call. Unit tests cover hit, miss, TTL expiry, and Redis unavailable (graceful degrade). UPSTASH_REDIS_REST_URL in .env.example.
+Validation: engineering → cto
+Tasks: none
+
+---
+
+## FEATURE-011: LLM Provider Evaluation + Abstraction
+Status: draft
+Milestone: Quality & Resilience v1
+Type: engineering
+Departments: backend-developer, cto
+Research-gate: false
+Why: GLM-5 is the only provider — no fallback if it's rate-limited or unavailable. Qwen 3.6 via OpenRouter is a candidate fallback but quality and cost are unvalidated for this product's specific tasks.
+Exec-decision: Two sequenced tasks. Task 1 (evaluation): run the same prompt inputs through GLM-5 and Qwen 3.6 (via OpenRouter) for all 3 API task types (/api/converse question generation, /api/simulate table generation, /api/output guide personalisation). Evaluate: output quality (plain language, domain accuracy, structure adherence) and cost per 1k tokens at 10x current traffic. Output is a findings doc (docs/llm-evaluation.md). Task 2 (abstraction): if Qwen 3.6 meets quality bar, abstract lib/llm-client.ts to support a provider config (GLM primary → Qwen 3.6 via OpenRouter fallback on 429/503). OPENROUTER_API_KEY added to .env.example. Pre-condition: verify OpenRouter's data handling policy before production adoption — useCase strings transit OpenRouter. Drop Qwen-turbo from any consideration — not needed. If Qwen 3.6 does not meet quality bar, Task 2 is scoped to GLM-only retry hardening only.
+Acceptance: docs/llm-evaluation.md exists with side-by-side quality scores and cost-per-1k for all 3 task types at 1x and 10x traffic. If Qwen 3.6 adopted: lib/llm-client.ts supports provider config, OPENROUTER_API_KEY in .env.example, fallback fires on GLM 429/503, unit tests cover both provider paths. If not adopted: findings doc documents the decision.
+Validation: engineering → cto + cpo
+Tasks: none
+
+---
+
 ## TASK-reelaborate — Re-elaborate incomplete task specs
 - **Status:** done
 - **Notes:** Scenarios, Verify, Artifacts added to TASK-033–035, TASK-037–040. File-count corrected. TASK-020 was superseded — skipped.
