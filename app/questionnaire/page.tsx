@@ -92,7 +92,7 @@ function QuestionnaireContent() {
           } catch {
             // sessionStorage unavailable — confirm page will gracefully skip the section
           }
-          track("questionnaire_complete", { components: result.components });
+          track("questionnaire_complete", { components: result.components.join(",") });
           const navParams = new URLSearchParams({
             components: result.components.join(","),
             useCase: result.useCase,

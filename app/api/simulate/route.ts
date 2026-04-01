@@ -1,28 +1,11 @@
 import { NextResponse } from "next/server";
-
-const CACHE_TTL_MS = 60 * 60 * 1000; // 60 minutes
-
-interface CacheEntry {
-  result: SimulationResult;
-  expiresAt: number;
-}
-
-export const simulateCache = new Map<string, CacheEntry>();
-
-export function getCacheKey(useCase: string, components: string[]): string {
-  return `${useCase}:${[...components].sort().join(",")}`;
-}
-
-export interface SimulationResult {
-  drafted_input: string;
-  metric: string;
-  experiment_rows: Array<{
-    experiment: number;
-    result: string;
-    status: string;
-  }>;
-  outcome: string;
-}
+import {
+  SimulationResult,
+  simulateCache,
+  getCacheKey,
+  getCached,
+  setCached,
+} from "@/lib/simulate-cache";
 
 interface ApiResponse {
   data: SimulationResult | null;
@@ -97,9 +80,9 @@ export async function POST(
   // Cache lookup — skip if useCase is null/undefined/empty
   const cacheKey = useCase ? getCacheKey(useCase, components) : null;
   if (cacheKey) {
-    const entry = simulateCache.get(cacheKey);
-    if (entry && Date.now() < entry.expiresAt) {
-      return NextResponse.json({ data: entry.result, error: null });
+    const cached = getCached(cacheKey);
+    if (cached) {
+      return NextResponse.json({ data: cached, error: null });
     }
   }
 
@@ -194,10 +177,7 @@ export async function POST(
     ).choices[0].message.content;
     const parsed: SimulationResult = JSON.parse(content);
     if (cacheKey) {
-      simulateCache.set(cacheKey, {
-        result: parsed,
-        expiresAt: Date.now() + CACHE_TTL_MS,
-      });
+      setCached(cacheKey, parsed);
     }
     return NextResponse.json({ data: parsed, error: null });
   } catch {
@@ -215,3 +195,4 @@ export async function POST(
     );
   }
 }
+

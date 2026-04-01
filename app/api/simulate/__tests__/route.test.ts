@@ -1,6 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { POST, simulateCache } from "@/app/api/simulate/route";
-import type { SimulationResult } from "@/app/api/simulate/route";
+import { POST } from "@/app/api/simulate/route";
+import {
+  simulateCache,
+  getCacheKey,
+  type SimulationResult,
+} from "@/lib/simulate-cache";
 
 const FIXTURE: SimulationResult = {
   drafted_input:

@@ -1,23 +1,7 @@
 import { NextResponse } from "next/server";
 import { getTemplate } from "@/lib/output-templates";
 import { glmChat } from "@/lib/llm-client";
-
-const CACHE_TTL_MS = 60 * 60 * 1000; // 60 minutes
-
-interface CacheEntry {
-  result: object;
-  expiresAt: number;
-}
-
-export const outputCache = new Map<string, CacheEntry>();
-
-export function getCacheKey(
-  components: string[],
-  useCase: string | null | undefined,
-): string {
-  const useCasePart = useCase?.trim() || "__no_usecase__";
-  return `${[...components].sort().join(",")}:${useCasePart}`;
-}
+import { getCacheKey, getCached, setCached } from "@/lib/output-cache";
 
 function buildPersonalizeMessages(
   useCase: string,
@@ -113,9 +97,9 @@ export async function POST(request: Request) {
 
   // Cache lookup — always cache, including null/undefined useCase
   const cacheKey = getCacheKey(components, useCase);
-  const cached = outputCache.get(cacheKey);
-  if (cached && Date.now() < cached.expiresAt) {
-    return NextResponse.json({ data: cached.result, error: null });
+  const cached = getCached(cacheKey);
+  if (cached) {
+    return NextResponse.json({ data: cached, error: null });
   }
 
   const template = getTemplate(components);
@@ -138,10 +122,7 @@ export async function POST(request: Request) {
   const trimmedUseCase = typeof useCase === "string" ? useCase.trim() : "";
 
   if (!trimmedUseCase) {
-    outputCache.set(cacheKey, {
-      result: template,
-      expiresAt: Date.now() + CACHE_TTL_MS,
-    });
+    setCached(cacheKey, template);
     return NextResponse.json({ data: template, error: null });
   }
 
@@ -165,9 +146,6 @@ export async function POST(request: Request) {
   ];
 
   const responseData = { ...template, guide_steps: guideSteps };
-  outputCache.set(cacheKey, {
-    result: responseData,
-    expiresAt: Date.now() + CACHE_TTL_MS,
-  });
+  setCached(cacheKey, responseData);
   return NextResponse.json({ data: responseData, error: null });
 }

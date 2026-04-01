@@ -395,7 +395,7 @@ describe("analytics: questionnaire_complete event", () => {
     await waitFor(() => expect(mockPush).toHaveBeenCalledOnce());
 
     expect(mockTrack).toHaveBeenCalledWith("questionnaire_complete", {
-      components: ["train", "prepare"],
+      components: "train,prepare",
     });
   });
 

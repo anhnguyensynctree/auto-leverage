@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import OutputCard from "@/components/OutputCard";
 import SimulationCard from "@/components/SimulationCard";
-import type { SimulationResult } from "@/app/api/simulate/route";
+import type { SimulationResult } from "@/lib/simulate-cache";
 
 interface OutputData {
   component_names: string[];

@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { POST, outputCache, getCacheKey } from "@/app/api/output/route";
+import { POST } from "@/app/api/output/route";
+import { outputCache, getCacheKey } from "@/lib/output-cache";
 import { OUTPUT_TEMPLATES } from "@/lib/output-templates";
 
 function makeRequest(body: unknown): Request {

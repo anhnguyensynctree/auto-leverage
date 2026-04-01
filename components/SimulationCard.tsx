@@ -1,6 +1,6 @@
 "use client";
 
-import type { SimulationResult } from "@/app/api/simulate/route";
+import type { SimulationResult } from "@/lib/simulate-cache";
 
 export default function SimulationCard({
   drafted_input,
