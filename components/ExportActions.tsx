@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { track } from "@vercel/analytics/react";
 
 interface ExportActionsProps {
   guideSteps: string[];
@@ -12,11 +13,20 @@ export default function ExportActions({
   llmPrompt,
 }: ExportActionsProps) {
   const [copied, setCopied] = useState(false);
+  const [sharedCopied, setSharedCopied] = useState(false);
 
   function handleCopy() {
+    track("output_copy_prompt");
     navigator.clipboard.writeText(llmPrompt).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
+    });
+  }
+
+  function handleShare() {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      setSharedCopied(true);
+      setTimeout(() => setSharedCopied(false), 2000);
     });
   }
 
@@ -40,6 +50,13 @@ export default function ExportActions({
       >
         <span className="text-base">{copied ? "✓" : "⎘"}</span>
         <span>{copied ? "Copied!" : "Copy to clipboard"}</span>
+      </button>
+      <button
+        onClick={handleShare}
+        className="flex-1 h-10 px-6 bg-surface-container border border-outline-variant/40 text-on-surface-variant rounded-xl font-semibold text-sm flex items-center justify-center gap-2 hover:bg-surface-container-high hover:text-on-surface transition-all active:scale-95"
+      >
+        <span className="text-base">{sharedCopied ? "✓" : "↗"}</span>
+        <span>{sharedCopied ? "Copied!" : "Share this guide"}</span>
       </button>
       <button
         onClick={handleDownload}
