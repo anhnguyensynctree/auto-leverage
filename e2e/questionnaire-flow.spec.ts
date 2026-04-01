@@ -69,8 +69,7 @@ test.describe("questionnaire flow", () => {
 
     await page
       .locator("label", { hasText: "Something else — I'll describe it" })
-      .locator('input[type="radio"]')
-      .check();
+      .click({ force: true });
 
     await expect(
       page.locator("textarea[aria-label='Describe your need']"),
@@ -133,8 +132,7 @@ test.describe("questionnaire flow", () => {
 
     await page
       .locator("label", { hasText: "Learning rate" })
-      .locator('input[type="radio"]')
-      .check();
+      .click({ force: true });
 
     await page.getByRole("button", { name: /next/i }).click();
 

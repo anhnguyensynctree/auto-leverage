@@ -22,7 +22,7 @@ test.describe("home entry form", () => {
   }) => {
     const input = "I want to download training data";
     await page.getByRole("textbox", { name: "Describe your goal" }).fill(input);
-    await page.getByRole("button", { name: "Find my answer" }).click();
+    await page.getByRole("button", { name: "Analyze Goal" }).click();
 
     await page.waitForURL(/\/questionnaire/);
 
@@ -35,7 +35,7 @@ test.describe("home entry form", () => {
     page,
   }) => {
     await page.getByRole("textbox", { name: "Describe your goal" }).fill("hi");
-    await page.getByRole("button", { name: "Find my answer" }).click();
+    await page.getByRole("button", { name: "Analyze Goal" }).click();
 
     await expect(page.locator("#entry-error")).toBeVisible();
     await expect(page.locator("#entry-error")).toContainText(
@@ -66,7 +66,7 @@ test.describe("home entry form", () => {
   }) => {
     const input = "I want to download training data";
     await page.getByRole("textbox", { name: "Describe your goal" }).fill(input);
-    await page.getByRole("button", { name: "Find my answer" }).click();
+    await page.getByRole("button", { name: "Analyze Goal" }).click();
 
     await page.waitForURL(/\/questionnaire/);
 

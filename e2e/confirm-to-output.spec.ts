@@ -26,7 +26,7 @@ test.describe("confirm to output", () => {
 
   test("useCase display — tune my model visible", async ({ page }) => {
     await page.goto(CONFIRM_URL);
-    await expect(page.getByText(/tune my model/i)).toBeVisible();
+    await expect(page.getByText("tune my model", { exact: true })).toBeVisible();
   });
 
   test("start over — navigates to / with no query params", async ({ page }) => {

@@ -77,7 +77,7 @@ test.describe("full happy path", () => {
     await page
       .getByRole("textbox", { name: "Describe your goal" })
       .fill("I want to tune my optimizer settings");
-    await page.getByRole("button", { name: "Find my answer" }).click();
+    await page.getByRole("button", { name: "Analyze Goal" }).click();
 
     // ── Step 2: Questionnaire ──────────────────────────────────────────────
     await page.waitForURL(/\/questionnaire/);
@@ -90,8 +90,7 @@ test.describe("full happy path", () => {
 
     await page
       .locator("label", { hasText: "Learning rate" })
-      .locator('input[type="radio"]')
-      .check();
+      .click({ force: true });
 
     await page.getByRole("button", { name: /next/i }).click();
 
@@ -99,7 +98,7 @@ test.describe("full happy path", () => {
     await page.waitForURL(/\/confirm/);
     expect(new URL(page.url()).pathname).toBe("/confirm");
 
-    await expect(page.getByText(/tune my optimizer/i)).toBeVisible();
+    await expect(page.getByText("tune my optimizer", { exact: true })).toBeVisible();
 
     await page.getByRole("button", { name: /yes, this fits/i }).click();
 
