@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { POST } from "@/app/api/output/route";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { POST, outputCache, getCacheKey } from "@/app/api/output/route";
 import { OUTPUT_TEMPLATES } from "@/lib/output-templates";
 
 function makeRequest(body: unknown): Request {
@@ -9,6 +9,11 @@ function makeRequest(body: unknown): Request {
     headers: { "Content-Type": "application/json" },
   });
 }
+
+beforeEach(() => {
+  outputCache.clear();
+  vi.useRealTimers();
+});
 
 // ---------------------------------------------------------------------------
 // All 7 valid component combinations
@@ -267,5 +272,112 @@ describe("useCase injection", () => {
     const original = [...OUTPUT_TEMPLATES.train.guide_steps];
     await POST(makeRequest({ components: ["train"], useCase: "some goal" }));
     expect(OUTPUT_TEMPLATES.train.guide_steps).toEqual(original);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// TTL cache
+// ---------------------------------------------------------------------------
+
+describe("TTL cache", () => {
+  it("getCacheKey sorts components and appends useCase", () => {
+    expect(getCacheKey(["train", "prepare"], "my goal")).toBe(
+      "prepare,train:my goal",
+    );
+    expect(getCacheKey(["prepare", "train"], "my goal")).toBe(
+      "prepare,train:my goal",
+    );
+  });
+
+  it("getCacheKey uses __no_usecase__ for null useCase", () => {
+    expect(getCacheKey(["train"], null)).toBe("train:__no_usecase__");
+    expect(getCacheKey(["train"], undefined)).toBe("train:__no_usecase__");
+    expect(getCacheKey(["train"], "")).toBe("train:__no_usecase__");
+    expect(getCacheKey(["train"], "   ")).toBe("train:__no_usecase__");
+  });
+
+  it("cache hit: second identical request (no useCase) returns cached result without GLM", async () => {
+    await POST(makeRequest({ components: ["train"] }));
+    await POST(makeRequest({ components: ["train"] }));
+
+    // Both requests succeed; cache was populated on first call
+    expect(outputCache.size).toBe(1);
+  });
+
+  it("cache hit: second identical request (with useCase) skips GLM", async () => {
+    // GLM is not configured in test env, so it falls through to prefixed guide_steps
+    const req1 = makeRequest({ components: ["train"], useCase: "predict wins" });
+    const req2 = makeRequest({ components: ["train"], useCase: "predict wins" });
+
+    const res1 = await POST(req1);
+    const res2 = await POST(req2);
+
+    const json1 = await res1.json();
+    const json2 = await res2.json();
+
+    expect(json1.error).toBeNull();
+    expect(json2.error).toBeNull();
+    expect(json2.data).toEqual(json1.data);
+    expect(outputCache.size).toBe(1);
+  });
+
+  it("cache hit: component order does not affect cache key", async () => {
+    await POST(makeRequest({ components: ["prepare", "train"] }));
+    await POST(makeRequest({ components: ["train", "prepare"] }));
+
+    // Same cache key regardless of order
+    expect(outputCache.size).toBe(1);
+  });
+
+  it("cache miss: different useCase produces a separate cache entry", async () => {
+    await POST(makeRequest({ components: ["train"], useCase: "goal A" }));
+    await POST(makeRequest({ components: ["train"], useCase: "goal B" }));
+
+    expect(outputCache.size).toBe(2);
+  });
+
+  it("cache miss: different components produce a separate cache entry", async () => {
+    await POST(makeRequest({ components: ["train"] }));
+    await POST(makeRequest({ components: ["prepare"] }));
+
+    expect(outputCache.size).toBe(2);
+  });
+
+  it("null useCase caches under __no_usecase__ key and hits on repeat", async () => {
+    await POST(makeRequest({ components: ["train"] }));
+    await POST(makeRequest({ components: ["train"] }));
+
+    const key = getCacheKey(["train"], null);
+    expect(key).toBe("train:__no_usecase__");
+    expect(outputCache.has(key)).toBe(true);
+    expect(outputCache.size).toBe(1);
+  });
+
+  it("null useCase and undefined useCase map to the same cache entry", async () => {
+    await POST(makeRequest({ components: ["train"], useCase: undefined }));
+    await POST(makeRequest({ components: ["train"] }));
+
+    expect(outputCache.size).toBe(1);
+  });
+
+  it("TTL expiry: expired entry triggers a fresh cache write", async () => {
+    vi.useFakeTimers();
+
+    await POST(makeRequest({ components: ["train"] }));
+    expect(outputCache.size).toBe(1);
+
+    // Retrieve the entry and verify it has an expiry
+    const key = getCacheKey(["train"], null);
+    const entry = outputCache.get(key)!;
+    expect(entry.expiresAt).toBeGreaterThan(Date.now());
+
+    // Advance past TTL (60 min + 1 ms)
+    vi.advanceTimersByTime(60 * 60 * 1000 + 1);
+
+    // Entry is now expired; next request should overwrite it
+    await POST(makeRequest({ components: ["train"] }));
+
+    const refreshed = outputCache.get(key)!;
+    expect(refreshed.expiresAt).toBeGreaterThan(Date.now());
   });
 });
