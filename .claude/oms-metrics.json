@@ -304,5 +304,86 @@
     "passed": true,
     "fail_at": null,
     "cost_usd": null
+  },
+  {
+    "task_id": "TASK-045",
+    "slug": "auto-leverage",
+    "title": "Rate limit UX \u2014 questionnaire 429 static fallback",
+    "date": "2026-04-01T19:28:48.813363Z",
+    "passed": true,
+    "fail_at": null,
+    "cost_usd": null
+  },
+  {
+    "task_id": "TASK-046",
+    "slug": "auto-leverage",
+    "title": "Upstash Redis cache \u2014 replace module-scope Maps",
+    "date": "2026-04-01T19:29:36.900968Z",
+    "passed": true,
+    "fail_at": null,
+    "cost_usd": null
+  },
+  {
+    "task_id": "TASK-047",
+    "slug": "auto-leverage",
+    "title": "LLM evaluation \u2014 GLM-5 vs Qwen 3.6 side-by-side",
+    "date": "2026-04-01T19:32:00.893775Z",
+    "passed": true,
+    "fail_at": null,
+    "cost_usd": null
+  },
+  {
+    "task_id": "TASK-041",
+    "slug": "auto-leverage",
+    "title": "Restructure home-entry.spec.ts into 5-category E2E spec",
+    "date": "2026-04-01T19:36:04.652021Z",
+    "passed": true,
+    "fail_at": null,
+    "cost_usd": null
+  },
+  {
+    "task_id": "TASK-042",
+    "slug": "auto-leverage",
+    "title": "Restructure questionnaire-flow.spec.ts into 5-category E2E spec",
+    "date": "2026-04-01T19:36:04.652021Z",
+    "passed": true,
+    "fail_at": null,
+    "cost_usd": null
+  },
+  {
+    "task_id": "TASK-043",
+    "slug": "auto-leverage",
+    "title": "Restructure confirm-to-output.spec.ts into 5-category E2E spec",
+    "date": "2026-04-01T19:36:04.652021Z",
+    "passed": true,
+    "fail_at": null,
+    "cost_usd": null
+  },
+  {
+    "task_id": "TASK-044",
+    "slug": "auto-leverage",
+    "title": "Restructure simulation-panel.spec.ts into 5-category E2E spec",
+    "date": "2026-04-01T19:36:04.652021Z",
+    "passed": true,
+    "fail_at": null,
+    "cost_usd": null
+  },
+  {
+    "task_id": "TASK-048",
+    "slug": "auto-leverage",
+    "title": "LLM provider abstraction \u2014 GLM backoff hardening",
+    "date": "2026-04-01T19:46:36.091Z",
+    "passed": true,
+    "fail_at": null,
+    "cost_usd": null
+  },
+  {
+    "task_id": "TASK-049",
+    "slug": "auto-leverage",
+    "title": "Upstash Redis cache unit tests",
+    "date": "2026-04-01T19:53:18.157873Z",
+    "passed": true,
+    "fail_at": null,
+    "cost_usd": null
   }
 ]

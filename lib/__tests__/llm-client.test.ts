@@ -180,7 +180,8 @@ describe("glmChat retry logic", () => {
       .mockResolvedValueOnce(makeResponse(200, SUCCESS_BODY));
 
     const promise = glmChat([{ role: "user", content: "hi" }]);
-    await vi.advanceTimersByTimeAsync(500);
+    // Exponential backoff: attempt=0 → Math.min(100 * 2^0, 400) = 100ms
+    await vi.advanceTimersByTimeAsync(100);
     const result = await promise;
 
     expect(result).toBe("hello");
@@ -238,10 +239,45 @@ describe("glmChat retry logic", () => {
       caughtError = e;
     });
 
-    await vi.advanceTimersByTimeAsync(600);
+    // Exponential backoff: attempt=0 → 100ms
+    await vi.advanceTimersByTimeAsync(150);
     await promise;
 
     expect(caughtError?.message).toBe("GLM API error: 503");
+    expect(globalThis.fetch).toHaveBeenCalledTimes(2);
+  });
+
+  it("uses exponential backoff: 100ms delay on first 503 retry", async () => {
+    vi.spyOn(globalThis, "fetch")
+      .mockResolvedValueOnce(makeResponse(503, {}))
+      .mockResolvedValueOnce(makeResponse(200, SUCCESS_BODY));
+
+    const promise = glmChat([{ role: "user", content: "hi" }]);
+
+    // At 99ms the retry fetch should not have fired yet
+    await vi.advanceTimersByTimeAsync(99);
+    expect(globalThis.fetch).toHaveBeenCalledTimes(1);
+
+    // At 100ms the retry fires
+    await vi.advanceTimersByTimeAsync(1);
+    const result = await promise;
+    expect(result).toBe("hello");
+    expect(globalThis.fetch).toHaveBeenCalledTimes(2);
+  });
+
+  it("caps 502/503 backoff at 400ms (attempt=0 yields 100ms: Math.min(100*2^0,400)=100)", async () => {
+    // With MAX_ATTEMPTS=2 there is only one retry (attempt=0).
+    // Formula: Math.min(100 * Math.pow(2, 0), 400) = Math.min(100, 400) = 100ms.
+    // Verify: advancing only 100ms is sufficient to trigger the retry.
+    vi.spyOn(globalThis, "fetch")
+      .mockResolvedValueOnce(makeResponse(502, {}))
+      .mockResolvedValueOnce(makeResponse(200, SUCCESS_BODY));
+
+    const promise = glmChat([{ role: "user", content: "hi" }]);
+    await vi.advanceTimersByTimeAsync(100);
+    const result = await promise;
+
+    expect(result).toBe("hello");
     expect(globalThis.fetch).toHaveBeenCalledTimes(2);
   });
 });

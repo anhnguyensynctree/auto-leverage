@@ -2,10 +2,15 @@
 
 const GLM_BASE_URL = "https://open.bigmodel.cn/api/paas/v4/chat/completions";
 
+// Qwen 3.6 (qwen/qwen-2.5-72b-instruct) evaluated as GLM fallback on 2026-04-01.
+// Evaluation found domain accuracy failures and JSON formatting issues.
+// Verdict: Qwen 3.6 does NOT qualify. GLM-only path hardened with exponential backoff.
+// See docs/llm-evaluation.md for full evaluation details.
 const RETRY_STATUS = new Set([502, 503]);
 const NO_RETRY_STATUS = new Set([400, 401, 404]);
 const MAX_ATTEMPTS = 2;
-const RETRY_DELAY_MS = 500;
+const BACKOFF_BASE_MS = 100;
+const BACKOFF_CAP_MS = 400;
 const MAX_RETRY_AFTER_MS = 2000;
 
 const delay = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
@@ -86,7 +91,7 @@ export async function glmChat(
           : MAX_RETRY_AFTER_MS;
         await delay(retryAfterMs);
       } else if (RETRY_STATUS.has(response.status)) {
-        await delay(RETRY_DELAY_MS);
+        await delay(Math.min(BACKOFF_BASE_MS * Math.pow(2, attempt), BACKOFF_CAP_MS));
       } else {
         // Unknown 4xx/5xx — throw without retry
         throw err;

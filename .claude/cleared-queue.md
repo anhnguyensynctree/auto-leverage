@@ -1080,7 +1080,7 @@ Verify: pnpm test -- --testPathPattern="questionnaire|ExportActions|confirm" 2>&
 ---
 
 ## TASK-041: Restructure home-entry.spec.ts into 5-category E2E spec
-Status: queued
+Status: done
 Feature: FEATURE-008
 Milestone: Quality & Resilience v1
 Department: Engineering
@@ -1122,7 +1122,7 @@ Verify: pnpm exec playwright test e2e/home-entry.spec.ts
 ---
 
 ## TASK-042: Restructure questionnaire-flow.spec.ts into 5-category E2E spec
-Status: queued
+Status: done
 Feature: FEATURE-008
 Milestone: Quality & Resilience v1
 Department: Engineering
@@ -1165,7 +1165,7 @@ Verify: pnpm exec playwright test e2e/questionnaire-flow.spec.ts && pnpm exec ts
 ---
 
 ## TASK-043: Restructure confirm-to-output.spec.ts into 5-category E2E spec
-Status: queued
+Status: done
 Feature: FEATURE-008
 Milestone: Quality & Resilience v1
 Department: Engineering
@@ -1206,7 +1206,7 @@ Verify: pnpm exec playwright test e2e/confirm-to-output.spec.ts && pnpm exec tsc
 ---
 
 ## TASK-044: Restructure simulation-panel.spec.ts into 5-category E2E spec
-Status: queued
+Status: done
 Feature: FEATURE-008
 Milestone: Quality & Resilience v1
 Department: Engineering
@@ -1243,7 +1243,7 @@ Verify: pnpm exec playwright test e2e/simulation-panel.spec.ts
 ---
 
 ## TASK-045: Rate limit UX — questionnaire 429 static fallback + "on call" message
-Status: queued
+Status: done
 Feature: FEATURE-009
 Milestone: Quality & Resilience v1
 Department: Engineering
@@ -1293,7 +1293,7 @@ Verify: pnpm test && pnpm exec playwright test e2e/rate-limit.spec.ts && pnpm ex
 ---
 
 ## TASK-046: Upstash Redis cache — replace module-scope Maps
-Status: queued
+Status: done
 Feature: FEATURE-010
 Milestone: Quality & Resilience v1
 Department: Engineering
@@ -1336,7 +1336,7 @@ Verify: pnpm exec tsc --noEmit
 ---
 
 ## TASK-049: Upstash Redis cache — unit tests
-Status: queued
+Status: done
 Feature: FEATURE-010
 Milestone: Quality & Resilience v1
 Department: Engineering
@@ -1376,7 +1376,7 @@ Verify: pnpm test
 ---
 
 ## TASK-047: LLM evaluation — GLM-5 vs Qwen 3.6 side-by-side
-Status: queued
+Status: done
 Feature: FEATURE-011
 Milestone: Quality & Resilience v1
 Department: Engineering
@@ -1425,7 +1425,7 @@ Verify: test -f docs/llm-evaluation.md && grep -qE "qualifies|does not qualify" 
 ---
 
 ## TASK-048: LLM provider abstraction (gates on TASK-047)
-Status: queued
+Status: done
 Feature: FEATURE-011
 Milestone: Quality & Resilience v1
 Department: Engineering
