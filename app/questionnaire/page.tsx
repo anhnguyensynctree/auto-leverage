@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import { track } from "@vercel/analytics/react";
 import QuestionCard from "@/components/QuestionCard";
 
 const ELSE_OPTION = "Something else — I'll describe it";
@@ -91,6 +92,7 @@ function QuestionnaireContent() {
           } catch {
             // sessionStorage unavailable — confirm page will gracefully skip the section
           }
+          track("questionnaire_complete", { components: result.components });
           const navParams = new URLSearchParams({
             components: result.components.join(","),
             useCase: result.useCase,

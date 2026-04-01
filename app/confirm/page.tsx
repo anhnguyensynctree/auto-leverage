@@ -2,6 +2,7 @@
 
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import { track } from "@vercel/analytics/react";
 
 interface Turn {
   q: string;
@@ -118,6 +119,7 @@ function ConfirmContent() {
     }));
 
   function handleConfirm() {
+    track("confirm_proceed");
     const navParams = new URLSearchParams({
       components: rawComponents,
       confidence,

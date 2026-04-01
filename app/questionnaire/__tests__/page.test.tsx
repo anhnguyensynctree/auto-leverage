@@ -18,6 +18,9 @@ vi.mock("next/navigation", () => ({
   useRouter: () => mockRouter,
 }));
 
+const { mockTrack } = vi.hoisted(() => ({ mockTrack: vi.fn() }));
+vi.mock("@vercel/analytics/react", () => ({ track: mockTrack }));
+
 import { useSearchParams } from "next/navigation";
 
 const mockUseSearchParams = vi.mocked(useSearchParams);
@@ -371,6 +374,50 @@ describe("error state", () => {
     await waitFor(() => {
       expect(screen.getByText("What aspect of training?")).toBeInTheDocument();
     });
+  });
+});
+
+describe("analytics: questionnaire_complete event", () => {
+  it("calls track('questionnaire_complete') with components when done:true is received", async () => {
+    mockConverseNotDone("What aspect of training?", DEFAULT_OPTIONS);
+    render(<QuestionnairePage />);
+    await waitFor(() =>
+      expect(screen.getByText("What aspect of training?")).toBeInTheDocument(),
+    );
+
+    mockConverseDone(["train", "prepare"], "Tune Adam LR schedule", 0.9);
+
+    const radio = screen.getByDisplayValue("Adjust learning rate");
+    await userEvent.click(radio);
+    const nextBtn = screen.getByRole("button", { name: /next/i });
+    await userEvent.click(nextBtn);
+
+    await waitFor(() => expect(mockPush).toHaveBeenCalledOnce());
+
+    expect(mockTrack).toHaveBeenCalledWith("questionnaire_complete", {
+      components: ["train", "prepare"],
+    });
+  });
+
+  it("does not call track when API returns done:false", async () => {
+    mockConverseNotDone("What aspect of training?", DEFAULT_OPTIONS);
+    render(<QuestionnairePage />);
+    await waitFor(() =>
+      expect(screen.getByText("What aspect of training?")).toBeInTheDocument(),
+    );
+
+    mockConverseNotDone("Follow-up question?", DEFAULT_OPTIONS);
+
+    const radio = screen.getByDisplayValue("Adjust learning rate");
+    await userEvent.click(radio);
+    const nextBtn = screen.getByRole("button", { name: /next/i });
+    await userEvent.click(nextBtn);
+
+    await waitFor(() =>
+      expect(screen.getByText("Follow-up question?")).toBeInTheDocument(),
+    );
+
+    expect(mockTrack).not.toHaveBeenCalled();
   });
 });
 
