@@ -2,7 +2,7 @@
 import { describe, it, expect } from "vitest";
 import { render, screen, within } from "@testing-library/react";
 import SimulationCard from "@/components/SimulationCard";
-import type { SimulationResult } from "@/app/api/simulate/route";
+import type { SimulationResult } from "@/lib/simulate-cache";
 
 const FIXTURE: SimulationResult = {
   drafted_input:
