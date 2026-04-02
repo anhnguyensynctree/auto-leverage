@@ -101,6 +101,10 @@ export async function POST(
     );
   }
 
+  // GLM_MODEL must match a model available on the account — glm-4-flash was deprecated.
+  // Set GLM_MODEL=glm-5 (or current equivalent) in Vercel env vars.
+  const glmModel = process.env.GLM_MODEL ?? "glm-5";
+
   let glmResponse: Response;
   try {
     glmResponse = await fetch(
@@ -112,7 +116,7 @@ export async function POST(
           Authorization: `Bearer ${apiKey}`,
         },
         body: JSON.stringify({
-          model: "glm-4-flash",
+          model: glmModel,
           messages: [
             { role: "system", content: SYSTEM_PROMPT },
             {
